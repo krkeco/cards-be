@@ -1,0 +1,120 @@
+{
+	"stories":{
+		
+		"jerusalem":{
+			"name":"Jerusalem",
+			"influence":3,
+			"abilities":["jerusalem"]
+		},
+
+		"jonah":{
+			"character":{
+				"name":"Jonah",
+				"cost": 0,
+				"gold":0,
+				"influence":0,
+				"abilities":["jonah"]},
+			"location":{
+				"name":"Nineveh",
+				"influence":6,
+				"abilities":["nineveh"]}
+		},
+			"esther":{
+			"character":{"name":"Esther",
+				"cost": 0,
+				"gold":2,
+				"influence":0,
+				"abilities":["esther"]},
+			"location":{
+				"name":"Babylon",
+				"influence":6,
+				"abilities":["babylon"]}
+		}
+	},
+	"decks":{
+		"starter":[
+			{"name":"Influence", "quantity": 3, "cost": 0,"gold":0,"influence":2},
+			{"name":"Purse", "quantity": 6, "cost": 0,"gold":1,"influence":0}
+		],
+		"jonah":[
+			{"name":"ninevite",
+				"quantity":4,
+				"cost": 2,
+				"gold":0,
+				"influence":2,
+				"abilities":["ninevite"]},
+			{"name":"caravan",
+				"quantity":4,
+					"cost": 3,
+					"gold":2,
+					"influence":0,
+					"abilities":["caravan"]},
+			{"name":"scorching east wind",
+				"quantity":3,
+				 	"cost": 4,
+				 	"gold":0,
+				 	"influence":3,
+				 	"abilities":["scorching"]},
+			{"name":"prince",
+				"quantity":3,
+					"cost": 4,
+					"gold":1,
+					"influence":2,
+					"abilities":["prince"]},
+			{"name":"healing vine",
+				"quantity":2,
+					"cost": 5,
+					"gold":0,
+					"influence":5,
+					"abilities":["vine"]},
+			{"name":"huge fish",
+				"quantity":2,
+					"cost": 6,
+					"gold":0,
+					"influence":0,
+					"abilities":["fish"]}
+		],
+		"esther":[
+			{"name":"Eunich",
+				"quantity":4,
+				"cost": 2,
+				"gold":0,
+				"influence":4,
+				"abilities":["eunich"]},
+			{"name":"Edict: Taxes",
+				"quantity":4,
+					"cost": 3,
+					"gold":3,
+					"influence":0,
+					"abilities":["taxes"]},
+			{"name":"Edict of Naman",
+				"quantity":3,
+				 	"cost": 3,
+				 	"gold":0,
+				 	"influence":0,
+				 	"abilities":["naman"]},
+			{"name":"Edict of Mordecai",
+				"quantity":2,
+					"cost": 5,
+					"gold":0,
+					"influence":0,
+					"abilities":["mordecai"]},
+			{"name":"Edict of Xerxes",
+				"quantity":3,
+					"cost": 4,
+					"gold":0,
+					"influence":0,
+					"abilities":["xerxes"]},
+			{"name":"Edict of Annihilation",
+				"quantity":2,
+					"cost": 6,
+					"gold":0,
+					"influence":10,
+					"abilities":["annihilation"]}
+		]
+
+
+
+
+	}
+}
