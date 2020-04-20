@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const deckData = require('./decks.json')
+// const deckData = require('./decks.json')
 // const Player = require('./objects/Player.js')
 // import {Player} from '/objects/Player.js'
 
@@ -9,36 +9,29 @@ app.get('/', function (req, res) {
  return res.send('Hello world');
 });
 
-var pl = require('./objects/Player.js');
-var loc = require('./objects/Location.js');
-var tu = require('./objects/Turn.js')
+
+// const pl = require('./objects/Player.js');
+// const loc = require('./objects/Location.js');
+// const tu = require('./objects/Turn.js')
+// const cards = require('./objects/CardData.js')
+// const deckData = new cards.data();
+const sim = require('./objects/Simulation.js');
 
 
 app.listen(process.env.PORT || 8080);
 
-//initialize data
-let decks = deckData.decks;
+// let Jonah = new pl.Player(deckData.stories.jonah,deckData.decks.starter)
+// let Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+// for(let x =0; x < 1000; x++){
+// 	Jonah.drawCards(10)
+// 	Jonah.discardCard(0)
+// 	Jonah.discardHand();
+// }
 
-//set deck sizes
-Object.keys(decks).map((deck)=>{
-	decks[deck].map((card,index) => {
-		for(let x = 0; x < decks[deck][index].quantity-1; x++){
-			decks[deck].push(decks[deck][index])
-		}
-	})
-})
-// console.log(decks)
-
-
-let Jonah = new pl.Player(deckData.stories.jonah,decks.starter)
-let Esther = new pl.Player(deckData.stories.esther, decks.starter)
-
-let Babylon = new loc.Location(decks.esther,deckData.stories.esther.location)
-let Nineveh = new loc.Location(decks.jonah,deckData.stories.jonah.location)
-let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
-console.log('babs'+Babylon.name)
-
-let players = [Jonah, Esther]
-let locations = [Babylon, Jerusalem, Nineveh]
-
-let turn = tu.Turn(players,locations,1);
+let simulation = new sim.Series(10);
+//@10k plays
+//FP rotate jonah winrate: 53% (really close!)
+//fprotate jonah w/ draw1: winrate 46
+//fprotate jonah w/ draw2: winrate 61 (too much)
+//jonahD2 estherG3 Jwinrate 55 56 53
+//jonahD2 estherG2I2 Jwinrate 52 50 52 52
