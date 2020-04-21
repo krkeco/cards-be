@@ -1,11 +1,16 @@
 module.exports.Player =  function Player(story, deck) {
 	this.deck = [story.character, ...deck]
 	this.hand = []
+	this.mills = 0
+	this.abilities = [...story.character.abilities]
 	this.discard = []
 	this.firstPlayer = false;
 	this.winning = false;
 	this.name = story.character.name;
 	// this.AI = new ai.AI(this);
+	this.setAbilities = function(abilities){
+		this.abilities=[...abilities]
+	}
 
 	this.drawCards = function(cardCount){
 	console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)

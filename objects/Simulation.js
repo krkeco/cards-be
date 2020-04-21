@@ -35,24 +35,32 @@ module.exports.Series = function Simulation(gameCount){
 }
 
 function Game(playerRotation){
-	let Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter)
-	let Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter)
 
+	// let Canaan = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+	let Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
 	let Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
 	let Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
 	let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
-	let players = []
+	let locations = {'rome':Rome, 'jerusalem':Jerusalem, "nineveh":Nineveh, 'babylon':Babylon}
 
-	if(playerRotation % 2 == 0){
-		players = [ Esther,Jonah ]
-	}else{
-		players = [Jonah, Esther]
-	}
-	
-	let locations = {'babylon':Babylon, 'jerusalem':Jerusalem, "nineveh":Nineveh}
-	
+
+	let players = []
+	let Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter)
+	let Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter)
+	let Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter)
+	// let Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter)
 	Jonah.AI = new ai.AI(Jonah, locations);
 	Esther.AI = new ai.AI(Esther, locations);
+	Paul.AI = new ai.AI(Paul, locations);
+	// Joshua.AI = new ai.AI(Joshua, locations);
+
+	if(playerRotation % 2 == 0){
+		players = [ Paul,Jonah ]
+	}else{
+		players = [Jonah, Paul]
+	}
+	
+	
 
 	let gameSim = []
 
@@ -62,6 +70,10 @@ function Game(playerRotation){
 		let turn = tu.Turn(players,locations,(gameSim.length+1),false);	
 		winner = turn[3]
 		gameSim.push(turn)
+		// if(turn[2] > 30){
+		// 	console.log('game took too long')
+		// 	break;
+		// }
 	}
 
 	console.log('game took ' + gameSim.length + ' turns to finish.')

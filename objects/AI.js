@@ -20,6 +20,93 @@ module.exports.AI = function AI(player, locations){
 
 			//char specific strategy
 			switch(strategem){
+				case "Paul":
+				if(player.name != "Paul"){
+					break;
+				}
+					// this.buySomething('nineveh')
+					// this.millSomething()
+					// this.attackSomething()
+						this.buySomething('rome')
+						// this.millSomething();
+					console.log('paul logic? '+player.getTotalInfluence())
+
+					let canEvangalize = false;
+					let paul;
+					console.log('paul abilities'+player.abilities)
+
+					player.hand.map((card,index)=>{
+						if(card.name == "Paul"){
+							canEvangalize = true;
+							paul = card;
+						}
+					})
+					let hasPlayed = false;
+					if(canEvangalize && player.getTotalInfluence() > 7){
+
+							 Object.keys(locations).map((location, index) => {
+							 	console.log('location index'+index)
+								if(player.abilities[index] ==0 ){
+									if(!hasPlayed){
+										hasPlayed = true
+										for(let x= player.hand.length-1; x>-1 ;x--){
+											locations[location].playCard(x,player,maxCard)
+										}
+
+										let newAbilities = [...player.abilities]
+										newAbilities[index] = 1;
+										console.log(newAbilities)
+										player.setAbilities(newAbilities);
+									}
+								}
+							})
+						}
+
+					if(player.abilities[0]==1 && player.abilities[1]==1 && player.abilities[2]==1){
+						player.winning = true;
+						console.log('paul won!')
+					}
+
+					if(!hasPlayed){
+						this.attackSomething(maxCard)
+					}
+					// if(player.abilities[0] ==0 && player.getTotalInfluence() > 7){
+						// for(let x= player.hand.length-1; x>-1 ;x--){
+						// 	locations['jerusalem'].playCard(x,player,maxCard)
+						// }
+					// 	let newAbilities = [...player.abilities]
+					// 	newAbilities[0] = 1;
+					// 	player.abilities = newAbilities;
+					// 	console.log('new abilities'+player.abilities)
+					// }else if(player.abilities[1] ==0 && player.getTotalInfluence() > 7){
+					// 	for(let x= player.hand.length-1; x>-1 ;x--){
+					// 		locations['rome'].playCard(x,player,maxCard)
+					// 	}
+					// 	let newAbilities = [...player.abilities]
+					// 	newAbilities[1] = 1;
+					// 	player.abilities = newAbilities;
+					// 	console.log(player.abilities)
+					// }else if(player.abilities[2] ==0 && player.getTotalInfluence() > 7){
+					// 		let local3;
+					// 		 Object.keys(locations).map((location, index) => {
+					// 		 	console.log('location index'+index)
+					// 			if(locations[location].name != 'Rome' && locations[location].name != 'Jerusalem'){
+					// 				console.log('found location'+locations[location].name)
+					// 				local3 = (locations[location].name).toLowerCase()
+
+					// 			}
+					// 		})
+					// 	for(let x= player.hand.length-1; x>-1 ;x--){
+
+					// 		locations[local3].playCard(x,player,maxCard)
+					// 	}
+					// 	let newAbilities = [...player.abilities]
+					// 	newAbilities[2] = 1;
+					// 	player.abilities = newAbilities;
+					// 	console.log(player.abilities)
+					// }
+
+				break;				
 				case "Esther":
 				if(player.name != "Esther"){
 					break;
@@ -32,7 +119,7 @@ module.exports.AI = function AI(player, locations){
 						
 					console.log('esther logic? '+player.getTotalInfluence())
 					
-					if(player.getTotalInfluence() > 24){
+					if(player.getTotalInfluence() > 17){
 						player.winning = true;
 						console.log('> is winnable for esther')
 						for(let x= player.hand.length-1; x>-1 ;x--){
@@ -68,7 +155,7 @@ module.exports.AI = function AI(player, locations){
 						}
 					})
 
-					if(ninevites > 3){
+					if(ninevites > 4){
 						player.winning = true;
 						console.log('Jonah is winning? '+player.winning)
 						
@@ -99,34 +186,19 @@ module.exports.AI = function AI(player, locations){
 				if(locations['nineveh'].market.length > 0){
 			
 					// let gold = 50;
-					let market = locations['nineveh'].market;
+					let locMarket = locations['nineveh'].market;
 					
-					if(market.length > 0){
-						let caravanDex = market.findIndex((card)=>card.name == 'caravan');
-						let prinIndex = market.findIndex((card)=>card.abilities.indexOf('ninevite')>-1)
-						let drawDex = market.findIndex((card)=>card.draw>0)
-
-
-							console.log('did we find a nin:'+prinIndex + JSON.stringify(market))
-							if(caravanDex>=market[drawDex] && cashOnHand>=market[caravanDex].cost && caravanDex > -1){
-								locations['nineveh'].buy(caravanDex,player)
-								cashOnHand -= market[caravanDex].cost
-								
+						if(locMarket.length > 0){
+							for(let x =0; x < locMarket.length;x++){
+								if(locMarket[x] && cashOnHand >= locMarket[x].cost){
+									cashOnHand -= locMarket[x].cost
+									locations['nineveh'].buy(x,player)
+									break;
+								}
 							}
-							if(cashOnHand>=market[drawDex] && cashOnHand>=market[drawDex].cost && drawDex > -1){
-								locations['nineveh'].buy(drawDex,player)
-								cashOnHand -= market[drawDex].cost
-								
-							}
-							 if(cashOnHand>=market[prinIndex] && cashOnHand>=market[prinIndex].cost && prinIndex > -1){
-								locations['nineveh'].buy(prinIndex,player)
-								cashOnHand -= market[prinIndex].cost
-							}else{
-								this.buySomething()
-							}
-
 						}
 					}
+				
 				
 			break;
 			case 'babylon':
@@ -227,18 +299,20 @@ module.exports.AI = function AI(player, locations){
 		})
 		console.log('alltehgold' + allTehGold + ' all the cards:'+allCard)
 
-		// if(allCard> 8){
+		if(allCard> 5){
 			let hasPurse = player.hand.findIndex((card)=> card.name == "Purse")
 			let hasInfluence = player.hand.findIndex((card)=>card.name=="Influence")
 			
 			if(hasInfluence > -1){
-				console.log(player.name+' is milling influence')
+				player.mills ++;
+				console.log(player.name+' is milling influence'+player.mills)
 				player.millCard(hasInfluence)
-			}else if(allTehGold > 6 && hasPurse > -1){
-				console.log(player.name+' is milling purse')
+			}else if( hasPurse > -1){
+				player.mills ++;
+				console.log(player.name+' is milling purse'+player.mills)
 				player.millCard(hasPurse)
 			}
-		// }
+		}
 		
 	}
 

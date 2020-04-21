@@ -26,7 +26,7 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 
 		player.drawCards(draws)
 
-		player.AI.runStrategy();
+		player.AI.runStrategy('Jonah');
 		// player.AI.runStrategy();
 
 		player.discardHand();
@@ -86,19 +86,19 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 	if(calling){
 		return [players,locations,turn,true,caller]
 	}
-	let conquerer = false;
-	if(locations['jerusalem'].influencer.name != 'neutral'){
-		conquerer = true;
-	}
-	Object.keys(locations).map((location, index)=>{
-		if(locations[location].influencer.name != locations['jerusalem'].influencer.name){
-			conquerer = false
-		}
-	})
-	if(conquerer){
-		console.log(locations['jerusalem'].influencer.name+' has won the game by influence!')
-		return [players,locations,turn,true,locations['jerusalem'].influencer.name]
-	}
+	// let conquerer = false;
+	// if(locations['jerusalem'].influencer.name != 'neutral'){
+	// 	conquerer = true;
+	// }
+	// Object.keys(locations).map((location, index)=>{
+	// 	if(locations[location].influencer.name != locations['jerusalem'].influencer.name){
+	// 		conquerer = false
+	// 	}
+	// })
+	// if(conquerer){
+	// 	console.log(locations['jerusalem'].influencer.name+' has won the game by influence!')
+	// 	return [players,locations,turn,true,locations['jerusalem'].influencer.name]
+	// }
 
 	return [players,locations,turn,false,locations['jerusalem'].influencer.name]
 
