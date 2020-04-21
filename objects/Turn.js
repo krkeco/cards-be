@@ -26,7 +26,7 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 
 		player.drawCards(draws)
 
-		player.AI.runStrategy('Jonah');
+		player.AI.runStrategy('Joshua');
 		// player.AI.runStrategy();
 
 		player.discardHand();

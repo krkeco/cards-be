@@ -39,25 +39,29 @@ function Game(playerRotation){
 	// let Canaan = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
 	let Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
 	let Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+	let Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
 	let Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
 	let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
-	let locations = {'rome':Rome, 'jerusalem':Jerusalem, "nineveh":Nineveh, 'babylon':Babylon}
+	
+	let locations = {'canaan':Canaan,'rome':Rome, 'jerusalem':Jerusalem, "nineveh":Nineveh, 'babylon':Babylon}
 
 
 	let players = []
+	
 	let Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter)
 	let Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter)
 	let Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter)
-	// let Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter)
+	let Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter)
+
 	Jonah.AI = new ai.AI(Jonah, locations);
 	Esther.AI = new ai.AI(Esther, locations);
 	Paul.AI = new ai.AI(Paul, locations);
-	// Joshua.AI = new ai.AI(Joshua, locations);
+	Joshua.AI = new ai.AI(Joshua, locations);
 
 	if(playerRotation % 2 == 0){
-		players = [ Paul,Jonah ]
+		players = [ Joshua,Jonah ]
 	}else{
-		players = [Jonah, Paul]
+		players = [Jonah, Joshua]
 	}
 	
 	

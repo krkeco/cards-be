@@ -20,15 +20,27 @@ module.exports.AI = function AI(player, locations){
 
 			//char specific strategy
 			switch(strategem){
-				case "Paul":
+				case "Joshua":
+				if(player.name != "Joshua"){
+					break;
+				}
+						this.buySomething('canaan')
+						this.millSomething();
+					console.log('joshua logic? '+player.getTotalInfluence())
+
+					
+
+					locations.map((location,index)=>{
+						locations['canaan'].setWeariness((locations['canaan']+1))
+						
+					})
+				break;			
+					case "Paul":
 				if(player.name != "Paul"){
 					break;
 				}
-					// this.buySomething('nineveh')
-					// this.millSomething()
-					// this.attackSomething()
 						this.buySomething('rome')
-						// this.millSomething();
+						this.millSomething();
 					console.log('paul logic? '+player.getTotalInfluence())
 
 					let canEvangalize = false;
@@ -70,42 +82,6 @@ module.exports.AI = function AI(player, locations){
 					if(!hasPlayed){
 						this.attackSomething(maxCard)
 					}
-					// if(player.abilities[0] ==0 && player.getTotalInfluence() > 7){
-						// for(let x= player.hand.length-1; x>-1 ;x--){
-						// 	locations['jerusalem'].playCard(x,player,maxCard)
-						// }
-					// 	let newAbilities = [...player.abilities]
-					// 	newAbilities[0] = 1;
-					// 	player.abilities = newAbilities;
-					// 	console.log('new abilities'+player.abilities)
-					// }else if(player.abilities[1] ==0 && player.getTotalInfluence() > 7){
-					// 	for(let x= player.hand.length-1; x>-1 ;x--){
-					// 		locations['rome'].playCard(x,player,maxCard)
-					// 	}
-					// 	let newAbilities = [...player.abilities]
-					// 	newAbilities[1] = 1;
-					// 	player.abilities = newAbilities;
-					// 	console.log(player.abilities)
-					// }else if(player.abilities[2] ==0 && player.getTotalInfluence() > 7){
-					// 		let local3;
-					// 		 Object.keys(locations).map((location, index) => {
-					// 		 	console.log('location index'+index)
-					// 			if(locations[location].name != 'Rome' && locations[location].name != 'Jerusalem'){
-					// 				console.log('found location'+locations[location].name)
-					// 				local3 = (locations[location].name).toLowerCase()
-
-					// 			}
-					// 		})
-					// 	for(let x= player.hand.length-1; x>-1 ;x--){
-
-					// 		locations[local3].playCard(x,player,maxCard)
-					// 	}
-					// 	let newAbilities = [...player.abilities]
-					// 	newAbilities[2] = 1;
-					// 	player.abilities = newAbilities;
-					// 	console.log(player.abilities)
-					// }
-
 				break;				
 				case "Esther":
 				if(player.name != "Esther"){

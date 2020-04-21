@@ -6,8 +6,14 @@ module.exports.Location = function Location(deck,story){
 	this.battlefield = {}
 	this.name = story.name;
 	this.influence = story.influence;
+	this.weariness = 0;
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
+
+	this.setWeariness = function(newWeary){
+		this.weariness = newWeary
+		console.log('weariness:'+this.weariness)
+	}
 
 	this.drawOne = function() {
 		let newMarket = [...this.market]
@@ -102,8 +108,12 @@ module.exports.Location = function Location(deck,story){
 	this.setInfluencing = function(){
 		console.log('location:setInfluencing:')
 		let influencer = this.compareInfluence();
-		if(influencer.influence > this.influence && influencer.name != 'neutral'){
+		if(influencer.influence > this.influence +this.weariness && influencer.name != 'neutral'){
 			this.influencer = influencer
+			if(this.name == "Canaan"){
+				this.ability[0] += 1;
+				console.log('canaan conquered, tier up'+this.ability[0])
+			}
 			this.battlefield = {}
 			console.log()
 		}
