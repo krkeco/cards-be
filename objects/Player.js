@@ -3,52 +3,71 @@ module.exports.Player =  function Player(story, deck) {
 	this.hand = []
 	this.discard = []
 	this.firstPlayer = false;
+	this.winning = false;
 	this.name = story.character.name;
+	// this.AI = new ai.AI(this);
 
 	this.drawCards = function(cardCount){
-	console.log('drawcards:'+this.deck.length+"/"+this.hand.length )
+	console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)
 	// let randomLng = this.deck.length-1
-	for(let x = 0; x < cardCount; x++){
-		if(this.deck.length == 0 && this.discard.length > 1){
-			// randomLng = this.discard.length-1
-			this.deck = [...this.discard]
-			this.discard = []
-			console.log('shuffling discard into deck')
-			cardCount -= x
-			x = 0;
-		}else
-		if(this.deck.length == 0 && this.discard.length == 0){
-			console.log('you drew all your cards!')
-			break;
-		}
+	let newDeck = [...this.deck]
+	let newDiscard = [...this.discard]
+	let newHand = [...this.hand]
+	// let drawMore = 0;
+	let cardsLeft = cardCount;
+	while(cardsLeft > 0){
+		if(newDeck.length == 0 && newDiscard.length > 1){
+			newDeck = [...this.discard]
+			newDiscard = []
 
-			let ranCard = Math.floor(Math.random()*(this.deck.length-1));
-			if(!this.deck[ranCard]){
-			console.log(this.deck.length+"/"+ranCard+"/"+this.deck[ranCard]+'<lng? this card is not real!!! \n\n\n\n\n')
+		}else if(newDeck.length == 0 && newDiscard.length == 0){
+			cardsLeft = 0;
+			console.log('you drew all the cards!')
+		}else{
+			cardsLeft--
+			let ranCard = Math.floor(Math.random()*(newDeck.length-1));
+			if(newDeck[ranCard] && newDeck[ranCard].abilities.indexOf('scrap') > -1){
+				cardsLeft++
+				console.log('drew a location card, banishing')
+				newDeck.splice(ranCard,1)
 
+			}else{
+
+				if(newDeck[ranCard] && newDeck[ranCard].draw){
+					cardsLeft += newDeck[ranCard].draw
+					console.log('drew '+newDeck[ranCard].name+" drawing more cards")
+				}
+				if(newDeck[ranCard]){
+					newHand.push(newDeck[ranCard])
+					newDeck.splice(ranCard,1)
+				}
 			}
-			let card = this.deck[ranCard]
-			this.hand.push(card)
-			this.deck.splice(ranCard,1)
-			if(card.draw){
-				console.log('drew '+card.name+" drawing more cards!")
-				this.drawCards(card.draw)
-			}
-			// console.log(ranCard);
-		
+
 		}
+	}
+		this.deck = [...newDeck]
+		this.discard = [...newDiscard]
+		this.hand = [...newHand]
+		console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)
+
 	}
 
 	this.discardHand = function(){
 		console.log('discardHand:')
+		this.hand.map((card,index)=>{
+			if(card && card.abilities.indexOf('scrap')){
+				this.hand.splice(index,1)
+			}
+		})
 		this.discard = [...this.discard, ...this.hand]
 		this.hand =[]
 	}
 	this.discardCard = function(index){
+		let newHand = [...this.hand]
 		console.log('discardCard:')
 		this.discard = [...this.discard, this.hand[index]]
-		this.hand.splice(index,1)
-		
+		newHand.splice(index,1)
+		this.hand = [...newHand]
 		console.log('hand now:'+this.hand.length)
 	}
 
@@ -60,7 +79,9 @@ module.exports.Player =  function Player(story, deck) {
 
 	this.millCard = function(index){
 		console.log('millCard:')
-		this.hand.splice(index,1);
+		let newHand = [...this.hand]
+		newHand.splice(index,1);
+		this.hand = [...newHand]
 	}
 
 	this.getTotalGold = function(){
@@ -78,7 +99,9 @@ module.exports.Player =  function Player(story, deck) {
 		this.hand.map((card,index)=>{
 			influence += this.hand[index].influence
 		})
-		console.log('has '+influence+' influence this turn')
+		console.log('getTotalInfluence: '+influence+' influence this turn with '+this.hand.length+ ' cards')
+		console.log(this.hand.map((card)=>card.name+card.influence))
 		return influence;
 	}
+
 }

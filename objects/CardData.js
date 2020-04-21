@@ -1,19 +1,24 @@
 
 const deckData = require('../decks.json')
 
-module.exports.data =  function cardData(){
+module.exports.data =  function CardData(){
 
-	let decks = deckData.decks;
-
+	let decks = {};
+	let cardsPushed = 0;
 	//set deck sizes
-	Object.keys(decks).map((deck)=>{
-		decks[deck].map((card,index) => {
-			for(let x = 0; x < decks[deck][index].quantity-1; x++){
-				decks[deck].push(decks[deck][index])
+	console.log(Object.keys(deckData.decks))
+	Object.keys(deckData.decks).map((deck)=>{
+		decks[deck] = []
+		// for(let x = deckData.decks[deck].length-1; x > 0; x--){
+		deckData.decks[deck].map((card,index) => {
+			for(let y = 0; y < card.quantity; y++){
+				decks[deck].push(card)
+				cardsPushed ++;
 			}
 		})
+		console.log(deck+' pushed:'+cardsPushed)
+		cardsPushed = 0;
 	})
 	let cardData = {stories: deckData.stories, decks: decks}
-
 	return cardData
 }

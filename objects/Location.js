@@ -1,6 +1,7 @@
 
 module.exports.Location = function Location(deck,story){
 	this.deck = [...deck]
+	this.card = story.card
 	this.market = []
 	this.battlefield = {}
 	this.name = story.name;
@@ -9,49 +10,75 @@ module.exports.Location = function Location(deck,story){
 	this.influencer = {name:'neutral'};
 
 	this.drawOne = function() {
+		let newMarket = [...this.market]
+		let newDeck = [...this.deck]
 		console.log('location:drawOne:')
-		if(this.deck.length > 0){
-				let ranCard = Math.floor(Math.random()*(this.deck.length-1));
-				this.market.push(this.deck[ranCard])
-				this.deck.splice(ranCard,1)
+		if(newDeck.length > 0){
+				let ranCard = Math.floor(Math.random()*(newDeck.length-1));
+				newMarket.push(newDeck[ranCard])
+				newDeck.splice(ranCard,1)
 			}else{
 				console.log('the market is empty!')
 			}
+
+		this.market = [...newMarket]
+		this.deck = [...newDeck]
 	}
 	// createMarket = function(){
 		//all decks start with 1 2cost and 1 3 cost card atm
 	if(this.deck.length > 0){//otherwise jerusalem has no market
 			this.market.push(this.deck[0])
 			this.deck.splice(0,1)
-			this.market.push(this.deck[0])
-			this.deck.splice(0,1)
+			this.market.push(this.deck[5])
+			this.deck.splice(5,1)
 			this.drawOne();
 			// console.log('market: '+this.market)
+			// console.log('market: '+JSON.stringify(this.deck))
 	}
 
 	this.buy = function(index, player){
-		console.log('location:buy:'+JSON.stringify(this.market[index]))
+		console.log('location:buy:'+JSON.stringify(this.market[index].name))
 		player.buyCard(this.market[index])
-		this.market.splice(index,1)
+		let newMarket = [...this.market]
+		newMarket.splice(index,1)
+		this.market = [...newMarket]
 		this.drawOne();
-		// console.log('jonah discard:'+JSON.stringify(player.discard))
-		// console.log('babylon market:'+JSON.stringify(this.market))
 	}
 
-	this.playCard = function(card,owner){
-		console.log('location:playcard:')
-		if(!this.battlefield[owner.name]){
-			this.battlefield[owner.name] = {name: owner.name,influence:0,gold:0, cards:[]};
+	this.playCard = function(card,owner, copyInfluence){
+		let newField = {...this.battlefield}
+		console.log('location:playcard:'+card)
+		if(!newField[owner.name]){
+			newField[owner.name] = {name: owner.name,influence:0,gold:0, cards:[]};
 		}
-		console.log('play card'+owner.hand[card])
-		this.battlefield[owner.name].influence += owner.hand[card].influence
-		this.battlefield[owner.name].gold += owner.hand[card].gold
-		this.battlefield[owner.name].cards.push(owner.hand[card]);
+		console.log('play card'+owner.hand[card].name)
+		newField[owner.name].influence += owner.hand[card].influence
+		newField[owner.name].gold += owner.hand[card].gold
+		newField[owner.name].cards.push(owner.hand[card]);
 		
 		//special abilities here!
-		console.log(owner.name+" played "+owner.hand[card].name+" for influence: "+this.battlefield[owner.name].influence)
+		//ninevite
+		if(owner.hand[card].abilities.indexOf('homeland') > -1 && this.name == "Nineveh"){
+			newField[owner.name].influence += 2;
+			console.log('ninevite advantage bonus')
+		}
+		//ninevite prince
+		else if(owner.hand[card].abilities.indexOf('prince') > -1 && this.name == "Nineveh"){
+			newField[owner.name].influence += 3;
+			console.log('prince advantage bonus')
+		}else if(owner.hand[card].abilities.indexOf('mordecai') > -1){
+			newField[owner.name].influence += copyInfluence;
+			console.log('mordecai added '+copyInfluence+" to this location")
+		}
 
-		owner.discardCard(card)
+		this.battlefield = newField;
+		console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence: "+newField[owner.name].influence)
+		// console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
+		if(owner.hand[card].abilities.indexOf("scrap") < 0){
+			owner.discardCard(card)
+		}else{
+			console.log('this is an influence card and is not discarded')
+		}
 	}
 
 	this.compareInfluence = function(){
@@ -77,7 +104,7 @@ module.exports.Location = function Location(deck,story){
 		let influencer = this.compareInfluence();
 		if(influencer.influence > this.influence && influencer.name != 'neutral'){
 			this.influencer = influencer
-			this.battlefield = []
+			this.battlefield = {}
 			console.log()
 		}
 			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name)

@@ -4,19 +4,33 @@ const loc = require('./Location.js');
 const tu = require('./Turn.js')
 const cards = require('./CardData.js')
 const deckData = new cards.data();
+const ai = require('./AI.js')
 
 module.exports.Series = function Simulation(gameCount){
 
-	let games = []
+	let games = [];
 	playerWon = 0;
+	let averageTurnBase = 0;
+	let maxTurn = 0;
+	let minTurn = 100;
 	
 	for(let x = 0; x < gameCount; x++){
 		let game = new Game(x);
 		games.push(game)
+		
+		if(game[game.length-1][2] < minTurn){
+			minTurn = game[game.length-1][2]
+		}
+		if(game[game.length-1][2] > maxTurn){
+			maxTurn = game[game.length-1][2]
+		}
+		averageTurnBase += game[game.length-1][2]
+
 		if(game[game.length-1][4] == 'Jonah'){
 			playerWon++;
 		}
 		console.log('Jonah won '+playerWon+' games of ' +gameCount)
+		console.log('minWin:'+minTurn+" maxTurn:"+maxTurn+" avgTurns:"+(averageTurnBase/games.length))
 	}
 }
 
@@ -36,6 +50,10 @@ function Game(playerRotation){
 	}
 	
 	let locations = {'babylon':Babylon, 'jerusalem':Jerusalem, "nineveh":Nineveh}
+	
+	Jonah.AI = new ai.AI(Jonah, locations);
+	Esther.AI = new ai.AI(Esther, locations);
+
 	let gameSim = []
 
 	winner=false;
@@ -48,5 +66,6 @@ function Game(playerRotation){
 
 	console.log('game took ' + gameSim.length + ' turns to finish.')
 	console.log('the winner is '+gameSim[gameSim.length-1][4])
+	
 	return gameSim
 }
