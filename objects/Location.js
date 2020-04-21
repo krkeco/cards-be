@@ -72,6 +72,9 @@ module.exports.Location = function Location(deck,story){
 		else if(owner.hand[card].abilities.indexOf('prince') > -1 && this.name == "Nineveh"){
 			newField[owner.name].influence += 3;
 			console.log('prince advantage bonus')
+		}else if(owner.hand[card].abilities.indexOf('joshua') > -1 && this.name == "Canaan"){
+			newField[owner.name].influence += 2;
+			console.log('joshua advantage bonus')
 		}else if(owner.hand[card].abilities.indexOf('mordecai') > -1){
 			newField[owner.name].influence += copyInfluence;
 			console.log('mordecai added '+copyInfluence+" to this location")
@@ -108,12 +111,23 @@ module.exports.Location = function Location(deck,story){
 	this.setInfluencing = function(){
 		console.log('location:setInfluencing:')
 		let influencer = this.compareInfluence();
-		if(influencer.influence > this.influence +this.weariness && influencer.name != 'neutral'){
+		let baseInfluence = this.influence
+		if(this.name == "Canaan"){
+			baseInfluence += this.abilities[0]
+			baseInfluence += this.abilities[0]-1
+			baseInfluence += this.abilities[0]-2
+			//0 = -3
+			//1 = 0
+			//2 = 3
+		}
+		if(influencer.influence > baseInfluence +this.weariness*2 && influencer.name != 'neutral'){
 			this.influencer = influencer
+
 			if(this.name == "Canaan"){
-				this.ability[0] += 1;
-				console.log('canaan conquered, tier up'+this.ability[0])
+				this.abilities = [(this.abilities[0]+1)];
+				console.log('canaan conquered, tier up'+this.abilities[0])
 			}
+
 			this.battlefield = {}
 			console.log()
 		}

@@ -28,12 +28,17 @@ module.exports.AI = function AI(player, locations){
 						this.millSomething();
 					console.log('joshua logic? '+player.getTotalInfluence())
 
-					
+						for(let x = player.hand.length-1; x >= 0; x--){
+							// console.log('playing '+x+' of '+ninevites+" ninevites for the win")
+							locations['canaan'].playCard(x,player,maxCard)
+						}
+						if(locations['canaan'].abilities[0] > 2){
+							player.winning = true;
+						}
+					// locations.map((location,index)=>{
+						locations['canaan'].setWeariness((locations['canaan'].weariness+1))
 
-					locations.map((location,index)=>{
-						locations['canaan'].setWeariness((locations['canaan']+1))
-						
-					})
+					// })
 				break;			
 					case "Paul":
 				if(player.name != "Paul"){

@@ -41,11 +41,11 @@
 				"cost": 0,
 				"gold":0,
 				"draw":0,
-				"influence":2,
+				"influence":3,
 				"abilities":["joshua"]},
 			"location":{
 				"name":"Canaan",
-				"influence":4,
+				"influence":8,
 				"abilities":[0],
 			"card":{
 				"name":"Canaan's Influence",
