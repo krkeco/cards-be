@@ -26,7 +26,7 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 
 		player.drawCards(draws)
 
-		player.AI.runStrategy('default');
+		player.AI.runStrategy();
 		// player.AI.runStrategy();
 
 		player.discardHand();
@@ -50,7 +50,7 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 		if(!FP){
 			players[0].firstPlayer = true;
 			FP = 0
-			players[0].drawCards(1)
+			// players[0].drawCards(1)
 			firstTurn = true;
 		}
 	}//setfirstplayer
@@ -83,9 +83,9 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 		}
 	}
 
-	// if(calling){
-	// 	return [players,locations,turn,true,caller]
-	// }
+	if(calling){
+		return [players,locations,turn,true,caller]
+	}
 	let conquerer = false;
 	if(locations['jerusalem'].influencer.name != 'neutral'){
 		conquerer = true;

@@ -68,17 +68,17 @@ module.exports.AI = function AI(player, locations){
 						}
 					})
 
-					if(ninevites > 2){
+					if(ninevites > 3){
 						player.winning = true;
 						console.log('Jonah is winning? '+player.winning)
+						
+					}else{
+						// this.attackSomething(maxCard);
+					}
 						for(let x = player.hand.length-1; x >= 0; x--){
 							console.log('playing '+x+' of '+ninevites+" ninevites for the win")
 							locations['nineveh'].playCard(x,player,maxCard)
 						}
-						
-					}else{
-						this.attackSomething(maxCard);
-					}
 				break;
 				default:
 					this.buySomething('babylon')
@@ -130,6 +130,26 @@ module.exports.AI = function AI(player, locations){
 				
 			break;
 			case 'babylon':
+				console.log('buy babylon')
+				//buy the single most powerful card you can
+				let buy = false;
+				
+					let locMarket = locations['babylon'].market
+					if(locMarket.length > 0){
+						for(let x =0; x < locMarket.length;x++){
+							if(cashOnHand >= locMarket[x].cost){
+								locations['babylon'].buy(x,player)
+								buy = true;
+								break;
+							}
+						}
+					}
+				
+				if(!buy){
+					this.buySomething();
+				}
+			break;
+			case 'influence':
 				console.log('buy babylon')
 				//buy the single most powerful card you can
 				let highLocation;
@@ -212,8 +232,10 @@ module.exports.AI = function AI(player, locations){
 			let hasInfluence = player.hand.findIndex((card)=>card.name=="Influence")
 			
 			if(hasInfluence > -1){
+				console.log(player.name+' is milling influence')
 				player.millCard(hasInfluence)
 			}else if(allTehGold > 6 && hasPurse > -1){
+				console.log(player.name+' is milling purse')
 				player.millCard(hasPurse)
 			}
 		// }

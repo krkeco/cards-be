@@ -39,7 +39,7 @@
 			"character":{
 				"name":"Jonah",
 				"cost": 0,
-				"gold":0,
+				"gold":1,
 				"draw":2,
 				"influence":0,
 				"abilities":["jonah"]},
