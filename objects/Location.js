@@ -43,12 +43,16 @@ module.exports.Location = function Location(deck,story){
 	}
 
 	this.buy = function(index, player){
-		console.log('location:buy:'+JSON.stringify(this.market[index].name))
-		player.buyCard(this.market[index])
-		let newMarket = [...this.market]
-		newMarket.splice(index,1)
-		this.market = [...newMarket]
-		this.drawOne();
+		if(this.battlefield[player.name].gold >= this.market[index].cost){
+				console.log('location:buy:'+JSON.stringify(this.market[index].name))
+				player.buyCard(this.market[index])
+				let newMarket = [...this.market]
+				newMarket.splice(index,1)
+				this.market = [...newMarket]
+				this.drawOne();
+			}else{
+				//can't afford card
+			}
 	}
 
 	this.playCard = function(card,owner, copyInfluence){

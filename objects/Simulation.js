@@ -6,6 +6,7 @@ const cards = require('./CardData.js')
 const deckData = new cards.data();
 const ai = require('./AI.js')
 
+
 module.exports.Series = function Simulation(gameCount){
 
 	let games = [];
@@ -26,7 +27,7 @@ module.exports.Series = function Simulation(gameCount){
 		}
 		averageTurnBase += game[game.length-1][2]
 
-		if(game[game.length-1][4] == 'Jonah'){
+		if(game[game.length-1][4] == 'Joshua'){
 			playerWon++;
 		}
 		console.log('Jonah won '+playerWon+' games of ' +gameCount)
@@ -59,9 +60,9 @@ function Game(playerRotation){
 	Joshua.AI = new ai.AI(Joshua, locations);
 
 	if(playerRotation % 2 == 0){
-		players = [ Joshua,Jonah ]
+		players = [ Joshua,Paul ]
 	}else{
-		players = [Jonah, Joshua]
+		players = [Paul, Joshua]
 	}
 	
 	
