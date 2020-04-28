@@ -132,10 +132,10 @@ module.exports.Location = function Location(deck,story){
 				console.log('canaan conquered, tier up'+this.abilities[0])
 			}
 
-			this.battlefield = {}
 			console.log()
 		}
-			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name)
+			this.battlefield = {}
+			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
 	}
 
 }

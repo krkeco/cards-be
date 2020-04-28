@@ -61,12 +61,13 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red') {
 
 	this.discardHand = function(){
 		console.log('discardHand:')
+		let newDiscard = [...this.discard]
 		this.hand.map((card,index)=>{
-			if(card && card.abilities.indexOf('scrap')){
-				this.hand.splice(index,1)
+			if(card && card.abilities.indexOf('scrap') < 0){
+				newDiscard.push(card)
 			}
 		})
-		this.discard = [...this.discard, ...this.hand]
+		this.discard = [...newDiscard]
 		this.hand =[]
 	}
 	this.discardCard = function(index){

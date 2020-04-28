@@ -37,7 +37,7 @@ app.get('/game/:id',function(req,res) {
 	let locInfo = game.getLocationInfo()
 	let playerInfo = game.getPlayerInfo()
 	// console.log(game.players[0])
-	return res.json({locations: locInfo, players: playerInfo})
+	return res.json({locations: locInfo, players: playerInfo, turn: game.getTurn()})
 });
 
 //get
@@ -82,21 +82,20 @@ app.post('/game/:id/buy',function(req,res) {
 	return res.json({locations: locInfo, players: playerInfo})
 });
 
-app.get('/game/:id/:player',function(req,res) {
+app.get('/game/:id/next/:player',function(req,res) {
 	console.log('getting player for game '+req.params.id)
 	let game = games[req.params.id]
 	let playerNumber = req.params.player
-	if(playerNumber >= game.players.length){
-		playerNumber = 0;
-	}
-	game.players[playerNumber].drawCards(5)
-	console.log('got player:'+playerNumber)
+	let gamePlayer = game.getCurrentPlayer();
+	console.log('currnetplayer'+playerNumber+' vs '+gamePlayer)
+	let nextPlayer = game.getNextPlayer();
 
+	let locInfo = game.getLocationInfo()
+	let playerInfo = game.getPlayerInfo()
+	console.log('nextplayer'+nextPlayer)
 
-	// let player = game.players[playerNumber]
-	return res.json()
+	return res.json({locations: locInfo, players: playerInfo, newPlayer: nextPlayer, turn: game.getTurn()})
 });
-
 
 
 // const pl = require('./objects/Player.js');
