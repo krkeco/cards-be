@@ -3,7 +3,7 @@ module.exports.Location = function Location(deck,story){
 	this.deck = [...deck]
 	this.card = story.card
 	this.market = []
-	this.battlefield = {}
+	this.battlefield = {'neutral':{name: 'neutral',influence:0,gold:0, cards:[]}};
 	this.name = story.name;
 	this.influence = story.influence;
 	this.weariness = 0;
@@ -43,7 +43,7 @@ module.exports.Location = function Location(deck,story){
 	}
 
 	this.buy = function(index, player){
-		if(this.battlefield[player.name].gold >= this.market[index].cost){
+		if(player.type == "AI" || this.battlefield[player.name].gold >= this.market[index].cost){
 				console.log('location:buy:'+JSON.stringify(this.market[index].name))
 				player.buyCard(this.market[index])
 				let newMarket = [...this.market]
@@ -134,7 +134,7 @@ module.exports.Location = function Location(deck,story){
 
 			console.log()
 		}
-			this.battlefield = {}
+			this.battlefield = {'neutral':{name: 'neutral',influence:0,gold:0, cards:[]}}
 			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
 	}
 
