@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start":"nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -18,5 +19,8 @@
   "devDependencies": {
     "jest": "^25.4.0",
     "nodemon": "^2.0.3"
+  },
+  "engines": {
+    "node": "12.16.1"
   }
 }
