@@ -123,7 +123,7 @@ var root = {
 };
 
 // const myGraphQLSchema = makeExecutableSchema({ typeDefs, resolvers })
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 const app = express()
 
 app.use(cors()) // not having cors enabled will cause an access control error
