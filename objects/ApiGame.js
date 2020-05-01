@@ -9,7 +9,7 @@ module.exports.newGame = function Game(playerNames){
 	
 	let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
 	this.players = []
-	this.locations = { 'jerusalem':Jerusalem}
+	this.locations = { 'Jerusalem':Jerusalem}
 	this.currentPlayer = 0;
 	this.turn = 0;
 	this.winner;
@@ -17,14 +17,18 @@ module.exports.newGame = function Game(playerNames){
 
 	this.getCurrentPlayer = () => {return this.currentPlayer;}
 	this.getNextPlayer = () => {
+		console.log('getting next player and maybe turn')
 		if(this.currentPlayer >= this.players.length-1){
 			this.currentPlayer = 0;
 		}else{
 			this.currentPlayer += 1;
 		}
+
 		if(this.players[this.currentPlayer].firstPlayer == true){
+			console.log('starting a new turn')
 			this.players[this.currentPlayer].firstPlayer= false;
 			this.startNewTurn();
+			console.log('new turn complete and getting new firstplayer')
 			// this.getNextPlayer();//increment again to move fpt
 			if(this.currentPlayer >= this.players.length-1){
 			this.currentPlayer = 0;
@@ -33,6 +37,7 @@ module.exports.newGame = function Game(playerNames){
 			}
 			this.players[this.currentPlayer].firstPlayer= true;
 		}
+		console.log('returning the new player' +this.currentPlayer)
 		return this.currentPlayer;
 	}
 
@@ -41,26 +46,30 @@ module.exports.newGame = function Game(playerNames){
 			case "Jonah":
 				this.Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
 				this.Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter,'player')
+				this.Jonah.id = index
 				this.players.push(this.Jonah)
-				this.locations.nineveh = this.Nineveh;
+				this.locations[this.Nineveh.name] = this.Nineveh;
 				break;
 			case "Esther":
 				this.Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter,'player')
+				this.Esther.id = index
 				this.Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
 				this.players.push(this.Esther)
-				this.locations.babylon = this.Babylon;
+				this.locations[this.Babylon.name] = this.Babylon;
 				break;
 			case "Joshua":
 				this.Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
 				this.Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter,'player')
+				this.Joshua.id = index
 				this.players.push(this.Joshua)
-				this.locations.canaan = this.Canaan;
+				this.locations[this.Canaan.name] = this.Canaan;
 				break;
 			case "Paul":
 				this.Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
 				this.Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter,'player')
+				this.Paul.id = index
 				this.players.push(this.Paul)
-				this.locations.rome = this.Rome;
+				this.locations[this.Rome.name] = this.Rome;
 				break;
 			
 		}
@@ -89,10 +98,12 @@ module.exports.newGame = function Game(playerNames){
 		if(conquest && conquerer != 'neutral'){
 			console.log('A WINNER!!!'+conquerer)
 			this.winner = conquerer
+		}else{
+			this.winner = null;
 		}
-
+		return this.winner;
 	}
-	console.log('starting new game with '+playerNames)
+	// console.log('starting new game with '+playerNames)
 
 	this.startNewTurn = function(){
 		
@@ -107,7 +118,7 @@ module.exports.newGame = function Game(playerNames){
 		Object.keys(this.locations).map((location, index)=>{
 			this.locations[location].setInfluencing();
 		})
-		this.checkVictoryConditions();
+		// this.checkVictoryConditions();
 		// return this.getPlayerInfo;
 	}
 

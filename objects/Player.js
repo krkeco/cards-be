@@ -1,6 +1,7 @@
-module.exports.Player =  function Player(story, deck,type="AI", color = 'red') {
+module.exports.Player =  function Player(story, deck,type="AI", color = 'red', id=0) {
 	this.deck = [story.character, ...deck]
 	this.hand = []
+	this.id = id;
 	this.type = type
 	this.color = color
 	this.mills = 0

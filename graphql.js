@@ -17,9 +17,10 @@ var gameDB = [] //this is going to be mongo some day
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
 	type Card {
-	name:String,
-	 quantity: Int,
+		name:String,
+	  quantity: Int,
 	  cost: Int,
+	  draw: Int,
 	  gold:Int,
 	  influence:Int,
 	  abilities:[String]
@@ -36,18 +37,22 @@ type Player {
 },
 type Location {	
 	name: String,
-	influence: Boolean,
-	influencer: Player,
+	influence: Int,
+	influencer: String,
 	market: [Card],
-	
+	battlefield: [Battlefield]
 			
 },
-type battlefield {
-	neutral: [String],
+type Battlefield {
 	name: String,
 	influence: Int,
 	gold: Int,
 	cards: [Card]
+},
+type TurnInfo {
+	turn: Int,
+	nextPlayer: Int,
+	winner: String
 },
   type Query {
     hello: String,
@@ -55,9 +60,9 @@ type battlefield {
     game(players: [String]): String!
     players(gameId: Int): [Player],
     locations(gameId: Int): [Location],
-    play(gameId: Int, playerName: String, locationName: String): String,
+    play(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     buy(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
-    nextTurn(gameId: Int): String,
+    nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
   }
 `);
 
@@ -85,20 +90,35 @@ var root = {
   	let locations = gameDB[gameId].getLocationInfo()
   	return locations
   },
-  play: ({gameId, playerName, buyLocation}) =>{
+  play: ({gameId, playerName, locationName, cardIndex}) =>{
 		let game = gameDB[gameId]
 		let player = game.players.find((pl)=>pl.name==playerName)
-		console.log('found player:'+player.name)
-		let location = game.locations[buyLocation.toLowerCase()]
-		console.log('found location'+location.name)
-		location.playCard(req.body.cardname,player)
+		let location = game.locations[locationName]
+		let response = location.playCard(cardIndex,player)
+
+		return response
+
   },
-  buy: ({gameId, playerName, buyLocation, cardIndex}) =>{
-	console.log('getting buy '+req.params.id)
-	let game = games[gameId]
+  buy: ({gameId, playerName, locationName, cardIndex}) =>{
+	console.log('getting buy '+gameId)
+	let game = gameDB[gameId]
 	let player = game.players.find((pl)=>pl.name==playerName)
-	let location = game.locations[buyLocation.toLowerCase()]
-	location.buy(cardIndex,player)
+	let location = game.locations[locationName]
+	return location.buy(cardIndex,player)
+	// return `card bought! ${JSON.stringify(player.discard[0])}`
+  },
+  nextPlayer: ({gameId, currentPlayer}) => {
+  	
+		let game = gameDB[gameId]
+		let playerNumber = currentPlayer
+		let gamePlayer = game.getCurrentPlayer();
+		console.log('currnetplayer'+playerNumber+' vs '+gamePlayer)
+		let newNextPlayer = game.getNextPlayer();
+		let winner = game.checkVictoryConditions();
+		// let locInfo = game.getLocationInfo()
+		// let playerInfo = game.getPlayerInfo()
+		console.log('nextplayer'+newNextPlayer)
+		return {turn: game.turn,nextPlayer:newNextPlayer, winner: winner}
   }
 };
 

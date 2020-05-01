@@ -64,7 +64,9 @@ function Game(playerRotation){
 	}else{
 		players = [Paul, Joshua]
 	}
-	
+	players.map((player,index)=>{
+		players[index].id = index;
+	})
 	
 
 	let gameSim = []

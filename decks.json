@@ -99,8 +99,8 @@
 	},
 	"decks":{
 		"starter":[
-			{"name":"Influence", "quantity": 3, "cost": 0,"gold":0,"influence":2,"abilities":[]},
-			{"name":"Purse", "quantity": 6, "cost": 0,"gold":1,"influence":0,"abilities":[]}
+			{"name":"Influence", "quantity": 3, "cost": 0,"gold":0,"influence":2,"draw":0, "abilities":[]},
+			{"name":"Purse", "quantity": 6, "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
 		],
 		"paul":[
 			{"name":"Pit of Vipers",
