@@ -9,6 +9,7 @@ module.exports.newGame = function Game(playerNames){
 	
 	let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
 	this.players = []
+	this.playerNames = [...playerNames]
 	this.locations = { 'Jerusalem':Jerusalem}
 	this.currentPlayer = 0;
 	this.turn = 0;
@@ -40,47 +41,55 @@ module.exports.newGame = function Game(playerNames){
 		console.log('returning the new player' +this.currentPlayer)
 		return this.currentPlayer;
 	}
+	this.setStartingPlayers = function(nPlayerNames) {
+		nPlayerNames.map((player, index)=>{
+			switch(player){
+				case "Jonah":
+					this.Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
+					this.Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter,'player')
+					this.Jonah.id = index
+					this.players.push(this.Jonah)
+					this.locations[this.Nineveh.name] = this.Nineveh;
+					break;
+				case "Esther":
+					this.Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter,'player')
+					this.Esther.id = index
+					this.Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+					this.players.push(this.Esther)
+					this.locations[this.Babylon.name] = this.Babylon;
+					break;
+				case "Joshua":
+					this.Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
+					this.Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter,'player')
+					this.Joshua.id = index
+					this.players.push(this.Joshua)
+					this.locations[this.Canaan.name] = this.Canaan;
+					break;
+				case "Paul":
+					this.Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
+					this.Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter,'player')
+					this.Paul.id = index
+					this.players.push(this.Paul)
+					this.locations[this.Rome.name] = this.Rome;
+					break;
+				
+			}
+			if(index == 0){
+				this.players[index].firstPlayer = true;
+			}else{
+				this.players[index].firstPlayer = false;
+			}
+		})
+	}
+	// this.setStartingPlayers(playerNames);
 
-	playerNames.map((player, index)=>{
-		switch(player){
-			case "Jonah":
-				this.Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
-				this.Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter,'player')
-				this.Jonah.id = index
-				this.players.push(this.Jonah)
-				this.locations[this.Nineveh.name] = this.Nineveh;
-				break;
-			case "Esther":
-				this.Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter,'player')
-				this.Esther.id = index
-				this.Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
-				this.players.push(this.Esther)
-				this.locations[this.Babylon.name] = this.Babylon;
-				break;
-			case "Joshua":
-				this.Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
-				this.Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter,'player')
-				this.Joshua.id = index
-				this.players.push(this.Joshua)
-				this.locations[this.Canaan.name] = this.Canaan;
-				break;
-			case "Paul":
-				this.Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
-				this.Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter,'player')
-				this.Paul.id = index
-				this.players.push(this.Paul)
-				this.locations[this.Rome.name] = this.Rome;
-				break;
-			
-		}
-		if(index == 0){
-			this.players[index].firstPlayer = true;
-		}else{
-			this.players[index].firstPlayer = false;
-		}
-	})
+	this.checkVictoryConditions = function() {
+		//esther 18
+		//jonah  5
+		//joshua canaan
+		//paul   3 loc card with paul
 
-	this.checkVictoryConditions = () => {
+
 		let conquerer;
 		let conquest = false;
 		Object.keys(this.locations).map((loc, index)=>{
@@ -98,8 +107,6 @@ module.exports.newGame = function Game(playerNames){
 		if(conquest && conquerer != 'neutral'){
 			console.log('A WINNER!!!'+conquerer)
 			this.winner = conquerer
-		}else{
-			this.winner = null;
 		}
 		return this.winner;
 	}
@@ -112,6 +119,7 @@ module.exports.newGame = function Game(playerNames){
 		console.log('new turn:'+this.turn)
 		this.players.map((player,index)=>{
 			player.discardHand();
+			player.mills = 0;
 			player.drawCards(5);
 		});
 	

@@ -88,6 +88,7 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red', i
 
 	this.millCard = function(index){
 		console.log('millCard:')
+		this.mills++;
 		let newHand = [...this.hand]
 		newHand.splice(index,1);
 		this.hand = [...newHand]

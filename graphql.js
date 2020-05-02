@@ -54,32 +54,71 @@ type TurnInfo {
 	nextPlayer: Int,
 	winner: String
 },
+type WaitingRoom {
+	room: [String],
+	started: Boolean
+},
   type Query {
     hello: String,
     goodbye: String,
-    game(players: [String]): String!
+    waitingRoom(gameId: Int): WaitingRoom,
+    newGame(players: [String]): Int!,
+    joinGame(players: [String],gameId: Int): [String]!,
+    startGame(gameId: Int): String,
     players(gameId: Int): [Player],
     locations(gameId: Int): [Location],
     play(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     buy(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
-  }
-`);
+    currentPlayer(gameId: Int): Int,
+  }`);
 
 // The root provides a resolver function for each API endpoint
 var root = {
+	waitingRoom: ({gameId})=>{
+		let game = gameDB[gameId];
+		let started = true
+		if(!game.players || game.players.length <= 0){
+			started = false;
+		}
+		return {room: game.playerNames, started: started};
+	},
   hello: () => {
     return 'Hello world!';
   },
-  game: ({players})=>{
+  currentPlayer: (gameId)=>{
+  	let game = gameDB[gameId]
+  	console.log('game found?'+game.locations[0].name)
+  	let player = game.getCurrentPlayer();
+  	console.log('current player found? '+player)
+  	return player
+  },
+  newGame: ({players})=>{
   	console.log('players are:'+JSON.stringify(players))
   		// let players = ['Jonah','Esther']
 			let game = GameBuilder.newGame(players)
-			game.startNewTurn();
 			
 			let gameId = gameDB.length
 			gameDB[gameId] = game
 		  return gameId
+  },
+
+  joinGame: ({players, gameId})=>{
+  	console.log('new players are:'+JSON.stringify(players))
+  	let game = gameDB[gameId]
+  	if(!game || game.turn <2){
+  		let newPlayerList = [...game.playerNames,...players]
+  		game.playerNames = newPlayerList;
+  		return newPlayerList
+  	}else{
+  		return 'this game is not available any more'
+  	}
+  },
+  startGame: ({gameId})=>{
+  		let game = gameDB[gameId]
+  		game.setStartingPlayers(game.playerNames);
+			game.startNewTurn();
+			return gameId
   },
   players: ({gameId})=>{
   	let players = gameDB[gameId].getPlayerInfo()
@@ -93,10 +132,24 @@ var root = {
   play: ({gameId, playerName, locationName, cardIndex}) =>{
 		let game = gameDB[gameId]
 		let player = game.players.find((pl)=>pl.name==playerName)
-		let location = game.locations[locationName]
-		let response = location.playCard(cardIndex,player)
+		let location
 
-		return response
+		if(locationName != "mill"){
+			
+			location= game.locations[locationName]
+			let response = location.playCard(cardIndex,player)
+			return response
+
+		} else{
+			//mill card
+			console.log('milling!')
+			if(player.mills < 1){
+				console.log('millcard!')
+				player.millCard(cardIndex)
+			}else{
+				return 'already milled this turn'
+			}
+		}
 
   },
   buy: ({gameId, playerName, locationName, cardIndex}) =>{
@@ -137,7 +190,7 @@ app.use('/graphql', graphqlHTTP({
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
     res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET,POST');//,PUT,DELETE,OPTIONS
     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     next();
 });
