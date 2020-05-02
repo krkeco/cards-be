@@ -114,4 +114,5 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red', i
 		return influence;
 	}
 
+
 }

@@ -18,6 +18,11 @@ module.exports.newGame = function Game(playerNames){
 
 	this.getCurrentPlayer = () => {return this.currentPlayer;}
 	this.getNextPlayer = () => {
+		//solo game
+		if(this.players.length == 1){
+			this.startNewTurn();
+			return 0
+		}
 		console.log('getting next player and maybe turn')
 		if(this.currentPlayer >= this.players.length-1){
 			this.currentPlayer = 0;
@@ -85,10 +90,63 @@ module.exports.newGame = function Game(playerNames){
 
 	this.checkVictoryConditions = function() {
 		//esther 18
+		this.winner = "";
+		console.log('cehcking win conditions')
+		this.players.map((player, index)=>{
+
+
+			switch(player.name){
+				case "Esther":
+					console.log('checking esther win condition')
+				let babylonian = this.locations['Babylon'].compareInfluence();
+				console.log('babylonian influencer'+babylonian.name)
+					if(babylonian.name == "Esther" && babylonian.finalInfluence > 17){//17
+						player.winning = true;
+						this.winner += player.name +" "
+					}
+				break;
+				case "Jonah":
+					console.log('checking jona win condition')
+					let ninevites = 0;
+					let bf = this.locations["Nineveh"].battlefield.find((bf)=>bf.name=="Jonah")
+					if(bf){
+						console.log('did play on nineveh')
+						bf.cards.map((card,index)=>{
+							if(card.abilities.indexOf('ninevite') > -1){
+								ninevites ++;
+								console.log('ninevites'+ninevites)
+							}
+						})
+						if(ninevites > 4){//4 irl
+							player.winning = true;
+							this.winner += player.name +" "
+						}
+					}
+				break;
+				case "Paul":
+					//set proselytize
+					
+					//check abilities
+
+				break;
+				case "Joshua":
+					if(location.name == "Canaan" && location.abilities[0]>2){
+						this.winning = true;
+					}
+					location.setWeariness((location.weariness+1))
+
+				break;
+			}
+		})
+
 		//jonah  5
 		//joshua canaan
 		//paul   3 loc card with paul
-
+		this.players.map((player,index)=>{
+			if(player.winning){
+				this.winner += player.name+" "
+			}
+		})
 
 		let conquerer;
 		let conquest = false;
@@ -106,7 +164,7 @@ module.exports.newGame = function Game(playerNames){
 		})
 		if(conquest && conquerer != 'neutral'){
 			console.log('A WINNER!!!'+conquerer)
-			this.winner = conquerer
+			this.winner += conquerer
 		}
 		return this.winner;
 	}

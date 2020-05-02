@@ -9,6 +9,7 @@ module.exports.Location = function Location(deck,story){
 	this.weariness = 0;
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
+	this.proselytized = false;
 
 	this.setWeariness = function(newWeary){
 		this.weariness = newWeary
@@ -105,25 +106,25 @@ module.exports.Location = function Location(deck,story){
 
 	this.compareInfluence = function(){
 		console.log('location:compareInfluence:')
-		let influencer ={influence:0};
-		influencer.baseInfluence = this.influence
-		influencer.influence = 0;
-		let runnerUp = 0;
+		let influencer ={influence:this.influence};
 		influencer.name = 'neutral';
+
+		let runnerUp = 0;
 		this.battlefield.length > 0 ? (
-				this.battlefield.map((player,index) => {
-					if(player && this.battlefield[index] ){
-						console.log('player from battlefield'+player+index)
-						if(this.battlefield[index].influence > influencer.influence){
-							influencer = this.battlefield[index];
-						}else if(this.battlefield[index].influence > runnerUp){
-							runnerUp = this.battlefield[index].influence;
-						}
+			this.battlefield.map((player,index) => {
+				if(player && this.battlefield[index] ){
+					console.log('player from battlefield'+player+index)
+					if(this.battlefield[index].influence > influencer.influence){
+						influencer = this.battlefield[index];
+					}else if(this.battlefield[index].influence > runnerUp){
+						runnerUp = this.battlefield[index].influence;
 					}
-				})):(null);
+				}
+			}
+		)):(null);
 
 		console.log(influencer.name+" is the highest influencer by "+(influencer.influence-runnerUp))
-		influencer.influence -= runnerUp
+		influencer.finalInfluence = influencer.influence - runnerUp
 		return influencer
 	}
 	this.setInfluencing = function(){
@@ -138,12 +139,15 @@ module.exports.Location = function Location(deck,story){
 			//1 = 0
 			//2 = 3
 		}
-		if(influencer.influence > baseInfluence +this.weariness*2 && influencer.name != 'neutral'){
+		if(influencer.finalInfluence > baseInfluence +this.weariness*2 && influencer.name != 'neutral'){
 			this.influencer = influencer
 
 			if(this.name == "Canaan"){
 				this.abilities = [(this.abilities[0]+1)];
 				console.log('canaan conquered, tier up'+this.abilities[0])
+			}
+			if(influencer.name == "Paul"){
+				this.proselytized = true;
 			}
 
 			console.log()
@@ -151,5 +155,6 @@ module.exports.Location = function Location(deck,story){
 			this.battlefield = [];
 			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
 	}
+
 
 }

@@ -166,8 +166,8 @@ var root = {
 		let playerNumber = currentPlayer
 		let gamePlayer = game.getCurrentPlayer();
 		console.log('currnetplayer'+playerNumber+' vs '+gamePlayer)
-		let newNextPlayer = game.getNextPlayer();
 		let winner = game.checkVictoryConditions();
+		let newNextPlayer = game.getNextPlayer();
 		// let locInfo = game.getLocationInfo()
 		// let playerInfo = game.getPlayerInfo()
 		console.log('nextplayer'+newNextPlayer)
