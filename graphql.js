@@ -39,6 +39,7 @@ type Location {
 	name: String,
 	influence: Int,
 	influencer: String,
+	weariness: Int,
 	market: [Card],
 	battlefield: [Battlefield]
 			

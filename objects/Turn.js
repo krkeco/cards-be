@@ -26,7 +26,7 @@ module.exports.Turn = function Turn(mPlayers,mLocations,turn, mConquerer){
 
 		player.drawCards(draws)
 		if(player.type == "AI"){
-			player.AI.runStrategy();
+			player.AI.runStrategy('default');
 		// player.AI.runStrategy();
 		}
 

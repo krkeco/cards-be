@@ -280,7 +280,7 @@ module.exports.AI = function AI(player, locations){
 		})
 		console.log('alltehgold' + allTehGold + ' all the cards:'+allCard)
 
-		if(allCard> 5){
+		if(allCard> 8){
 			let hasPurse = player.hand.findIndex((card)=> card.name == "Purse")
 			let hasInfluence = player.hand.findIndex((card)=>card.name=="Influence")
 			

@@ -44,7 +44,7 @@ module.exports.Location = function Location(deck,story){
 	}
 
 	this.buy = function(index, player){
-		if(player.type == "AI" || this.battlefield[player.id] && this.battlefield[player.id].gold >= this.market[index].cost){
+		if(this.battlefield[player.id] && this.battlefield[player.id].gold >= this.market[index].cost){
 				console.log('location:buy:'+JSON.stringify(this.market[index].name))
 				let newBattleField  = [...this.battlefield]
 				newBattleField[player.id].gold -= this.market[index].cost
@@ -59,6 +59,18 @@ module.exports.Location = function Location(deck,story){
 			}else{
 				//can't afford card
 				return `can't afford card`
+			}
+			if(player.type == "AI"){
+				//AI cheat ... if it has gold it floats it
+				
+				player.buyCard(this.market[index])
+				let newMarket = [...this.market]
+				newMarket.splice(index,1)
+				this.market = [...newMarket]
+				this.battlefield = [...newBattleField]
+				this.drawOne();
+				return `bought ${player.discard[0].name}`
+				
 			}
 	}
 
@@ -90,6 +102,17 @@ module.exports.Location = function Location(deck,story){
 		}else if(owner.hand[card].abilities.indexOf('mordecai') > -1){
 			newField[owner.id].influence += copyInfluence;
 			console.log('mordecai added '+copyInfluence+" to this location")
+		}else if(owner.hand[card].weary){
+			console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
+			this.weariness += parseInt(owner.hand[card].weary);
+		}else if(owner.hand[card].vitality){
+			this.weariness -= owner.hand[card].vitality;
+			if(this.weariness < 0){
+				this.weariness = 0;
+			}
+		}else if(owner.hand[card].abilities.indexOf('balaam') > -1){
+			newField[owner.id].influence += copyInfluence;
+			console.log('balaam added '+copyInfluence+" to this location")
 		}
 
 		this.battlefield = newField;
@@ -99,6 +122,9 @@ module.exports.Location = function Location(deck,story){
 		if(owner.hand[card].abilities.indexOf("scrap") < 0){
 			owner.discardCard(card)
 		}else{
+			let newHand = [...owner.hand]
+			newHand.splice(card,1)
+			owner.hand = [...newHand]
 			console.log('this is an influence card and is not discarded')
 		}
 		return `played ${cardName} on ${this.name}`
@@ -131,20 +157,25 @@ module.exports.Location = function Location(deck,story){
 		console.log('location:setInfluencing:')
 		let influencer = this.compareInfluence();
 		let baseInfluence = this.influence
-		if(this.name == "Canaan"){
-			baseInfluence += this.abilities[0]
-			baseInfluence += this.abilities[0]-1
-			baseInfluence += this.abilities[0]-2
-			//0 = -3
-			//1 = 0
-			//2 = 3
-		}
+		// if(this.name == "Canaan"){
+		// 	baseInfluence += this.abilities[0]
+		// 	baseInfluence += this.abilities[0]-1
+		// 	baseInfluence += this.abilities[0]-2
+
+		// 	//0 = -3
+		// 	//1 = 0
+		// 	//2 = 3
+		// }
+		console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)
 		if(influencer.finalInfluence > baseInfluence +this.weariness*2 && influencer.name != 'neutral'){
 			this.influencer = influencer
+			console.log('new influencer is now'+influencer.name)
 
 			if(this.name == "Canaan"){
 				this.abilities = [(this.abilities[0]+1)];
+				this.influence += this.abilities[0]*2
 				console.log('canaan conquered, tier up'+this.abilities[0])
+				// console.log('remove influencer after tier up?')
 			}
 			if(influencer.name == "Paul"){
 				this.proselytized = true;
@@ -154,7 +185,11 @@ module.exports.Location = function Location(deck,story){
 		}
 			this.battlefield = [];
 			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
+			
+		if(this.name == "Canaan"){
+			this.weariness++;
+			console.log('end of turn weariness for canaan')
+		}
 	}
-
 
 }

@@ -130,10 +130,12 @@ module.exports.newGame = function Game(playerNames){
 
 				break;
 				case "Joshua":
-					if(location.name == "Canaan" && location.abilities[0]>2){
+				console.log('checking joshua wincon:'+this.locations['Canaan'].abilities[0])
+					if(this.locations['Canaan'].abilities[0]>1){
 						this.winning = true;
+						this.winner += player.name +" "
 					}
-					location.setWeariness((location.weariness+1))
+					
 
 				break;
 			}
@@ -175,15 +177,37 @@ module.exports.newGame = function Game(playerNames){
 
 		this.turn = this.turn +1;
 		console.log('new turn:'+this.turn)
-		this.players.map((player,index)=>{
-			player.discardHand();
-			player.mills = 0;
-			player.drawCards(5);
-		});
-	
+		
 		Object.keys(this.locations).map((location, index)=>{
 			this.locations[location].setInfluencing();
 		})
+
+		this.players.map((player,index)=>{
+			player.discardHand();
+			player.mills = 0;
+
+			let draws = 5;
+
+			Object.keys(this.locations).map((location)=>{
+				if(this.locations[location].influencer.name == player.name){
+					let newHand = [...player.hand]
+					newHand.push(this.locations[location].card)
+					player.hand = [...newHand]
+					console.log('adding influence card to hand'+JSON.stringify(player.hand))
+					if(this.locations[location].card.draw > 0){
+						// player.drawCards(1);
+						draws += this.locations[location].card.draw
+					}
+
+				}
+			})
+
+			player.drawCards(draws)
+
+
+
+		});
+	
 		// this.checkVictoryConditions();
 		// return this.getPlayerInfo;
 	}
