@@ -98,8 +98,8 @@ module.exports.newGame = function Game(playerNames){
 			switch(player.name){
 				case "Esther":
 					console.log('checking esther win condition')
-				let babylonian = this.locations['Babylon'].compareInfluence();
-				console.log('babylonian influencer'+babylonian.name)
+					let babylonian = this.locations['Babylon'].compareInfluence();
+					console.log('babylonian influencer'+babylonian.name)
 					if(babylonian.name == "Esther" && babylonian.finalInfluence > 17){//17
 						player.winning = true;
 						this.winner += player.name +" "
@@ -108,24 +108,45 @@ module.exports.newGame = function Game(playerNames){
 				case "Jonah":
 					console.log('checking jona win condition')
 					let ninevites = 0;
-					let bf = this.locations["Nineveh"].battlefield.find((bf)=>bf.name=="Jonah")
+					 
+					let bf;
+					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
+						if(battlefield.name == "Jonah"){
+							bf = battlefield;
+							console.log('found jonah')
+						}
+					})
+					
 					if(bf){
-						console.log('did play on nineveh')
+					 	
+						console.log(bf)
 						bf.cards.map((card,index)=>{
 							if(card.abilities.indexOf('ninevite') > -1){
 								ninevites ++;
 								console.log('ninevites'+ninevites)
 							}
 						})
-						if(ninevites > 4){//4 irl
+						if(ninevites > 4){//4
 							player.winning = true;
 							this.winner += player.name +" "
 						}
 					}
+					 
 				break;
 				case "Paul":
 					//set proselytize
-					
+					console.log('checking paul win con')
+						let pros = 0;
+					Object.keys(this.locations).map((location, index)=>{
+						if(this.locations[location].proselytized){
+							pros += 1;
+							console.log(this.locations[location].name+' has been proselytized to' + pros)
+						}
+					})
+						if (pros > 2){
+							player.winning = true;
+							this.winner += player.name +" "
+						}
 					//check abilities
 
 				break;
@@ -168,6 +189,7 @@ module.exports.newGame = function Game(playerNames){
 			console.log('A WINNER!!!'+conquerer)
 			this.winner += conquerer
 		}
+		console.log('finish checking winconditions')
 		return this.winner;
 	}
 	// console.log('starting new game with '+playerNames)

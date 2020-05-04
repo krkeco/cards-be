@@ -10,6 +10,7 @@ module.exports.Location = function Location(deck,story){
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
 	this.proselytized = false;
+	this.wounds = 0;
 
 	this.setWeariness = function(newWeary){
 		this.weariness = newWeary
@@ -113,6 +114,9 @@ module.exports.Location = function Location(deck,story){
 		}else if(owner.hand[card].abilities.indexOf('balaam') > -1){
 			newField[owner.id].influence += copyInfluence;
 			console.log('balaam added '+copyInfluence+" to this location")
+		}else if(owner.hand[card].name=='Paul'){
+			newField[owner.id].playPaul = true;
+			console.log('paul played on location')
 		}
 
 		this.battlefield = newField;
@@ -136,9 +140,20 @@ module.exports.Location = function Location(deck,story){
 		influencer.name = 'neutral';
 
 		let runnerUp = 0;
+		let paul = -1;
 		this.battlefield.length > 0 ? (
 			this.battlefield.map((player,index) => {
 				if(player && this.battlefield[index] ){
+					if(this.battlefield[index].playPaul){
+						console.log('paul is playign')
+						paul = index;
+
+					}
+					// if(this.battlefield[player].name == "Paul"){
+					// 	if(this.battlefield[player].cards.findIndex((card,index)=>card.name == "Paul") > -1){
+					// 		console.log('the paul card was played')
+					// 	}
+					// }
 					console.log('player from battlefield'+player+index)
 					if(this.battlefield[index].influence > influencer.influence){
 						influencer = this.battlefield[index];
@@ -148,7 +163,12 @@ module.exports.Location = function Location(deck,story){
 				}
 			}
 		)):(null);
+		if(paul > -1){
+			if(influencer.name != "Paul"){
+				console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
 
+			}
+		}
 		console.log(influencer.name+" is the highest influencer by "+(influencer.influence-runnerUp))
 		influencer.finalInfluence = influencer.influence - runnerUp
 		return influencer
@@ -171,7 +191,7 @@ module.exports.Location = function Location(deck,story){
 			this.influencer = influencer
 			console.log('new influencer is now'+influencer.name)
 
-			if(this.name == "Canaan"){
+			if(this.name == "Canaan" && influencer.name != "neutral"){
 				this.abilities = [(this.abilities[0]+1)];
 				this.influence += this.abilities[0]*2
 				console.log('canaan conquered, tier up'+this.abilities[0])
@@ -179,6 +199,7 @@ module.exports.Location = function Location(deck,story){
 			}
 			if(influencer.name == "Paul"){
 				this.proselytized = true;
+				console.log('location has been proselytized')
 			}
 
 			console.log()
