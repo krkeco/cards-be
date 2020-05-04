@@ -163,7 +163,7 @@
 				 	"cost": 4,
 				 	"gold":3,
 				 	"draw":0,
-				 	"influence":5,
+				 	"influence":0,
 				 	"vitality":3,
 				 	"abilities":[]},
 			{"name":"Spies",
