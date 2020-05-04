@@ -3,7 +3,7 @@
 		
 		"jerusalem":{
 			"name":"Jerusalem",
-			"influence":1,
+			"influence":7,
 			"abilities":["jerusalem"],
 			"card":{
 				"name":"Jerusalem Influence",
@@ -24,7 +24,7 @@
 				"abilities":[0,0,0,7]},
 			"location":{
 				"name":"Rome",
-				"influence":5,
+				"influence":7,
 				"abilities":["rome"],
 			"card":{
 				"name":"Romes's Influence",
@@ -66,7 +66,7 @@
 				"abilities":["jonah"]},
 			"location":{
 				"name":"Nineveh",
-				"influence":1,
+				"influence":7,
 				"abilities":["nineveh"],
 			"card":{
 				"name":"Nineveh's Influence",
@@ -85,7 +85,7 @@
 				"abilities":["esther"]},
 			"location":{
 				"name":"Babylon",
-				"influence":1,
+				"influence":7,
 				"abilities":["babylon"],
 				"card":{
 					"name":"Babylon's Influence",
