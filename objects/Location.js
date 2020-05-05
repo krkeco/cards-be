@@ -2,6 +2,7 @@
 module.exports.Location = function Location(deck,story){
 	this.deck = [...deck]
 	this.card = story.card
+	this.info = story.info;
 	this.market = []
 	this.battlefield = [];
 	this.name = story.name;
@@ -10,13 +11,35 @@ module.exports.Location = function Location(deck,story){
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
 	this.proselytized = false;
+	
 	this.wounds = 0;
+	this.hardened = 0;
+	this.edicts = 0;
 
 	this.setWeariness = function(newWeary){
 		this.weariness = newWeary
 		console.log('weariness:'+this.weariness)
 	}
 
+	this.refreshMarket = function(playerName){
+		console.log('location refreshMarket ')
+		let newField= [...this.battlefield]
+		let player = newField.find((pl)=>pl.name==playerName)
+		console.log(player.name+' is refreshing')
+		if(player && player.gold > 0){
+			this.deck = [...this.deck, this.market]
+			this.market = []
+			this.drawOne();
+			this.drawOne();
+			this.drawOne();
+			player.gold -= 1;
+			this.battlefield = [...newField]
+			console.log('market refreshed')
+			return 'market refreshed'
+		}
+			console.log('market NOT refreshed')
+		return 'market not refreshed'
+	}
 	this.drawOne = function() {
 		let newMarket = [...this.market]
 		let newDeck = [...this.deck]
@@ -80,7 +103,7 @@ module.exports.Location = function Location(deck,story){
 		let newField = [...this.battlefield]
 		console.log('location:playcard:'+card)
 		if(!newField[owner.id]){
-			newField[owner.id] = {name: owner.name,influence:0,gold:0, cards:[]};
+			newField[owner.id] = {name: owner.name,influence:0,gold:0,politics:0,poliBonus:0, cards:[]};
 		}
 		console.log('play card'+owner.hand[card].name)
 		newField[owner.id].influence += owner.hand[card].influence
@@ -89,70 +112,96 @@ module.exports.Location = function Location(deck,story){
 		
 		//special abilities here!
 		//ninevite
-		if(owner.hand[card].abilities.indexOf('homeland') > -1 && this.name == "Nineveh"){
+		if(owner.hand[card].abilities.indexOf('Ninevite') > -1 && this.name == "Nineveh"){
 			newField[owner.id].influence += 2;
 			console.log('ninevite advantage bonus')
 		}
-		//ninevite prince
-		else if(owner.hand[card].abilities.indexOf('prince') > -1 && this.name == "Nineveh"){
-			newField[owner.id].influence += 2;
-			console.log('prince advantage bonus')
-		}else if(owner.hand[card].abilities.indexOf('mordecai') > -1){
-			newField[owner.id].influence += copyInfluence;
-			console.log('mordecai added '+copyInfluence+" to this location")
-		}else if(owner.hand[card].weary){
+		
+		 if(owner.hand[card].abilities.indexOf('mordecai') > -1){
+			let greatest = 0;
+			newField[owner.id].cards.map((card,index)=>{
+				if(card.influence > greatest){
+					greatest = card.influence
+				}
+			})
+			newField[owner.id].influence += greatest;
+			console.log('mordecai added '+greatest+" to this location")
+		}
+		 if(owner.hand[card].weary){
 			console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
 			this.weariness += parseInt(owner.hand[card].weary);
-		}else if(owner.hand[card].vitality){
+		}
+		 if(owner.hand[card].vitality){
 			this.weariness -= owner.hand[card].vitality;
 			if(this.weariness < 0){
 				this.weariness = 0;
 			}
-		}else if(owner.hand[card].abilities.indexOf('balaam') > -1){
+		}
+		 if(owner.hand[card].abilities.indexOf('balaam') > -1){
 			newField[owner.id].influence += copyInfluence;
 			console.log('balaam added '+copyInfluence+" to this location")
-		}else if(owner.hand[card].name=='Paul'){
+		}
+		 if(owner.hand[card].reinforce > 0){	
+			for(let x = 0; x < owner.hand[card].reinforce; x++){
+				console.log('reinforcements!')
+				owner.drawCards(1)
+				this.battlefield = [...newField]
+				this.playCard((owner.hand.length-1),owner)
+			}
+		}
+		 if(owner.hand[card].name=='Paul'){
 			newField[owner.id].playPaul = true;
 			console.log('paul played on location')
 		}
+		
+		if(owner.hand[card].abilities.indexOf('Harden') > -1 && this.name == "Nineveh"){
+			this.hardened++;
+			console.log('Jonah has been hardened'+this.hardened)
+		}
+		//can't else this because some cards have both edict and politics
+		if(owner.hand[card].abilities.indexOf('edict') > -1){
+			this.edicts++;
+			console.log('played an edict, now there are '+this.edicts)
+		}
+		if(owner.hand[card].politics){
+			newField[owner.id].politics += owner.hand[card].politics;
+			newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts
+			console.log('total politics bonus for loc is:'+newField[owner.id].politics +"*"+ this.edicts + newField[owner.id].poliBonus)
+		}
 
 		this.battlefield = newField;
-		console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence: "+newField[owner.id].influence)
+		console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
 		// console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
 		let cardName = owner.hand[card].name
 		if(owner.hand[card].abilities.indexOf("scrap") < 0){
 			owner.discardCard(card)
 		}else{
-			let newHand = [...owner.hand]
-			newHand.splice(card,1)
-			owner.hand = [...newHand]
+			owner.millCard(card)
+			// let newHand = [...owner.hand]
+			// newHand.splice(card,1)
+			// owner.hand = [...newHand]
 			console.log('this is an influence card and is not discarded')
 		}
-		return `played ${cardName} on ${this.name}`
+		return `played ${card.name} on ${this.name}`
 	}
 
 	this.compareInfluence = function(){
 		console.log('location:compareInfluence:')
-		let influencer ={influence:this.influence};
-		influencer.name = 'neutral';
-
+		let influencer ={name: 'neutral',influence:this.influence, poliBonus:0};
+		
 		let runnerUp = 0;
 		let paul = -1;
 		this.battlefield.length > 0 ? (
 			this.battlefield.map((player,index) => {
 				if(player && this.battlefield[index] ){
+
 					if(this.battlefield[index].playPaul){
 						console.log('paul is playign')
 						paul = index;
-
 					}
-					// if(this.battlefield[player].name == "Paul"){
-					// 	if(this.battlefield[player].cards.findIndex((card,index)=>card.name == "Paul") > -1){
-					// 		console.log('the paul card was played')
-					// 	}
-					// }
+
 					console.log('player from battlefield'+player+index)
-					if(this.battlefield[index].influence > influencer.influence){
+					if(this.battlefield[index].influence + this.battlefield[index].poliBonus > influencer.influence + influencer.poliBonus ){
 						influencer = this.battlefield[index];
 					}else if(this.battlefield[index].influence > runnerUp){
 						runnerUp = this.battlefield[index].influence;
@@ -167,22 +216,14 @@ module.exports.Location = function Location(deck,story){
 			}
 		}
 		console.log(influencer.name+" is the highest influencer by "+(influencer.influence-runnerUp))
-		influencer.finalInfluence = influencer.influence - runnerUp
+		influencer.finalInfluence = influencer.influence - runnerUp + influencer.poliBonus
 		return influencer
 	}
 	this.setInfluencing = function(){
 		console.log('location:setInfluencing:')
 		let influencer = this.compareInfluence();
 		let baseInfluence = this.influence
-		// if(this.name == "Canaan"){
-		// 	baseInfluence += this.abilities[0]
-		// 	baseInfluence += this.abilities[0]-1
-		// 	baseInfluence += this.abilities[0]-2
 
-		// 	//0 = -3
-		// 	//1 = 0
-		// 	//2 = 3
-		// }
 		console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)
 		if(influencer.finalInfluence > baseInfluence +this.weariness*2 && influencer.name != 'neutral'){
 			this.influencer = influencer
@@ -203,6 +244,7 @@ module.exports.Location = function Location(deck,story){
 			console.log()
 		}
 			this.battlefield = [];
+			this.edicts = 0;
 			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
 			
 		if(this.name == "Canaan"){

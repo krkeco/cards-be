@@ -24,7 +24,7 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red', i
 	// let drawMore = 0;
 	let cardsLeft = cardCount;
 	while(cardsLeft > 0){
-		if(newDeck.length == 0 && newDiscard.length > 1){
+		if(newDeck.length == 0 && newDiscard.length >= 1){
 			newDeck = [...this.discard]
 			newDiscard = []
 

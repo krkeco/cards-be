@@ -20,12 +20,14 @@ var schema = buildSchema(`
 		name:String,
 	  quantity: Int,
 	  cost: Int,
+	  gold:Int,
+	  influence:Int,
+	  abilities:[String],
 	  draw: Int,
 	  vitality:Int,
 	  weary: Int,
-	  gold:Int,
-	  influence:Int,
-	  abilities:[String]
+	  politics: Int,
+	  reinforce: Int,
 },
 
 type Player {	
@@ -40,10 +42,14 @@ type Player {
 type Location {	
 	name: String,
 	influence: Int,
+	info: [String],
 	influencer: String,
-	weariness: Int,
 	market: [Card],
 	battlefield: [Battlefield]
+	proselytized: Boolean,
+	hardened:Int,
+	wounds: Int,
+	weariness: Int,
 			
 },
 type Battlefield {
@@ -74,6 +80,7 @@ type WaitingRoom {
     buy(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
     currentPlayer(gameId: Int): Int,
+    refreshMarket(gameId: Int, playerName: String, locationName: String): String,
   }`);
 
 // The root provides a resolver function for each API endpoint
@@ -127,6 +134,20 @@ var root = {
   	let players = gameDB[gameId].getPlayerInfo()
   	console.log(JSON.stringify(players[0].name))
   	return players
+  },
+  refreshMarket: ({gameId, playerName, locationName})=> {
+		let game = gameDB[gameId]
+		if(game.turn > 1){
+				console.log('graph refreshmarket')
+				let location= game.locations[locationName]
+				console.log('location:'+location.name)
+				let res = location.refreshMarket(playerName);
+				console.log('res'+res)
+				return res;
+			}else{
+				return 'cannot refresh turn 1'
+			}
+
   },
   locations: ({gameId})=>{
   	let locations = gameDB[gameId].getLocationInfo()

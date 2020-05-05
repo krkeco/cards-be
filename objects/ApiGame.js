@@ -262,9 +262,13 @@ module.exports.newGame = function Game(playerNames){
 				market: location.market,
 				battlefield: location.battlefield,
 				influence: location.influence,
-				weariness: location.weariness,
 				abilities: location.abilities,
-				influencer: location.influencer.name
+				influencer: location.influencer.name,
+				info: location.info,
+				weariness: location.weariness,
+				wounds: location.wounds,
+				hardened: location.hardened,
+				proselytized: location.proselytized,
 			}
 			if(info.battlefield == {}){
 				console.log('empty battlefield, please proxy')

@@ -10,11 +10,11 @@ module.exports.test = function PlayerTest(){
 
 	// this.deck = [story.character, ...deck]
 	this.getCardGroups = function(){
-		console.log("deck:"+Jonah.deck.length+JSON.stringify(Jonah.deck))
+		console.log("deck:"+Jonah.deck.length)
 		
-		console.log("hand:"+Jonah.hand.length+JSON.stringify(Jonah.hand))
+		console.log("hand:"+Jonah.hand.length)
 		
-		console.log("discard:"+Jonah.discard.length+JSON.stringify(Jonah.discard))
+		console.log("discard:"+Jonah.discard.length)
 		
 	}
 	this.getCardGroups();
@@ -52,4 +52,17 @@ module.exports.test = function PlayerTest(){
 
 	Jonah.getTotalInfluence()
 
+
+
+	//abilities
+	const loc = require('./Location.js');
+	let Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
+	this.getCardGroups();
+	Jonah.drawCards(10);
+	this.getCardGroups();
+	for(let x= 0; x < Jonah.hand.length-1;x++){
+		console.log('x:'+x)
+		Nineveh.playCard(0,Jonah, 0)
+	}
+	Nineveh.buy(0,Jonah.name)
 }
