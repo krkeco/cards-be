@@ -95,11 +95,8 @@ module.exports.Location = function Location(deck,story){
 		}
 		//ninevite prince
 		else if(owner.hand[card].abilities.indexOf('prince') > -1 && this.name == "Nineveh"){
-			newField[owner.id].influence += 3;
-			console.log('prince advantage bonus')
-		}else if(owner.hand[card].abilities.indexOf('joshua') > -1 && this.name == "Canaan"){
 			newField[owner.id].influence += 2;
-			console.log('joshua advantage bonus')
+			console.log('prince advantage bonus')
 		}else if(owner.hand[card].abilities.indexOf('mordecai') > -1){
 			newField[owner.id].influence += copyInfluence;
 			console.log('mordecai added '+copyInfluence+" to this location")
@@ -194,6 +191,7 @@ module.exports.Location = function Location(deck,story){
 			if(this.name == "Canaan" && influencer.name != "neutral"){
 				this.abilities = [(this.abilities[0]+1)];
 				this.influence += this.abilities[0]*2
+				// this.card.influence += 2;
 				console.log('canaan conquered, tier up'+this.abilities[0])
 				// console.log('remove influencer after tier up?')
 			}

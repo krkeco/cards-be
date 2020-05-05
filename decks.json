@@ -42,7 +42,8 @@
 				"gold":0,
 				"draw":0,
 				"influence":3,
-				"abilities":["joshua"]},
+				"vitality":1,
+				"abilities":[]},
 			"location":{
 				"name":"Canaan",
 				"influence":5,

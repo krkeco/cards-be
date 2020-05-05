@@ -21,6 +21,8 @@ var schema = buildSchema(`
 	  quantity: Int,
 	  cost: Int,
 	  draw: Int,
+	  vitality:Int,
+	  weary: Int,
 	  gold:Int,
 	  influence:Int,
 	  abilities:[String]
