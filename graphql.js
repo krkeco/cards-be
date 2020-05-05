@@ -89,9 +89,10 @@ var root = {
   hello: () => {
     return 'Hello world!';
   },
-  currentPlayer: (gameId)=>{
+  currentPlayer: ({gameId})=>{
+  	console.log('currentplayer for '+gameId)
   	let game = gameDB[gameId]
-  	console.log('game found?'+game.locations[0].name)
+  	// console.log('game found?'+game.locations[0].name)
   	let player = game.getCurrentPlayer();
   	console.log('current player found? '+player)
   	return player
@@ -100,7 +101,6 @@ var root = {
   	console.log('players are:'+JSON.stringify(players))
   		// let players = ['Jonah','Esther']
 			let game = GameBuilder.newGame(players)
-			
 			let gameId = gameDB.length
 			gameDB[gameId] = game
 		  return gameId
