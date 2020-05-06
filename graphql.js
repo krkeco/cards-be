@@ -107,7 +107,7 @@ var root = {
   newGame: ({players})=>{
   	console.log('players are:'+JSON.stringify(players))
   		// let players = ['Jonah','Esther']
-			let game = GameBuilder.newGame(players)
+			let game = new GameBuilder.newGame(players)
 			let gameId = gameDB.length
 			gameDB[gameId] = game
 		  return gameId
@@ -131,6 +131,7 @@ var root = {
 			return gameId
   },
   players: ({gameId})=>{
+  	console.log('getting players for game:'+gameId)
   	let players = gameDB[gameId].getPlayerInfo()
   	console.log(JSON.stringify(players[0].name))
   	return players
