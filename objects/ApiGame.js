@@ -14,6 +14,7 @@ module.exports.newGame = function Game(playerNames){
 	this.currentPlayer = 0;
 	this.turn = 0;
 	this.winner;
+	this.slug = 0;
 	this.getTurn = () => {return this.turn}
 
 	this.getCurrentPlayer = () => {return this.currentPlayer;}
@@ -109,28 +110,25 @@ module.exports.newGame = function Game(playerNames){
 					console.log('checking jona win condition')
 					let ninevites = 0;
 					 
-					let bf;
+				//	let bf;
 					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
 						if(battlefield.name == "Jonah"){
-							bf = battlefield;
+							let bf = battlefield;
 							console.log('found jonah')
+							console.log(bf)
+							bf.cards.map((card,index)=>{
+								if(card.abilities.indexOf('ninevite') > -1){
+									ninevites ++;
+									console.log('ninevites'+ninevites)
+								}
+							})
+							if(ninevites > 4){//4
+								player.winning = true;
+								this.winner += player.name +" "
+							}
 						}
 					})
 					
-					if(bf){
-					 	
-						console.log(bf)
-						bf.cards.map((card,index)=>{
-							if(card.abilities.indexOf('ninevite') > -1){
-								ninevites ++;
-								console.log('ninevites'+ninevites)
-							}
-						})
-						if(ninevites > 4){//4
-							player.winning = true;
-							this.winner += player.name +" "
-						}
-					}
 					 
 				break;
 				case "Paul":
@@ -195,7 +193,7 @@ module.exports.newGame = function Game(playerNames){
 	// console.log('starting new game with '+playerNames)
 
 	this.startNewTurn = function(){
-		
+		console.log('apigame startnewturn')
 
 		this.turn = this.turn +1;
 		console.log('new turn:'+this.turn)
@@ -203,13 +201,14 @@ module.exports.newGame = function Game(playerNames){
 		Object.keys(this.locations).map((location, index)=>{
 			this.locations[location].setInfluencing();
 		})
+		console.log('player setup')
 
 		this.players.map((player,index)=>{
-			player.discardHand();
-			player.mills = 0;
-
+			player.startTurn()
+			console.log('player hand'+JSON.stringify(player.hand))
 			let draws = 5;
 
+			//influence cards
 			Object.keys(this.locations).map((location)=>{
 				if(this.locations[location].influencer.name == player.name){
 					let newHand = [...player.hand]

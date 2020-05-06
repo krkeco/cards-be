@@ -7,12 +7,22 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red', i
 	this.mills = 0
 	this.abilities = [...story.character.abilities]
 	this.discard = []
+	this.played = []
 	this.firstPlayer = false;
 	this.winning = false;
 	this.name = story.character.name;
 	// this.AI = new ai.AI(this);
 	this.setAbilities = function(abilities){
 		this.abilities=[...abilities]
+	}
+
+	this.startTurn = function(){
+		this.discardHand();
+		let newDiscard = [...this.played, ...this.discard]
+		this.discard = [...newDiscard]
+		this.played = []
+		this.mills = 0;
+
 	}
 
 	this.drawCards = function(cardCount){
@@ -79,7 +89,14 @@ module.exports.Player =  function Player(story, deck,type="AI", color = 'red', i
 		this.hand = [...newHand]
 		console.log('hand now:'+this.hand.length)
 	}
-
+	this.playedCard = function(index){
+		let newHand = [...this.hand]
+		console.log('discardCard:')
+		this.played = [...this.played, this.hand[index]]
+		newHand.splice(index,1)
+		this.hand = [...newHand]
+		console.log('hand now:'+this.hand.length)
+	}
 	this.buyCard = function(card){
 		console.log('buyCard:')
 		console.log(card)

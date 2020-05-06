@@ -11,6 +11,7 @@ module.exports.Location = function Location(deck,story){
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
 	this.proselytized = false;
+	this.momentsPeace = false;
 	
 	this.wounds = 0;
 	this.hardened = 0;
@@ -22,21 +23,31 @@ module.exports.Location = function Location(deck,story){
 	}
 
 	this.refreshMarket = function(playerName){
-		console.log('location refreshMarket ')
+		console.log('location refreshMarket by '+playerName)
 		let newField= [...this.battlefield]
-		let player = newField.find((pl)=>pl.name==playerName)
-		console.log(player.name+' is refreshing')
-		if(player && player.gold > 0){
-			let newDeck = [...this.deck, ...this.market]
-			this.market = []
-			this.drawOne();
-			this.drawOne();
-			this.drawOne();
-			player.gold -= 1;
-			this.battlefield = [...newField]
-			console.log('market refreshed')
-			return 'market refreshed'
-		}
+		let player; 
+		newField.map((pl,index)=>{
+			if(pl.name==playerName){
+				console.log('found player in bf')
+				player= pl;
+				if(player && player.gold > 0){
+					let newDeck = [...this.deck, ...this.market]
+					this.deck = [...newDeck];
+					this.market = []
+					this.drawOne();
+					this.drawOne();
+					this.drawOne();
+					player.gold -= 1;
+					this.battlefield = [...newField]
+					console.log('market refreshed')
+					return 'market refreshed'
+				}
+			}else{
+				
+				console.log('no player in bf found')
+			}
+		})
+		// console.log(player.name+' is refreshing')
 			console.log('market NOT refreshed')
 		return 'market not refreshed'
 	}
@@ -117,6 +128,13 @@ module.exports.Location = function Location(deck,story){
 			console.log('ninevite advantage bonus')
 		}
 		
+		if(owner.hand[card].abilities.indexOf('angelic') > -1){
+			this.momentsPeace = true;
+		}
+		if(owner.hand[card].abilities.indexOf('mob') > -1){
+			newField[owner.id].influence += newField[owner.id].cards.length-1;
+			card.influence += newField[owner.id].cards.length-1;
+		}
 		 if(owner.hand[card].abilities.indexOf('mordecai') > -1){
 			let greatest = 0;
 			newField[owner.id].cards.map((card,index)=>{
@@ -127,7 +145,16 @@ module.exports.Location = function Location(deck,story){
 			newField[owner.id].influence += greatest;
 			console.log('mordecai added '+greatest+" to this location")
 		}
-		 if(owner.hand[card].weary){
+
+		if(owner.hand[card].abilities.indexOf('haman') > -1){
+			newField.map((bf, ind)=>{
+				if(ind != owner.id){
+					bf.haman = true;
+				}
+			})
+		}
+
+		if(owner.hand[card].weary){
 			console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
 			this.weariness += parseInt(owner.hand[card].weary);
 		}
@@ -137,6 +164,12 @@ module.exports.Location = function Location(deck,story){
 				this.weariness = 0;
 			}
 		}
+		if(owner.hand[card].abilities.indexOf('faithful') > -1){
+			if(!newField[owner.id].faithfulReport){
+				newField[owner.id].faithfulReport =0;
+			}
+			newField[owner.id].faithfulReport +=1
+		}
 		 if(owner.hand[card].abilities.indexOf('balaam') > -1){
 			newField[owner.id].influence += copyInfluence;
 			console.log('balaam added '+copyInfluence+" to this location")
@@ -145,7 +178,7 @@ module.exports.Location = function Location(deck,story){
 			for(let x = 0; x < owner.hand[card].reinforce; x++){
 				console.log('reinforcements!')
 				if(owner.deck.length >0){
-								owner.drawCards(1)
+					owner.drawCards(1)
 				this.battlefield = [...newField]
 				this.playCard((owner.hand.length-1),owner)
 				}else{
@@ -174,19 +207,21 @@ module.exports.Location = function Location(deck,story){
 		}
 
 		this.battlefield = newField;
+		let theString = `played ${card.name} on ${this.name}`
 		console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
 		// console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
 		let cardName = owner.hand[card].name
 		if(owner.hand[card].abilities.indexOf("scrap") < 0){
-			owner.discardCard(card)
+			owner.playedCard(card)
 		}else{
 			owner.millCard(card)
+			owner.mills--;
 			// let newHand = [...owner.hand]
 			// newHand.splice(card,1)
 			// owner.hand = [...newHand]
 			console.log('this is an influence card and is not discarded')
 		}
-		return `played ${card.name} on ${this.name}`
+		return theString;
 	}
 
 	this.compareInfluence = function(){
@@ -199,10 +234,42 @@ module.exports.Location = function Location(deck,story){
 			this.battlefield.map((player,index) => {
 				if(player && this.battlefield[index] ){
 
+					//paul
 					if(this.battlefield[index].playPaul){
 						console.log('paul is playign')
 						paul = index;
 					}
+
+					//faithful report
+					if(this.battlefield[index].faithfulReport){
+						while(this.battlefield[index].faithfulReport >0 && this.battlefield[index].gold > 2){
+							this.weariness -=3
+							this.battlefield[index].faithfulReport--;
+							this.battlefield[index].gold -=3;
+
+						}
+
+					} 
+
+					//haman
+						
+							if(player.haman){
+								let greatest = 0;
+								let greatDex;
+								player.cards.map((card,index)=>{
+									if(card.influence > greatest){
+										greatest = card.influence
+										greatDex = player
+									}
+								})
+								if(greatDex){
+									greatDex.influence -=greatest
+									console.log('haman reduce '+greatDex.name+"'s influence by "+greatest)
+								}else{
+									console.log=('nothing to reduce for haman')
+								}			
+							}
+
 
 					console.log('player from battlefield'+player+index)
 					if(this.battlefield[index].influence + this.battlefield[index].poliBonus > influencer.influence + influencer.poliBonus ){
@@ -224,6 +291,12 @@ module.exports.Location = function Location(deck,story){
 		return influencer
 	}
 	this.setInfluencing = function(){
+
+		if(this.momentsPeace){
+			console.log('moments peace no influence today')
+			this.postInfluencePhase()
+			
+		}else{
 		console.log('location:setInfluencing:')
 		let influencer = this.compareInfluence();
 		let baseInfluence = this.influence
@@ -233,24 +306,26 @@ module.exports.Location = function Location(deck,story){
 			this.influencer = influencer
 			console.log('new influencer is now'+influencer.name)
 
-			if(this.name == "Canaan" && influencer.name != "neutral"){
+			if(this.name == "Canaan" && influencer.name == "Joshua"){
 				this.abilities = [(this.abilities[0]+1)];
-				this.influence += this.abilities[0]*2
-				// this.card.influence += 2;
+				this.influence += 3
+				this.card.influence += 2;
 				console.log('canaan conquered, tier up'+this.abilities[0])
-				// console.log('remove influencer after tier up?')
 			}
 			if(influencer.name == "Paul"){
 				this.proselytized = true;
 				console.log('location has been proselytized')
 			}
-
-			console.log()
 		}
-			this.battlefield = [];
-			this.edicts = 0;
-			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
 			
+			this.postInfluencePhase()
+			console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
+		}		
+	}
+	this.postInfluencePhase = function(){
+		this.momentsPeace = false;
+		this.battlefield = [];
+		this.edicts = 0;
 		if(this.name == "Canaan"){
 			this.weariness++;
 			console.log('end of turn weariness for canaan')
