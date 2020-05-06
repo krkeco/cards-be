@@ -27,7 +27,7 @@ module.exports.Location = function Location(deck,story){
 		let player = newField.find((pl)=>pl.name==playerName)
 		console.log(player.name+' is refreshing')
 		if(player && player.gold > 0){
-			this.deck = [...this.deck, this.market]
+			let newDeck = [...this.deck, ...this.market]
 			this.market = []
 			this.drawOne();
 			this.drawOne();
@@ -144,9 +144,13 @@ module.exports.Location = function Location(deck,story){
 		 if(owner.hand[card].reinforce > 0){	
 			for(let x = 0; x < owner.hand[card].reinforce; x++){
 				console.log('reinforcements!')
-				owner.drawCards(1)
+				if(owner.deck.length >0){
+								owner.drawCards(1)
 				this.battlefield = [...newField]
 				this.playCard((owner.hand.length-1),owner)
+				}else{
+					console.log('your deck is empty cannot reinforce')
+				}
 			}
 		}
 		 if(owner.hand[card].name=='Paul'){
