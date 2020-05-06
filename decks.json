@@ -158,7 +158,7 @@
 					"cost": 5,
 					"gold":0,
 					"influence":0,
-					"abilities":["peace",": this location does not check influence this turn"]},
+					"abilities":["angelic",": this location does not check influence this turn"]},
 			{"name":"Stormy Seas",
 				"quantity":3,
 					"cost": 6,

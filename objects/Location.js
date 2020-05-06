@@ -11,7 +11,7 @@ module.exports.Location = function Location(deck,story){
 	this.abilities = story.abilities;
 	this.influencer = {name:'neutral'};
 	this.proselytized = false;
-	this.momentsPeace = false;
+	this.angelic = false;
 	
 	this.wounds = 0;
 	this.hardened = 0;
@@ -129,7 +129,7 @@ module.exports.Location = function Location(deck,story){
 		}
 		
 		if(owner.hand[card].abilities.indexOf('angelic') > -1){
-			this.momentsPeace = true;
+			this.angelic = true;
 		}
 		if(owner.hand[card].abilities.indexOf('mob') > -1){
 			newField[owner.id].influence += newField[owner.id].cards.length-1;
@@ -292,7 +292,7 @@ module.exports.Location = function Location(deck,story){
 	}
 	this.setInfluencing = function(){
 
-		if(this.momentsPeace){
+		if(this.angelic){
 			console.log('moments peace no influence today')
 			this.postInfluencePhase()
 			
@@ -323,7 +323,7 @@ module.exports.Location = function Location(deck,story){
 		}		
 	}
 	this.postInfluencePhase = function(){
-		this.momentsPeace = false;
+		this.angelic = false;
 		this.battlefield = [];
 		this.edicts = 0;
 		if(this.name == "Canaan"){
