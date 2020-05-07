@@ -171,15 +171,10 @@ module.exports.newGame = function Game(playerNames){
 			}
 		})
 
-		//jonah  5
-		//joshua canaan
-		//paul   3 loc card with paul
-		this.players.map((player,index)=>{
-			if(player.winning){
-				this.winner += player.name+" "
-			}
-		})
-
+		console.log('finish checking winconditions')
+		return this.winner;
+	}
+	this.checkForConquerer = function(){
 		let conquerer;
 		let conquest = false;
 		Object.keys(this.locations).map((loc, index)=>{
@@ -197,10 +192,7 @@ module.exports.newGame = function Game(playerNames){
 		if(conquest && conquerer != 'neutral'){
 			console.log('A WINNER!!!'+conquerer)
 			this.winner += conquerer
-		}
-		console.log('finish checking winconditions')
-		return this.winner;
-	}
+		}}
 	// console.log('starting new game with '+playerNames)
 
 	this.startNewTurn = function(){
@@ -212,6 +204,9 @@ module.exports.newGame = function Game(playerNames){
 		Object.keys(this.locations).map((location, index)=>{
 			this.locations[location].setInfluencing();
 		})
+		
+		this.checkForConquerer();
+
 		console.log('player setup')
 
 		this.players.map((player,index)=>{
@@ -240,8 +235,6 @@ module.exports.newGame = function Game(playerNames){
 
 		});
 	
-		// this.checkVictoryConditions();
-		// return this.getPlayerInfo;
 	}
 
 	this.getPlayerInfo = function(){
