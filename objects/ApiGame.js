@@ -29,8 +29,9 @@ module.exports.newGame = function Game(playerNames){
 	this.getNextPlayer = () => {
 		//solo game
 		if(this.players.length == 1){
+			let winner = this.checkVictoryConditions();
 			this.startNewTurn();
-			return 0
+			return {nextPlayer: 0, winner:winner}
 		}else{
 
 			console.log('getting next player')
@@ -44,14 +45,15 @@ module.exports.newGame = function Game(playerNames){
 				console.log('getting new firstplayer')
 				this.incrementPlayer();
 				this.players[this.currentPlayer].firstPlayer= true;
-
+				
+				let winner = this.checkVictoryConditions();
 				this.startNewTurn();
 				console.log('new turn and new firstplayer is'+this.currentPlayer)
-				return this.currentPlayer;
+				return {nextPlayer: this.currentPlayer, winner: winner};
 			}else{
 
 				console.log('returning the new player' +this.currentPlayer)
-				return this.currentPlayer;
+				return {nextPlayer: this.currentPlayer, winner: ""};
 			}
 		}
 	}
@@ -119,8 +121,26 @@ module.exports.newGame = function Game(playerNames){
 					
 					 
 				//	let bf;
-				this.checkForNinevites();
-					 
+				let ninevites = 0;
+			console.log('checkforninevites'+JSON.stringify(this.locations["Nineveh"].battlefield))
+					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
+						console.log('mapping nineveh')
+						if(battlefield && battlefield.name == "Jonah"){
+							console.log('found jonah')
+							battlefield.cards.map((card,index)=>{
+								console.log('mapping battlefield cards:'+card.name)
+								if(card.abilities.indexOf('Ninevite') > -1){
+									ninevites ++;
+									console.log('ninevites'+ninevites)
+								}
+							})
+							if(ninevites > 4){//4
+								console.log('jonah is a winner!')
+								player.winning = true;
+								this.winner += player.name +" "
+							}
+						}else{console.log('no jonah found')}
+					})
 				break;
 				case "Paul":
 					//set proselytize
@@ -268,27 +288,6 @@ module.exports.newGame = function Game(playerNames){
 		})
 
 		return locationInfo
-	}
-	this.checkForNinevites = function(){
-		let ninevites = 0;
-			console.log('checkforninevites'+JSON.stringify(this.locations["Nineveh"].battlefield))
-					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
-						console.log('mapping nineveh')
-						if(battlefield && battlefield.name == "Jonah"){
-							console.log('found jonah')
-							battlefield.cards.map((card,index)=>{
-								if(card.abilities.indexOf('ninevite') > -1){
-									ninevites ++;
-									console.log('ninevites'+ninevites)
-								}
-							})
-							if(ninevites > 4){//4
-								player.winning = true;
-								this.winner += player.name +" "
-							}
-						}else{console.log('no jonah found')}
-					})
-					
 	}
 
 	return this

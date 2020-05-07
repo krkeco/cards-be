@@ -23,10 +23,11 @@ module.exports.Location = function Location(deck,story){
 	}
 
 	this.refreshMarket = function(playerName){
-		console.log('location refreshMarket by '+playerName)
 		let newField= [...this.battlefield]
+		console.log('location refreshMarket by '+playerName+JSON.stringify(newField))
 		let player; 
 		newField.map((pl,index)=>{
+			console.log(pl.name+'mapped')
 			if(pl.name==playerName){
 				console.log('found player in bf')
 				player= pl;
@@ -213,15 +214,17 @@ module.exports.Location = function Location(deck,story){
 		let cardName = owner.hand[card].name
 		if(owner.hand[card].abilities.indexOf("scrap") < 0){
 			owner.playedCard(card)
+			return theString;
 		}else{
 			owner.millCard(card)
 			owner.mills--;
+
 			// let newHand = [...owner.hand]
 			// newHand.splice(card,1)
 			// owner.hand = [...newHand]
 			console.log('this is an influence card and is not discarded')
+			return theString;
 		}
-		return theString;
 	}
 
 	this.compareInfluence = function(){
@@ -284,6 +287,12 @@ module.exports.Location = function Location(deck,story){
 			if(influencer.name != "Paul"){
 				console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
 
+			}else{
+				if(influencer.influence > 6 && !this.angelic){
+					this.proselytized = true;
+					console.log('location has been proselytized')
+				}
+
 			}
 		}
 		console.log(influencer.name+" is the highest influencer by "+(influencer.influence-runnerUp))
@@ -312,10 +321,7 @@ module.exports.Location = function Location(deck,story){
 				this.card.influence += 2;
 				console.log('canaan conquered, tier up'+this.abilities[0])
 			}
-			if(influencer.name == "Paul"){
-				this.proselytized = true;
-				console.log('location has been proselytized')
-			}
+		
 		}
 			
 			this.postInfluencePhase()

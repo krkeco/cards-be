@@ -26,7 +26,7 @@ var schema = buildSchema(`
 	  draw: Int,
 	  vitality:Int,
 	  weary: Int,
-	  politics: Int,
+	  politics: Float,
 	  reinforce: Int,
 },
 
@@ -43,6 +43,7 @@ type Location {
 	name: String,
 	influence: Int,
 	info: [String],
+	abilities: [String],
 	influencer: String,
 	market: [Card],
 	battlefield: [Battlefield]
@@ -170,7 +171,9 @@ var root = {
 			console.log('milling!')
 			if(player.mills < 1){
 				console.log('millcard!')
+				let cardName = player.hand[cardIndex].name
 				player.millCard(cardIndex)
+				return 'Milled '+cardName
 			}else{
 				return 'already milled this turn'
 			}
@@ -191,12 +194,12 @@ var root = {
 		let playerNumber = currentPlayer
 		let gamePlayer = game.getCurrentPlayer();
 		console.log('currnetplayer'+playerNumber+' vs '+gamePlayer)
-		let winner = game.checkVictoryConditions();
-		let newNextPlayer = game.getNextPlayer();
+		// let winner = game.checkVictoryConditions();
+		let npInfo = game.getNextPlayer();
 		// let locInfo = game.getLocationInfo()
 		// let playerInfo = game.getPlayerInfo()
-		console.log('nextplayer'+newNextPlayer)
-		return {turn: game.turn,nextPlayer:newNextPlayer, winner: winner}
+		// console.log('nextplayer'+newNextPlayer)
+		return {turn: game.turn,nextPlayer:npInfo.nextPlayer, winner: npInfo.winner}
   }
 };
 
