@@ -139,8 +139,9 @@ var root = {
   },
   refreshMarket: ({gameId, playerName, locationName})=> {
 		let game = gameDB[gameId]
+		console.log('refreshing market')
 		if(game.turn > 1){
-				console.log('graph refreshmarket')
+				console.log('past turn 1 can refreshmarket')
 				let location= game.locations[locationName]
 				console.log('location:'+location.name)
 				let res = location.refreshMarket(playerName);
@@ -149,7 +150,7 @@ var root = {
 			}else{
 				return 'cannot refresh turn 1'
 			}
-
+			return 'something went wrong...'
   },
   locations: ({gameId})=>{
   	let locations = gameDB[gameId].getLocationInfo()
