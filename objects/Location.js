@@ -27,26 +27,28 @@ module.exports.Location = function Location(deck,story){
 		console.log('location refreshMarket by '+playerName+JSON.stringify(newField))
 		let player; 
 		newField.map((pl,index)=>{
-			console.log(pl.name+'mapped')
-			if(pl.name==playerName){
-				console.log('found player in bf')
-				player= pl;
-				if(player && player.gold > 0){
-					let newDeck = [...this.deck, ...this.market]
-					this.deck = [...newDeck];
-					this.market = []
-					this.drawOne();
-					this.drawOne();
-					this.drawOne();
-					player.gold -= 1;
-					this.battlefield = [...newField]
-					console.log('market refreshed')
-					return 'market refreshed'
-				}
+			if(pl){
+				console.log(pl.name+'mapped')
+				if(pl.name==playerName){
+					console.log('found player in bf')
+					player= pl;
+					if(player && player.gold > 0){
+						let newDeck = [...this.deck, ...this.market]
+						this.deck = [...newDeck];
+						this.market = []
+						this.drawOne();
+						this.drawOne();
+						this.drawOne();
+						player.gold -= 1;
+						this.battlefield = [...newField]
+						console.log('market refreshed')
+						return 'market refreshed'
+					}
 			}else{
 				
 				console.log('no player in bf found')
 			}
+				}
 		})
 		// console.log(player.name+' is refreshing')
 			console.log('market NOT refreshed')
