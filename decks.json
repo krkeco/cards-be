@@ -280,7 +280,7 @@
 				"quantity":3,
 				 	"cost": 3,
 				 	"gold":0,
-				 	"influence":6,
+				 	"influence":2,
 				 	"abilities":["edict","haman",": reduce the value of the enemys best card to 0"]},
 			{"name":"Edict of Mordecai",
 				"quantity":2,

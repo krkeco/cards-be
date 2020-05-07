@@ -16,6 +16,14 @@ module.exports.newGame = function Game(playerNames){
 	this.winner;
 	this.slug = 0;
 	this.getTurn = () => {return this.turn}
+	
+	this.incrementPlayer = function(){
+		if(this.currentPlayer >= this.players.length-1){
+				this.currentPlayer = 0;
+			}else{
+				this.currentPlayer += 1;
+			}
+	}
 
 	this.getCurrentPlayer = () => {return this.currentPlayer;}
 	this.getNextPlayer = () => {
@@ -23,29 +31,29 @@ module.exports.newGame = function Game(playerNames){
 		if(this.players.length == 1){
 			this.startNewTurn();
 			return 0
-		}
-		console.log('getting next player and maybe turn')
-		if(this.currentPlayer >= this.players.length-1){
-			this.currentPlayer = 0;
 		}else{
-			this.currentPlayer += 1;
-		}
 
-		if(this.players[this.currentPlayer].firstPlayer == true){
-			console.log('starting a new turn')
-			this.players[this.currentPlayer].firstPlayer= false;
-			this.startNewTurn();
-			console.log('new turn complete and getting new firstplayer')
-			// this.getNextPlayer();//increment again to move fpt
-			if(this.currentPlayer >= this.players.length-1){
-			this.currentPlayer = 0;
+			console.log('getting next player')
+			this.incrementPlayer();
+
+			console.log('checking for new turn')
+			if(this.players[this.currentPlayer].firstPlayer == true){
+				console.log('starting a new turn')
+				this.players[this.currentPlayer].firstPlayer= false;
+				
+				console.log('getting new firstplayer')
+				this.incrementPlayer();
+				this.players[this.currentPlayer].firstPlayer= true;
+
+				this.startNewTurn();
+				console.log('new turn and new firstplayer is'+this.currentPlayer)
+				return this.currentPlayer;
 			}else{
-				this.currentPlayer += 1;
+
+				console.log('returning the new player' +this.currentPlayer)
+				return this.currentPlayer;
 			}
-			this.players[this.currentPlayer].firstPlayer= true;
 		}
-		console.log('returning the new player' +this.currentPlayer)
-		return this.currentPlayer;
 	}
 	this.setStartingPlayers = function(nPlayerNames) {
 		nPlayerNames.map((player, index)=>{

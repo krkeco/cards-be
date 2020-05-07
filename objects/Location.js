@@ -148,7 +148,7 @@ module.exports.Location = function Location(deck,story){
 
 		if(owner.hand[card].abilities.indexOf('haman') > -1){
 			newField.map((bf, ind)=>{
-				if(ind != owner.id){
+				if(bf.name != owner.name){
 					bf.haman = true;
 				}
 			})
