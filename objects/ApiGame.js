@@ -108,7 +108,7 @@ module.exports.newGame = function Game(playerNames){
 				break;
 				case "Jonah":
 					console.log('checking jona win condition')
-					let ninevites = 0;
+					
 					 
 				//	let bf;
 				this.checkForNinevites();
@@ -262,6 +262,7 @@ module.exports.newGame = function Game(playerNames){
 		return locationInfo
 	}
 	this.checkForNinevites = function(){
+		let ninevites = 0;
 			console.log('checkforninevites'+JSON.stringify(this.locations["Nineveh"].battlefield))
 					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
 						console.log('mapping nineveh')
