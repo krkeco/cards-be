@@ -80,7 +80,7 @@ type WaitingRoom {
     play(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     buy(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
     nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
-    currentPlayer(gameId: Int): Int,
+    currentPlayer(gameId: Int): TurnInfo,
     refreshMarket(gameId: Int, playerName: String, locationName: String): String,
   }`);
 
@@ -102,8 +102,9 @@ var root = {
   	let game = gameDB[gameId]
   	// console.log('game found?'+game.locations[0].name)
   	let player = game.getCurrentPlayer();
-  	console.log('current player found? '+player)
-  	return player
+  	console.log('current player found? '+player+"winner:"+game.winner)
+  	return {turn: game.turn,nextPlayer:player, winner: game.winner}
+  	// return player
   },
   newGame: ({players})=>{
   	console.log('players are:'+JSON.stringify(players))
@@ -128,7 +129,9 @@ var root = {
   startGame: ({gameId})=>{
   		let game = gameDB[gameId]
   		game.setStartingPlayers(game.playerNames);
+  		console.log('starting first turn')
 			game.startNewTurn();
+			console.log('startGame finished and returning')
 			return gameId
   },
   players: ({gameId})=>{

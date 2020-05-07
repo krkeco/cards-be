@@ -13,7 +13,7 @@ module.exports.newGame = function Game(playerNames){
 	this.locations = { 'Jerusalem':Jerusalem}
 	this.currentPlayer = 0;
 	this.turn = 0;
-	this.winner;
+	this.winner ="";
 	this.slug = 0;
 	this.getTurn = () => {return this.turn}
 	
