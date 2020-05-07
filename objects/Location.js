@@ -177,7 +177,7 @@ module.exports.Location = function Location(deck,story){
 		 if(owner.hand[card].reinforce > 0){	
 			for(let x = 0; x < owner.hand[card].reinforce; x++){
 				console.log('reinforcements!')
-				if(owner.deck.length >0){
+				if(owner.deck.length >0 || owner.discard.length >0){
 					owner.drawCards(1)
 				this.battlefield = [...newField]
 				this.playCard((owner.hand.length-1),owner)
@@ -207,7 +207,7 @@ module.exports.Location = function Location(deck,story){
 		}
 
 		this.battlefield = newField;
-		let theString = `played ${card.name} on ${this.name}`
+		let theString = `played ${owner.hand[card].name} on ${this.name}`
 		console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
 		// console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
 		let cardName = owner.hand[card].name

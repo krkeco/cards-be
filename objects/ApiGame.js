@@ -111,24 +111,7 @@ module.exports.newGame = function Game(playerNames){
 					let ninevites = 0;
 					 
 				//	let bf;
-					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
-						if(battlefield.name == "Jonah"){
-							let bf = battlefield;
-							console.log('found jonah')
-							console.log(bf)
-							bf.cards.map((card,index)=>{
-								if(card.abilities.indexOf('ninevite') > -1){
-									ninevites ++;
-									console.log('ninevites'+ninevites)
-								}
-							})
-							if(ninevites > 4){//4
-								player.winning = true;
-								this.winner += player.name +" "
-							}
-						}
-					})
-					
+				this.checkForNinevites();
 					 
 				break;
 				case "Paul":
@@ -278,5 +261,26 @@ module.exports.newGame = function Game(playerNames){
 
 		return locationInfo
 	}
+	this.checkForNinevites = function(){
+			console.log('checkforninevites'+JSON.stringify(this.locations["Nineveh"].battlefield))
+					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
+						console.log('mapping nineveh')
+						if(battlefield && battlefield.name == "Jonah"){
+							console.log('found jonah')
+							battlefield.cards.map((card,index)=>{
+								if(card.abilities.indexOf('ninevite') > -1){
+									ninevites ++;
+									console.log('ninevites'+ninevites)
+								}
+							})
+							if(ninevites > 4){//4
+								player.winning = true;
+								this.winner += player.name +" "
+							}
+						}else{console.log('no jonah found')}
+					})
+					
+	}
+
 	return this
 }
