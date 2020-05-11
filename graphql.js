@@ -5,6 +5,8 @@ const cors = require('cors')
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 
+var mongo = require('./mongodb.js')
+
 const GameBuilder = require('./objects/ApiGame.js');
 var gameDB = [] //this is going to be mongo some day
 	// let players = ['Jonah','Esther']
@@ -69,8 +71,6 @@ type WaitingRoom {
 	started: Boolean
 },
   type Query {
-    hello: String,
-    goodbye: String,
     waitingRoom(gameId: Int): WaitingRoom,
     newGame(players: [String]): Int!,
     joinGame(players: [String],gameId: Int): [String]!,
@@ -94,9 +94,6 @@ var root = {
 		}
 		return {room: game.playerNames, started: started};
 	},
-  hello: () => {
-    return 'Hello world!';
-  },
   currentPlayer: ({gameId})=>{
   	console.log('currentplayer for '+gameId)
   	let game = gameDB[gameId]
