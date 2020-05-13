@@ -5,22 +5,26 @@ var MongoClient = require('mongodb').MongoClient
 // Connection URL
 var url = 'mongodb://localhost:27017/myproject';
 
+const GameBuilder = require('./objects/ApiGame.js');
+
 var insertNewGame = function(newGame) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected successfully to server");
+    //console.log("Connected successfully to server");
     
   	var collection = db.collection('calling')
     // collection.remove({})//deletes all the things
     Promise.resolve(collection.count()).then(function(value) {
-    console.log(value); // "Success"
+    //console.log(value); // "Success"
     newGame.slug = value
-    console.log('new game'+newGame.slug)
+    //console.log('new game'+newGame.slug)
   	collection.insertMany([newGame], function(err, result) {
     assert.equal(err, null);
     // assert.equal(3, result.result.n);
     // assert.equal(3, result.ops.length);
-    console.log("Inserted game"+JSON.stringify(result.ops));
+    //console.log("Inserted game"+JSON.stringify(result.ops));
+
+    //console.log("Inserted game"+JSON.stringify(newGame.slug));
     // callback(result);
     });
     db.close();
@@ -28,93 +32,88 @@ var insertNewGame = function(newGame) {
     });
   });
 }
-//var add player
-var addPlayer = function(playerName, gameId) {
-  MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-    var collection = db.collection('calling')
-    // collection.find({'slug':gameId}).toArray(function(err, docs) {
-    // assert.equal(err, null);
-    // console.log("Found the following records");
-    
-    // console.log(docs[0].playerNames)
-    // callback(docs);
-    // let newPlayerList = [...docs[0].playerNames,playerName]
-   collection.updateOne({ 'slug' : gameId }
-    , { $push: { playerNames: playerName } }, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    console.log("Updated the document with the field a equal to 2");
-    db.close();
-  });
-
-  // });
-    // collection.updateOne({ slug : `${gameId}` }
-    //   , { $set: { playerNames : [...playerNames, playerName] } }
-    //   , function(err, result) {
-    //   assert.equal(err, null);
-    //   assert.equal(1, result.result.n);
-    //   console.log("Updated the document with the field a equal to 2");
-      
-    // });  
-      // let newPlayerList = [...game.playerNames,...playerName]
-      // game.playerNames = newPlayerList;
-
-  });
-}
-
-var getGame = function(gameId) {
-  MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-    var collection = db.collection('calling')
-
-    collection.find({'slug':gameId}).toArray(function(err, docs) {
-    assert.equal(err, null);
-    console.log(docs)
-    // callback(docs);
-    db.close();
-  });
-  });
-}
 var showGames = function() {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected successfully to server");
+    //console.log("Connected successfully to server");
     var collection = db.collection('calling')
 
     collection.find({}).toArray(function(err, docs) {
     assert.equal(err, null);
-    console.log(docs)
+    //console.log(docs)
     // callback(docs);
     db.close();
   });
   });
 }
-// var startGame 
+
+const getGame = (gameId, callback) => {
+  
+
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+    //console.log("Connected successfully to server");
+    var collection = db.collection('calling')
+
+    collection.find({'slug':gameId}).toArray(function(err, docs) {
+    assert.equal(err, null);
+    //console.log(docs)
+    // callback ? callback(docs[0], "Esther","Babylon",0) : null;
+    let game = docs[0];
+    db.close();
+    // //console.log('got game '+game.slug)
+    return game
+  });
+  });
+  return null;
+  
+}
+
+const play = (game, playerName, locationName, cardIndex) =>{
+    // let game = gameDB[gameId]
+
+    let player = game.players.find((pl)=>pl.name==playerName)
+    let location
+
+    if(locationName != "mill"){
+      
+      location= game.locations[locationName]
+      let response = location.playCard(cardIndex,player)
+      return response
+
+    } else{
+      //mill card
+      //console.log('milling!')
+      if(player.mills < 1){
+        //console.log('millcard!')
+        let cardName = player.hand[cardIndex].name
+        player.millCard(cardIndex)
+        return 'Milled '+cardName
+      }else{
+        return 'already milled this turn'
+      }
+    }
+
+}
 
 const dbTest = async () => {
-  // const GameBuilder = require('./objects/ApiGame.js');
+  
   // let game = GameBuilder.newGame(["Jonah","Esther"])
-  // console.log('created game'+game.id)
-  // await insertNewGame(game)
+  // game.setStartingPlayers(game.playerNames);
+  // // //console.log('starting first turn')
+  // game.startNewTurn();
+  // // //console.log('startGame finished and returning')
+  // insertNewGame(game)
 
-  // await addPlayer("Paul",1)
-
-  // await startGame
-
-      
-      // game.setStartingPlayers(game.playerNames);
-      // console.log('starting first turn')
-      // game.startNewTurn();
-      // console.log('startGame finished and returning')
+  getGame(1,play)
 
   // await play
   // await buy
   // await nextPlayer
   // await refreshMarket
-  await showGames()
+
+
+  // await showGames()
 
 }
 dbTest();
@@ -125,7 +124,7 @@ dbTest();
 // Use connect method to connect to the server
 // MongoClient.connect(url, function(err, db) {
 //   assert.equal(null, err);
-//   console.log("Connected successfully to server");
+//   //console.log("Connected successfully to server");
   
 //   updateDocument(db, function() {
     
@@ -148,7 +147,7 @@ dbTest();
 //     assert.equal(err, null);
 //     assert.equal(3, result.result.n);
 //     assert.equal(3, result.ops.length);
-//     console.log("Inserted 3 documents into the collection");
+//     //console.log("Inserted 3 documents into the collection");
 //     callback(result);
 //   });
 // }
@@ -158,8 +157,8 @@ dbTest();
 //   // Find some documents
 //   collection.find({'a':3}).toArray(function(err, docs) {
 //     assert.equal(err, null);
-//     console.log("Found the following records");
-//     console.log(docs)
+//     //console.log("Found the following records");
+//     //console.log(docs)
 //     callback(docs);
 //   });
 // }
@@ -171,7 +170,7 @@ dbTest();
 //     , { $set: { b : 1 } }, function(err, result) {
 //     assert.equal(err, null);
 //     assert.equal(1, result.result.n);
-//     console.log("Updated the document with the field a equal to 2");
+//     //console.log("Updated the document with the field a equal to 2");
 //     callback(result);
 //   });  
 // }
@@ -182,7 +181,7 @@ dbTest();
 //   collection.deleteOne({ a : 3 }, function(err, result) {
 //     assert.equal(err, null);
 //     assert.equal(1, result.result.n);
-//     console.log("Removed the document with the field a equal to 3");
+//     //console.log("Removed the document with the field a equal to 3");
 //     callback(result);
 //   });    
 // }
@@ -191,7 +190,7 @@ dbTest();
 //     { "a": 1 },
 //       null,
 //       function(err, results) {
-//         console.log(results);
+//         //console.log(results);
 //         callback();
 //     }
 //   );
@@ -220,19 +219,19 @@ dbTest();
 
 // })
 // collection.find({name: 'Togo'}).toArray((err, items) => {
-//   console.log(items)
+//   //console.log(items)
 // })
 // collection.findOne({name: 'Togo'}, (err, item) => {
-//   console.log(item)
+//   //console.log(item)
 // })
 // collection.updateOne({name: 'Togo'}, {'$set': {'name': 'Togo2'}}, (err, item) => {
-//   console.log(item)
+//   //console.log(item)
 // })
 // collection.deleteOne({name: 'Togo'}, (err, item) => {
-//   console.log(item)
+//   //console.log(item)
 // })
 // collection.find().toArray((err, items) => {
-//   console.log(items)
+//   //console.log(items)
 // })
 // client.close()
 // collection.insertMany([{name: 'Togo'}, {name: 'Syd'}], (err, result) => {

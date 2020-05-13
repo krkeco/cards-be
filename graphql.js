@@ -5,7 +5,7 @@ const cors = require('cors')
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 
-var mongo = require('./mongodb.js')
+// var mongo = require('./mongodb.js')
 
 const GameBuilder = require('./objects/ApiGame.js');
 var gameDB = [] //this is going to be mongo some day
@@ -26,8 +26,8 @@ var schema = buildSchema(`
 	  influence:Int,
 	  abilities:[String],
 	  draw: Int,
-	  vitality:Int,
-	  weary: Int,
+	  faith:Int,
+	  fear: Int,
 	  politics: Float,
 	  reinforce: Int,
 },
@@ -72,7 +72,7 @@ type WaitingRoom {
 },
   type Query {
     waitingRoom(gameId: Int): WaitingRoom,
-    newGame(players: [String]): Int!,
+    newGame(players: [String], types: [String]): Int!,
     joinGame(players: [String],gameId: Int): [String]!,
     startGame(gameId: Int): String,
     players(gameId: Int): [Player],
@@ -103,10 +103,10 @@ var root = {
   	return {turn: game.turn,nextPlayer:player, winner: game.winner}
   	// return player
   },
-  newGame: ({players})=>{
+  newGame: ({players, types})=>{
   	console.log('players are:'+JSON.stringify(players))
   		// let players = ['Jonah','Esther']
-			let game = new GameBuilder.newGame(players)
+			let game = new GameBuilder.newGame(players, types)
 			let gameId = gameDB.length
 			gameDB[gameId] = game
 		  return gameId
