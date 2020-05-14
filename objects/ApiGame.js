@@ -50,7 +50,7 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 				this.incrementPlayer();
 				this.players[this.currentPlayer].firstPlayer= true;
 				
-				let winner = this.checkVictoryConditions();
+				let winner =  this.checkVictoryConditions();
 					this.startNewTurn();
 					this.checkAI();
 					console.log('new turn and new firstplayer is'+this.currentPlayer);
@@ -68,8 +68,9 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 	this.checkAI = () => {
 		console.log('checking ai' + this.players[this.currentPlayer].type+this.turn);
 				if(this.players[this.currentPlayer].type == "AI"){
+					console.log('running ai')
 					this.players[this.currentPlayer].AI.runStrategy('default');
-					this.getNextPlayer();
+					// this.getNextPlayer();
 				}
 	}
 	this.setStartingPlayers = function() {
@@ -113,7 +114,7 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 			}
 		})
 		this.players.map((player, index)=>{
-			
+
 			if(player.type == "AI"){
 				console.log('created AI for '+player.name)
 				player.AI = new ai.AI(player,this.locations);
