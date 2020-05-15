@@ -15,7 +15,9 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 	this.currentPlayer = 0;
 	this.turn = 0;
 	this.winner ="";
+	this.loser = "";
 	this.slug = 0;
+	this.log = []
 
 	this.getTurn = () => {return this.turn}
 	
