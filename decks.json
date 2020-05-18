@@ -135,7 +135,7 @@
 			{"name":"Gold", "quantity": 6, "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
 		],
 		"paul":[
-			{"name":"Exhortation / Vipers",
+			{"name":"Exhortation",
 				"quantity":3,
 				"cost": 2,
 				"gold":0,
@@ -177,11 +177,11 @@
 
 			{"name":"Imprisonment",
 				"quantity":0,
-					"cost": 6,
+					"cost": 5,
 					"gold":0,
 					"draw":0,
 					"influence":0,
-					"abilities":[]}
+					"abilities":["imprison"]}
 		],
 		"joshua":[
 			{"name":"Milk and Honey",
@@ -210,7 +210,7 @@
 				"quantity":3,
 					"cost": 5,
 					"gold":0,
-					"influence":3,
+					"influence":5,
 					"fear":2,
 					"abilities":["fear"]},
 			{"name":"NATSOTS",
@@ -220,13 +220,15 @@
 					"draw":0,
 					"influence":7,
 					"abilities":[]},
-			{"name":"Prayer of Baalam",
-				"quantity":0,
-					"cost": 6,
+			{"name":"The Ark",
+				"quantity":1,
+					"cost": 7,
 					"gold":0,
 					"draw":0,
-					"influence":0,
-					"abilities":["balaam","you gain the influence for your opponents highest influnece card on this location"]}
+					"faith":0,
+					"fear":0,
+					"influence":7,
+					"abilities":["ark","if played on a location with faith: +3 faith, else +3 fear"]}
 		],
 		"jonah":[
 			{"name":"Ninevite",

@@ -150,6 +150,29 @@ module.exports.Location = function Location(deck, story) {
       //console.log('ninevite advantage bonus')
     }
 
+    if(owner.hand[card].abilities.indexOf('ark') > -1 ) {
+      // newField[owner.id].influence += 2;
+      let hasFaith = false;
+      if(this.battlefield[owner.id]){
+        this.battlefield[owner.id].cards.map((card,index)=>{
+          if(card.abilities.indexOf('faith') > -1){
+            hasFaith = true;
+          }
+        })
+      }
+      if(hasFaith){
+        console.log('has faith +3')
+        this.weariness-=3;
+        if (this.weariness < 0) {
+          this.weariness = 0;
+        }
+      }else{
+        console.log('has fear +3')
+        this.weariness+=3;
+      }
+      //console.log('ninevite advantage bonus')
+    }
+
     if (owner.hand[card].abilities.indexOf('angelic') > -1) {
       this.angelic = true;
     }
