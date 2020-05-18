@@ -162,13 +162,13 @@ var root = {
   },
   play: ({ gameId, playerId, locationId, cardIndex }) => {
     let game = gameDB[gameId];
-    console.log('play card'+locationId)
+    console.log('play card' + locationId);
     let player = game.players.find((pl) => pl.id == playerId);
     let location;
 
     if (locationId != -1) {
       location = game.locations[locationId];
-      console.log('found location'+location.name)
+      console.log('found location' + location.name);
       let response = location.playCard(cardIndex, player);
       return response;
     } else {

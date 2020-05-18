@@ -1,6 +1,6 @@
 module.exports.Location = function Location(deck, story) {
   this.deck = [...deck];
-  this.card = story.card;
+  this.card = {...story.card};
   this.info = story.info;
   this.market = [];
   this.battlefield = [];
@@ -43,7 +43,14 @@ module.exports.Location = function Location(deck, story) {
             //console.log('market refreshed')
             return 'market refreshed';
           }
-        } else {
+        } else if(playerId == -1) {
+           let newDeck = [...this.deck, ...this.market];
+            this.deck = [...newDeck];
+            this.market = [];
+            this.drawOne();
+            this.drawOne();
+            this.drawOne();
+           return 'market refreshed'; 
           //console.log('no player in bf found')
         }
       }
@@ -114,7 +121,7 @@ module.exports.Location = function Location(deck, story) {
   };
 
   this.playCard = function (card, owner, copyInfluence) {
-    //console.log('owner id:'+owner.id)
+    console.log('playCard: owner id:'+owner.id)
     let newField = [...this.battlefield];
     //console.log('location:playcard:'+card)
     if (!newField[owner.id]) {
@@ -201,7 +208,7 @@ module.exports.Location = function Location(deck, story) {
         }
       }
     }
-    if (owner.hand[card].abilities.indexOf("apostle") > -1) {
+    if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].playPaul = true;
       //console.log('paul played on location')
     }
@@ -350,7 +357,7 @@ module.exports.Location = function Location(deck, story) {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
           this.card.influence += 2;
-          //console.log('canaan conquered, tier up'+this.abilities[0])
+          console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }
 

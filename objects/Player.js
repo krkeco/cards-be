@@ -129,13 +129,13 @@ module.exports.Player = function Player(
     return golds;
   };
   this.getTotalInfluence = function () {
-    //console.log('getTotalInfluence:')
+    console.log('getTotalInfluence:')
     let influence = 0;
     this.hand.map((card, index) => {
       influence += this.hand[index].influence;
     });
-    //console.log('getTotalInfluence: '+influence+' influence this turn with '+this.hand.length+ ' cards')
-    //console.log(this.hand.map((card)=>card.name+card.influence))
+    console.log('getTotalInfluence: '+influence+' influence this turn with '+this.hand.length+ ' cards')
+    console.log(this.hand.map((card)=>card.name+card.influence))
     return influence;
   };
 };

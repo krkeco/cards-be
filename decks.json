@@ -29,7 +29,7 @@
 			"location":{
 				"name":"Rome",
 			"info":[
-				"Calling: Paul must plant 3 churches to win",
+				"Calling: Paul must plant 7 churches to win",
 				"Bane: If Paul tries to proselytize a location and loses he gains wounds, if he has 7 he loses the game",
 				"Influence Bonus: 2 gold",
 				"Church Plant: Play an apostle on a location, be an influencer, and have over 7 influence"
@@ -132,7 +132,7 @@
 	"decks":{
 		"starter":[
 			{"name":"Influence", "quantity": 3, "cost": 0,"gold":0,"influence":2,"draw":0, "abilities":[]},
-			{"name":"Gold", "quantity": 6, "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
+			{"name":"Gold", "quantity": 4, "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
 		],
 		"paul":[
 			{"name":"Exhortation / Vipers",
@@ -190,14 +190,14 @@
 				"gold":1,
 				"influence":0,
 				"faith":1,
-				"abilities":[]},
+				"abilities":["faith"]},
 			{"name":"Spreading Fear",
 				"quantity":4,
 					"cost": 2,
 					"gold":0,
 					"influence":4,
 					"fear":1,
-					"abilities":[]},
+					"abilities":["fear"]},
 			{"name":"Faithful Report",
 				"quantity":3,
 				 	"cost": 4,
@@ -205,14 +205,14 @@
 				 	"draw":0,
 				 	"influence":0,
 				 	"faith":0,
-				 	"abilities":["faithful",": if you don't use this gold, reduce the location weariness by 3"]},
+				 	"abilities":["faithful",": if you don't use this gold, reduce the location weariness by 3","faith"]},
 			{"name":"Spies",
 				"quantity":3,
 					"cost": 5,
 					"gold":0,
 					"influence":3,
 					"fear":2,
-					"abilities":[]},
+					"abilities":["fear"]},
 			{"name":"NATSOTS",
 				"quantity":2,
 					"cost": 5,
