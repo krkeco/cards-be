@@ -75,7 +75,7 @@ type WaitingRoom {
   type Query {
     waitingRoom(gameId: Int): WaitingRoom,
     newGame(players: [String], types: [String]): Int!,
-    joinGame(players: [String],gameId: Int): [String]!,
+    joinGame(players: [String],types: [String],gameId: Int): [String]!,
     startGame(gameId: Int): String,
     players(gameId: Int): [Player],
     locations(gameId: Int): [Location],
@@ -114,12 +114,15 @@ var root = {
     return gameId;
   },
 
-  joinGame: ({ players, gameId }) => {
+  joinGame: ({ players, types, gameId }) => {
     console.log('new players are:' + JSON.stringify(players));
     let game = gameDB[gameId];
     if (!game || game.turn < 2) {
       let newPlayerList = [...game.playerNames, ...players];
       game.playerNames = newPlayerList;
+
+      let newPlayerType = [...game.playerTypes, ...types];
+      game.playerTypes = newPlayerType;
       return newPlayerList;
     } else {
       return 'this game is not available any more';

@@ -88,6 +88,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     }
   };
   this.setStartingPlayers = function () {
+    console.log('playerTypes:'+this.playerTypes)
     this.playerNames.map((player, index) => {
       switch (player) {
         case 'Jonah':
@@ -297,7 +298,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
 
     this.players.map((player, index) => {
       player.startTurn();
-      let draws = 4;
+      let draws = 5;
 
       //influence cards
       Object.keys(this.locations).map((location) => {
