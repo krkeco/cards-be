@@ -51,7 +51,7 @@ type Location {
 	influencer: String,
 	market: [Card],
 	battlefield: [Battlefield]
-	proselytized: Boolean,
+	proselytized: Int,
 	hardened:Int,
 	wounds: Int,
 	weariness: Int,

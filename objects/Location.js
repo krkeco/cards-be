@@ -9,7 +9,7 @@ module.exports.Location = function Location(deck, story) {
   this.weariness = 0;
   this.abilities = story.abilities;
   this.influencer = { name: 'neutral' };
-  this.proselytized = false;
+  this.proselytized = 0;
   this.angelic = false;
 
   this.wounds = 0;
@@ -201,7 +201,7 @@ module.exports.Location = function Location(deck, story) {
         }
       }
     }
-    if (owner.hand[card].name == 'Paul') {
+    if (owner.hand[card].abilities.indexOf("apostle") > -1) {
       newField[owner.id].playPaul = true;
       //console.log('paul played on location')
     }
@@ -316,7 +316,7 @@ module.exports.Location = function Location(deck, story) {
         //console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
       } else {
         if (influencer.influence > 6 && !this.angelic) {
-          this.proselytized = true;
+          this.proselytized += 1;
           //console.log('location has been proselytized')
         }
       }

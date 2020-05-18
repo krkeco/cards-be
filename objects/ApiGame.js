@@ -180,12 +180,12 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 					console.log('checking paul win con');
 						let pros = 0;
 					Object.keys(this.locations).map((location, index)=>{
-						if(this.locations[location].proselytized){
-							pros += 1;
+						if(this.locations[location].proselytized > 0){
+							pros += this.locations[location].proselytized;
 							console.log(this.locations[location].name+' has been proselytized to' + pros);
 						}
 					})
-						if (pros > 2){
+						if (pros >= 7 ){
 							player.winning = true;
 							this.winner += player.name +" "
 						}
