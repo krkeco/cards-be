@@ -8,10 +8,11 @@ const ai = require('./AI.js')
 module.exports.newGame = function Game(playerNames, playerTypes){
 	
 	let Jerusalem = new loc.Location([],deckData.stories.jerusalem)
+	Jerusalem.id = 7;
 	this.players = []
 	this.playerNames = [...playerNames]
 	this.playerTypes = [...playerTypes]
-	this.locations = { 'Jerusalem':Jerusalem}
+	this.locations = { 7:Jerusalem}
 	this.currentPlayer = 0;
 	this.turn = 0;
 	this.winner ="";
@@ -79,32 +80,36 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 		this.playerNames.map((player, index)=>{
 			switch(player){
 				case "Jonah":
-					this.Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
+					let Nineveh = new loc.Location(deckData.decks.jonah,deckData.stories.jonah.location)
+					Nineveh.id = index;
 					this.Jonah = new pl.Player(deckData.stories.jonah, deckData.decks.starter,this.playerTypes[index])
 					this.Jonah.id = index
 					this.players.push(this.Jonah)
-					this.locations[this.Nineveh.name] = this.Nineveh;
+					this.locations[Nineveh.id] = Nineveh;
 					break;
 				case "Esther":
 					this.Esther = new pl.Player(deckData.stories.esther, deckData.decks.starter,this.playerTypes[index])
 					this.Esther.id = index
-					this.Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+					let Babylon = new loc.Location(deckData.decks.esther,deckData.stories.esther.location)
+					Babylon.id = index;
 					this.players.push(this.Esther)
-					this.locations[this.Babylon.name] = this.Babylon;
+					this.locations[Babylon.id] = Babylon;
 					break;
 				case "Joshua":
-					this.Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
+					let Canaan = new loc.Location(deckData.decks.joshua,deckData.stories.joshua.location)
+					Canaan.id = index;
 					this.Joshua =  new pl.Player(deckData.stories.joshua, deckData.decks.starter,this.playerTypes[index])
 					this.Joshua.id = index
 					this.players.push(this.Joshua)
-					this.locations[this.Canaan.name] = this.Canaan;
+					this.locations[Canaan.id] = Canaan;
 					break;
 				case "Paul":
-					this.Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
+					let Rome = new loc.Location(deckData.decks.paul,deckData.stories.paul.location)
+					Rome.id = index;
 					this.Paul =  new pl.Player(deckData.stories.paul, deckData.decks.starter,this.playerTypes[index])
 					this.Paul.id = index
 					this.players.push(this.Paul)
-					this.locations[this.Rome.name] = this.Rome;
+					this.locations[Rome.id] = Rome;
 					break;
 				
 			}
@@ -135,8 +140,8 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 			switch(player.name){
 				case "Esther":
 					console.log('checking esther win condition');
-					let babylonian = this.locations['Babylon'].compareInfluence();
-					// console.log('babylonian influencer'+babylonian.name)
+					let babylonian = this.locations[player.id].compareInfluence();
+					console.log('babylonian influencer'+babylonian.name)
 					if(babylonian.name == "Esther" && babylonian.finalInfluence > 17){//17
 						player.winning = true;
 						this.winner += player.name +" "
@@ -148,8 +153,8 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 					 
 				//	let bf;
 				let ninevites = 0;
-			console.log('checkforninevites'+JSON.stringify(this.locations["Nineveh"].battlefield));
-					this.locations["Nineveh"].battlefield.map((battlefield, ind)=>{
+			console.log('checkforninevites'+JSON.stringify(this.locations[player.id].battlefield));
+					this.locations[player.id].battlefield.map((battlefield, ind)=>{
 						console.log('mapping nineveh');
 						if(battlefield && battlefield.name == "Jonah"){
 							console.log('found jonah');
@@ -188,8 +193,9 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 
 				break;
 				case "Joshua":
-				console.log('checking joshua wincon:'+this.locations['Canaan'].abilities[0]);
-					if(this.locations['Canaan'].abilities[0]>2){
+				console.log('checking joshua wincon:'+this.locations[player.id].abilities[0]);
+					
+					if(this.locations[player.id].abilities[0]>2){
 						this.winning = true;
 						this.winner += player.name +" "
 					}
@@ -203,23 +209,35 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 		return this.winner;
 	}
 	this.checkForConquerer = function(){
-		let conquerer;
-		let conquest = false;
+		let conquerer ={
+			'neutral': -10
+		};
+		let chief = null;
+		// let conquest = false;
 		Object.keys(this.locations).map((loc, index)=>{
-			if(!conquerer ){
-				conquest = true;
-				conquerer = this.locations[loc].influencer.name
-			}
-			if(conquerer != this.locations[loc].influencer.name
-				|| conquerer == 'neutral'){
-				console.log('neutral cannot win');
-				conquest = false;
+			// if(!conquerer ){
+			// 	conquest = true;
+			// 	conquerer = this.locations[loc].influencer.name
+			// }
+			// if(conquerer != this.locations[loc].influencer.name
+			// 	|| conquerer == 'neutral'){
+			// 	console.log('neutral cannot win');
+			// 	conquest = false;
+			// }
+			if(!conquerer[this.locations[loc].influencer.id]){
+				conquerer[this.locations[loc].influencer.id]=1
+			}else{
+				conquerer[this.locations[loc].influencer.id]++;
+				if(conquerer[this.locations[loc].influencer.id] > 2){
+					chief = this.locations[loc].influencer.id 
+				}
 			}
 
 		})
-		if(conquest && conquerer != 'neutral'){
+
+		if(chief){
 			console.log('A WINNER!!!'+conquerer);
-			this.winner += conquerer
+			this.winner += chief
 		}}
 	// console.log('starting new game with '+playerNames)
 
@@ -248,7 +266,7 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 
 			//influence cards
 			Object.keys(this.locations).map((location)=>{
-				if(this.locations[location].influencer.name == player.name){
+				if(this.locations[location].influencer.id == player.id){
 					let newHand = [...player.hand]
 					newHand.push(this.locations[location].card)
 					player.hand = [...newHand]
@@ -275,6 +293,7 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 			
 			let info = {
 				name: player.name,
+				id: player.id,
 				hand: player.hand,
 				deck: player.deck,
 				discard: player.discard,
@@ -293,11 +312,13 @@ module.exports.newGame = function Game(playerNames, playerTypes){
 			let location = this.locations[loc];
 			let info = {
 				name: location.name,
+				id: location.id,
 				market: location.market,
 				battlefield: location.battlefield,
 				influence: location.influence,
 				abilities: location.abilities,
 				influencer: location.influencer.name,
+				influencerId: location.influencer.id,
 				info: location.info,
 				weariness: location.weariness,
 				wounds: location.wounds,

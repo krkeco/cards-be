@@ -5,7 +5,7 @@
 			"name":"Jerusalem",
 			"info":[
 				"Calling: Any player can win the game by influencing 3 locations at once",
-				"Influence Bonus: 2 gold"
+				"Influence Bonus: 2 gold 2 influence"
 			],
 			"influence":3,
 			"abilities":["jerusalem"],
@@ -14,7 +14,7 @@
 				"cost": 0,
 				"gold":2,
 				"draw":0,
-				"influence":0,
+				"influence":2,
 				"abilities":["scrap","this card is not put in your discard"]
 			}
 		},

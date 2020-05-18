@@ -21,14 +21,14 @@ module.exports.Location = function Location(deck, story) {
     //console.log('weariness:'+this.weariness)
   };
 
-  this.refreshMarket = function (playerName) {
+  this.refreshMarket = function (playerId) {
     let newField = [...this.battlefield];
     //console.log('location refreshMarket by '+playerName+JSON.stringify(newField))
     let player;
     newField.map((pl, index) => {
       if (pl) {
         //console.log(pl.name+'mapped')
-        if (pl.name == playerName) {
+        if (pl.id == playerId) {
           //console.log('found player in bf')
           player = pl;
           if (player && player.gold > 0) {
@@ -120,6 +120,7 @@ module.exports.Location = function Location(deck, story) {
     if (!newField[owner.id]) {
       newField[owner.id] = {
         name: owner.name,
+        id: owner.id,
         influence: 0,
         gold: 0,
         politics: 0,
@@ -162,7 +163,7 @@ module.exports.Location = function Location(deck, story) {
 
     if (owner.hand[card].abilities.indexOf('haman') > -1) {
       newField.map((bf, ind) => {
-        if (bf && bf.name != owner.name) {
+        if (bf && bf.id != owner.id) {
           bf.haman = true;
         }
       });
@@ -247,6 +248,7 @@ module.exports.Location = function Location(deck, story) {
     //console.log('location:compareInfluence:')
     let influencer = {
       name: 'neutral',
+      id: 0,
       influence: this.influence,
       poliBonus: 0,
     };

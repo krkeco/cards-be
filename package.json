@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prodpush": "",
     "pretty": "prettier --single-quote --trailing-comma all --write ./*.js ./objects/*.js",
     "mongo": "mongod --dbpath=./data",
     "start": "npx nodemon index.js",

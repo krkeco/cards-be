@@ -34,6 +34,7 @@ var schema = buildSchema(`
 
 type Player {	
 	name: String,
+  id: Int,
 	firstPlayer: Boolean,
 	type: String,
 	deck: [Card],
@@ -43,6 +44,7 @@ type Player {
 },
 type Location {	
 	name: String,
+  id: Int,
 	influence: Int,
 	info: [String],
 	abilities: [String],
@@ -77,11 +79,11 @@ type WaitingRoom {
     startGame(gameId: Int): String,
     players(gameId: Int): [Player],
     locations(gameId: Int): [Location],
-    play(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
-    buy(gameId: Int, playerName: String, locationName: String, cardIndex: Int): String,
+    play(gameId: Int, playerId: Int, locationId: Int, cardIndex: Int): String,
+    buy(gameId: Int, playerId: Int, locationId: Int, cardIndex: Int): String,
     nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
     currentPlayer(gameId: Int): TurnInfo,
-    refreshMarket(gameId: Int, playerName: String, locationName: String): String,
+    refreshMarket(gameId: Int, playerId: Int, locationId: Int): String,
   }`);
 
 // The root provides a resolver function for each API endpoint
@@ -137,16 +139,16 @@ var root = {
     console.log(JSON.stringify(players[0].name));
     return players;
   },
-  refreshMarket: ({ gameId, playerName, locationName }) => {
+  refreshMarket: ({ gameId, playerId, locationId }) => {
     let game = gameDB[gameId];
     console.log(
-      'refreshing market' + gameId + '/' + playerName + '/' + locationName,
+      'refreshing market' + gameId + '/' + playerId + '/' + locationId,
     );
     if (game.turn > 1) {
       console.log('past turn 1 can refreshmarket');
-      let location = game.locations[locationName];
+      let location = game.locations[locationId];
       console.log('location:' + location.name);
-      let res = location.refreshMarket(playerName);
+      let res = location.refreshMarket(playerId);
       console.log('res' + res);
       return res;
     } else {
@@ -158,13 +160,15 @@ var root = {
     let locations = gameDB[gameId].getLocationInfo();
     return locations;
   },
-  play: ({ gameId, playerName, locationName, cardIndex }) => {
+  play: ({ gameId, playerId, locationId, cardIndex }) => {
     let game = gameDB[gameId];
-    let player = game.players.find((pl) => pl.name == playerName);
+    console.log('play card'+locationId)
+    let player = game.players.find((pl) => pl.id == playerId);
     let location;
 
-    if (locationName != 'mill') {
-      location = game.locations[locationName];
+    if (locationId != -1) {
+      location = game.locations[locationId];
+      console.log('found location'+location.name)
       let response = location.playCard(cardIndex, player);
       return response;
     } else {
@@ -180,11 +184,11 @@ var root = {
       }
     }
   },
-  buy: ({ gameId, playerName, locationName, cardIndex }) => {
+  buy: ({ gameId, playerId, locationId, cardIndex }) => {
     console.log('getting buy ' + gameId);
     let game = gameDB[gameId];
-    let player = game.players.find((pl) => pl.name == playerName);
-    let location = game.locations[locationName];
+    let player = game.players.find((pl) => pl.id == playerId);
+    let location = game.locations[locationId];
     return location.buy(cardIndex, player);
     // return `card bought! ${JSON.stringify(player.discard[0])}`
   },
