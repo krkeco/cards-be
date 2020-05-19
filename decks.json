@@ -5,7 +5,8 @@
 			"name":"Jerusalem",
 			"info":[
 				"Calling: Any player can win the game by influencing 3 locations at once",
-				"Influence Bonus: 2 gold 2 influence"
+				"Influence Bonus: 2 gold 2 influence",
+				"scrap: cards with scrap (influence cards) don't go to your discard"
 			],
 			"influence":3,
 			"abilities":["jerusalem"],
@@ -15,7 +16,7 @@
 				"gold":2,
 				"draw":0,
 				"influence":2,
-				"abilities":["scrap","this card is not put in your discard"]
+				"abilities":["scrap"]
 			}
 		},
 		"paul":{
@@ -29,10 +30,12 @@
 			"location":{
 				"name":"Rome",
 			"info":[
-				"Calling: Paul must plant 7 churches to win",
+				"Calling: Plant 7 churches to win",
 				"Bane: If Paul tries to proselytize a location and loses he gains wounds, if he has 7 he loses the game",
 				"Influence Bonus: 2 gold",
-				"Church Plant: Play an apostle on a location, be an influencer, and have over 7 influence"
+				"Church Plant: Play an apostle on a location and be the influencer for this turn",
+				"Mob: +1 INF for every other card you already played here",
+				"Angelic: this location does not check influence this turn"
 			],
 				"influence":3,
 				"abilities":["rome"],
@@ -42,7 +45,7 @@
 				"gold":2,
 				"draw":0,
 				"influence":0,
-				"abilities":["scrap","this card is not put in your discard"]
+				"abilities":["scrap"]
 			}}
 		},
 		"joshua":{
@@ -61,7 +64,9 @@
 					"Bane: If there are more than 13 weariness in the game, Joshua loses",
 					"Influence Bonus: 1 gold and 2 influence per tier",
 					"fear: Any player with influence on this location loses 2 influence for each weariness here",
-					"faith: This card removes 1 weariness from the location it is played on"
+					"faith: This card removes 1 weariness from the location it is played on",
+					"faithful report: if you don't use 3 gold, gain 3 faith",
+					"ark: if played on a location with faith: +3 faith, otherwise +3 fear"
 				],
 				"influence":1,
 				"abilities":[0],
@@ -71,7 +76,7 @@
 				"gold":1,
 				"draw":0,
 				"influence":0,
-				"abilities":["scrap","this card is not put in your discard"]
+				"abilities":["scrap"]
 			}}
 		},
 		"jonah":{
@@ -99,11 +104,12 @@
 				"gold":0,
 				"reinforce":1,
 				"influence":0,
-				"abilities":["scrap","this card is not put in your discard"]
+				"abilities":["scrap"]
 			}}
 		},
 			"esther":{
 			"character":{"name":"Esther",
+				"img":"esther",
 				"cost": 0,
 				"gold":2,
 				"influence":0,
@@ -115,7 +121,9 @@
 					"Calling: Esther must play 18 influence on Babylon to win",
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
 					"Influence Bonus: 3 influence",
-					"Politics: Gain or lose influence based on number of edicts on this location"
+					"Politics [X]: Gain or lose [X] influence based on number of edicts on this location",
+					"Mordecai: copy the highest influence you played on this location",
+					"Haman: reduce your opponents best influence on this location to 0"
 				],
 				"influence":3,
 				"abilities":["babylon"],
@@ -125,27 +133,34 @@
 					"gold":0,
 					"draw":0,
 					"influence":3,
-					"abilities":["scrap","this card is not put in your discard"]
+					"abilities":["scrap"]
 			}}
 		}
 	},
 	"decks":{
 		"starter":[
-			{"name":"Influence", "quantity": 3, "cost": 0,"gold":0,"influence":2,"draw":0, "abilities":[]},
-			{"name":"Gold", "quantity": 6, "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
+			{"name":"Influence", "quantity": 3,"img":"influence", "cost": 0,"gold":0,"influence":2,"draw":0, "abilities":[]},
+			{"name":"Gold", "quantity": 6,"img":"gold", "cost": 0,"gold":1,"influence":0,"draw":0, "abilities":[]}
 		],
 		"paul":[
 			{"name":"Exhortation",
-				"quantity":3,
+				"quantity":4,
 				"cost": 2,
 				"gold":0,
 				"influence":3,
 				"abilities":[]},
+			{"name":"Apostle",
+		"quantity":4,
+			"cost": 3,
+			"gold":1,
+			"draw":0,
+			"influence":2,
+			"abilities":["apostle"]},
 			{"name":"Epistle",
-				"quantity":4,
-					"cost": 3,
+				"quantity":3,
+					"cost": 4,
 					"gold":2,
-					"influence":1,
+					"influence":2,
 					"abilities":[]},
 			{"name":"Angry Mob",
 				"quantity":2,
@@ -153,13 +168,13 @@
 				 	"gold":0,
 				 	"draw":0,
 				 	"influence":4,
-				 	"abilities":["mob",": +1 INF for every other card you already played here"]},
+				 	"abilities":["mob"]},
 			{"name":"Angelic Protection",
 				"quantity":2,
 					"cost": 4,
 					"gold":0,
 					"influence":0,
-					"abilities":["angelic",": this location does not check influence this turn"]},
+					"abilities":["angelic"]},
 			{"name":"Stormy Seas",
 				"quantity":2,
 					"cost": 6,
@@ -167,13 +182,6 @@
 					"draw":0,
 					"influence":8,
 					"abilities":[]},
-					{"name":"Apostle",
-				"quantity":3,
-					"cost": 3,
-					"gold":0,
-					"draw":0,
-					"influence":4,
-					"abilities":["apostle"]},
 
 			{"name":"Imprisonment",
 				"quantity":0,
@@ -205,7 +213,7 @@
 				 	"draw":0,
 				 	"influence":0,
 				 	"faith":0,
-				 	"abilities":["faithful",": if you don't use this gold, reduce the location weariness by 3","faith"]},
+				 	"abilities":["faithful","faith"]},
 			{"name":"Spies",
 				"quantity":3,
 					"cost": 5,
@@ -228,7 +236,7 @@
 					"faith":0,
 					"fear":0,
 					"influence":7,
-					"abilities":["ark","if played on a location with faith: +3 faith, else +3 fear"]}
+					"abilities":["ark"]}
 		],
 		"jonah":[
 			{"name":"Ninevite",
@@ -274,6 +282,7 @@
 		],
 		"esther":[
 			{"name":"Eunich",
+				"img":"eunich",
 				"quantity":4,
 				"cost": 2,
 				"gold":0,
@@ -281,6 +290,7 @@
 				"politics":-1,
 				"abilities":["eunich"]},
 			{"name":"Edict: Taxes",
+				"img":"taxes",
 				"quantity":4,
 					"cost": 3,
 					"gold":3,
@@ -288,24 +298,28 @@
 					"politics":-1,
 					"abilities":["edict"]},
 			{"name":"Edict of Haman",
+				"img":"haman",
 				"quantity":3,
 				 	"cost": 3,
 				 	"gold":0,
 				 	"influence":2,
-				 	"abilities":["edict","haman",": reduce the value of the enemys best card to 0"]},
+				 	"abilities":["edict","haman"]},
 			{"name":"Edict of Mordecai",
+				"img":"mordecai",
 				"quantity":2,
 					"cost": 4,
 					"gold":0,
 					"influence":0,
-					"abilities":["edict","mordecai",": copy the highest influence you played on this location"]},
+					"abilities":["edict","mordecai"]},
 			{"name":"Edict of Xerxes",
+				"img":"king",
 				"quantity":0,
 					"cost": 4,
 					"gold":0,
 					"influence":0,
 					"abilities":["xerxes"]},
 			{"name":"Edict of Annihilation",
+				"img":"annihilation",
 				"quantity":2,
 					"cost": 6,
 					"gold":0,

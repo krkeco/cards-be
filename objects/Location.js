@@ -11,6 +11,7 @@ module.exports.Location = function Location(deck, story) {
   this.influencer = { name: 'neutral' };
   this.proselytized = 0;
   this.angelic = false;
+  this.apostle = -1;
 
   this.wounds = 0;
   this.hardened = 0;
@@ -291,7 +292,7 @@ module.exports.Location = function Location(deck, story) {
           //paul
           if (this.battlefield[index].playPaul) {
             //console.log('paul is playign')
-            paul = index;
+            this.apostle = index;
           }
 
           //faithful report
@@ -341,16 +342,7 @@ module.exports.Location = function Location(deck, story) {
         }
       });
     }
-    if (paul > -1) {
-      if (influencer.name != 'Paul') {
-        //console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
-      } else {
-        if (influencer.influence > 6 && !this.angelic) {
-          this.proselytized += 1;
-          //console.log('location has been proselytized')
-        }
-      }
-    }
+  
     if (!runnerUp) {
       runnerUp = 0;
     }
@@ -360,6 +352,7 @@ module.exports.Location = function Location(deck, story) {
     return influencer;
   };
   this.setInfluencing = function () {
+
     if (this.angelic) {
       //console.log('moments peace no influence today')
       this.postInfluencePhase();
@@ -367,6 +360,16 @@ module.exports.Location = function Location(deck, story) {
       //console.log('location:setInfluencing:')
       let influencer = this.compareInfluence();
       let baseInfluence = this.influence;
+
+      if (this.apostle > -1) {
+        if (influencer.name != 'Paul') {
+          //console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
+        } else {
+          //influencer.influence > 6 && 
+          this.proselytized += 1;
+            //console.log('location has been proselytized')
+        }
+      }
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)
       if (
@@ -392,6 +395,7 @@ module.exports.Location = function Location(deck, story) {
     this.angelic = false;
     this.battlefield = [];
     this.edicts = 0;
+    this.apostle = -1;
     if (this.name == 'Canaan') {
       this.weariness++;
       //console.log('end of turn weariness for canaan')

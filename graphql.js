@@ -20,6 +20,7 @@ var gameDB = []; //this is going to be mongo some day
 var schema = buildSchema(`
 	type Card {
 		name:String,
+    img:String,
 	  quantity: Int,
 	  cost: Int,
 	  gold:Int,

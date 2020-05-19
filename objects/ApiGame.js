@@ -231,7 +231,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
               );
             }
           });
-          if (pros >= 3) {
+          if (pros >= 7) {
             player.winning = true;
             this.winner = player.name;
           }
@@ -258,23 +258,24 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
   this.checkForConquerer = function () {
     let conquerer = {};
     // let chief = null;
-
-    // let conquest = false;
-    Object.keys(this.locations).map((loc, index) => {
-    	let location = this.locations[loc]
-    	if(location.influencer.name != 'neutral'){
-    		if(!conquerer[location.influencer.id]){
-    			conquerer[location.influencer.id] = 1
-    		}else{
-    			conquerer[location.influencer.id]++;
-    		}
-    		if(conquerer[location.influencer.id]>2
-    			|| (conquerer[location.influencer.id]>1 && this.players.length == 1)){
-    			this.winner = location.influencer.name
-    		}
-
-    	}
-    });
+    if(this.players.length > 1){
+        // let conquest = false;
+      Object.keys(this.locations).map((loc, index) => {
+        let location = this.locations[loc]
+        if(location.influencer.name != 'neutral'){
+          if(!conquerer[location.influencer.id]){
+            conquerer[location.influencer.id] = 1
+          }else{
+            conquerer[location.influencer.id]++;
+          }
+          if(conquerer[location.influencer.id]>2
+            || (conquerer[location.influencer.id]>1 && this.players.length == 1)){
+            this.winner = location.influencer.name
+          }
+  
+        }
+      });
+    }
 
   };
   // console.log('starting new game with '+playerNames)
