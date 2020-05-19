@@ -51,6 +51,7 @@
 		"joshua":{
 			"character":{
 				"name":"Joshua",
+				"img":"joshua",
 				"cost": 0,
 				"gold":0,
 				"draw":0,
@@ -82,6 +83,7 @@
 		"jonah":{
 			"character":{
 				"name":"Jonah",
+				"img":"jonah",
 				"cost": 0,
 				"gold":1,
 				"reinforce":1,
