@@ -134,6 +134,7 @@ module.exports.Location = function Location(deck, story) {
         politics: 0,
         poliBonus: 0,
         cards: [],
+        finalInfluence:0,
       };
     }
     //console.log('play card'+owner.hand[card].name)

@@ -65,6 +65,7 @@ type Battlefield {
 	cards: [Card]
 },
 type TurnInfo {
+  log: [String],
 	turn: Int,
 	nextPlayer: Int,
 	winner: String
@@ -103,7 +104,7 @@ var root = {
     // console.log('game found?'+game.locations[0].name)
     let player = game.getCurrentPlayer();
     console.log('current player found? ' + player + 'winner:' + game.winner);
-    return { turn: game.turn, nextPlayer: player, winner: game.winner };
+    return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log };
     // return player
   },
   newGame: ({ players, types }) => {
@@ -154,6 +155,7 @@ var root = {
       console.log('location:' + location.name);
       let res = location.refreshMarket(playerId);
       console.log('res' + res);
+      game.appendLog("Player refreshed the market at"+location.name)
       return res;
     } else {
       return 'cannot refresh turn 1';
@@ -174,6 +176,7 @@ var root = {
       location = game.locations[locationId];
       console.log('found location' + location.name);
       let response = location.playCard(cardIndex, player);
+      game.appendLog(player.name+" "+response)
       return response;
     } else {
       //mill card
@@ -182,6 +185,7 @@ var root = {
         console.log('millcard!');
         let cardName = player.hand[cardIndex].name;
         player.millCard(cardIndex);
+        game.appendLog(player.name+" milled"+cardName)
         return 'Milled ' + cardName;
       } else {
         return 'already milled this turn';
@@ -193,7 +197,9 @@ var root = {
     let game = gameDB[gameId];
     let player = game.players.find((pl) => pl.id == playerId);
     let location = game.locations[locationId];
-    return location.buy(cardIndex, player);
+    let buyString = location.buy(cardIndex, player);
+    game.appendLog(player.name+" "+buyString)
+    return buyString
     // return `card bought! ${JSON.stringify(player.discard[0])}`
   },
   nextPlayer: ({ gameId, currentPlayer }) => {
@@ -210,6 +216,7 @@ var root = {
       turn: game.turn,
       nextPlayer: npInfo.nextPlayer,
       winner: npInfo.winner,
+      log: game.log
     };
   },
 };

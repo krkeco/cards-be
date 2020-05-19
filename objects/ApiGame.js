@@ -23,6 +23,11 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
   this.getTurn = () => {
     return this.turn;
   };
+  this.appendLog = function (log) {
+    let newLog = [...this.log]
+    newLog.push(log)
+    this.log = [...newLog];
+  }
 
   this.incrementPlayer = function () {
     if (this.currentPlayer >= this.players.length - 1) {
@@ -30,6 +35,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     } else {
       this.currentPlayer += 1;
     }
+    this.appendLog('Next player is '+this.currentPlayer)
   };
 
   this.getCurrentPlayer = () => {
@@ -81,6 +87,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     );
     if (this.players[this.currentPlayer].type == 'AI') {
       console.log('running ai');
+      this.appendLog('Running AI for '+this.players[this.currentPlayer].name)
       this.players[this.currentPlayer].AI.runStrategy('default');
       if(this.simulation){
         // this.getNextPlayer();
@@ -253,6 +260,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     });
 
     console.log('finish checking winconditions'+this.winner);
+    if(this.winner != ""){
+      this.appendLog(this.winner+ " won the game by finishing their calling!")
+    }
     return this.winner;
   };
   this.checkForConquerer = function () {
@@ -276,7 +286,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
         }
       });
     }
-
+    if(this.winner != ""){
+      this.appendLog(this.winner+ " won the game by influencing 3 locations!")
+    }
   };
   // console.log('starting new game with '+playerNames)
 
@@ -286,7 +298,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
   this.startNewTurn = function () {
     console.log('apigame startnewturn');
 
+    
     this.turn = this.turn + 1;
+    this.appendLog("Starting turn "+this.turn)
     console.log('\n new turn:' + this.turn);
 
     Object.keys(this.locations).map((location, index) => {
