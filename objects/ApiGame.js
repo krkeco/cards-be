@@ -48,9 +48,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
       if (this.players.length == 1) {
         this.startNewTurn();
         this.checkAI();
-        let winner = this.checkVictoryConditions();
+        // let winner = this.checkVictoryConditions();
         console.log("winner:"+winner)
-        return { nextPlayer: 0, winner: winner };
+        return { nextPlayer: 0, winner: this.winner };
       } else {
         console.log('getting next player');
         this.incrementPlayer();
@@ -64,11 +64,11 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           this.incrementPlayer();
           this.players[this.currentPlayer].firstPlayer = true;
 
-          let winner = this.checkVictoryConditions();
+          // let winner = this.checkVictoryConditions();
           this.startNewTurn();
           this.checkAI();
           console.log('new turn and new firstplayer is' + this.currentPlayer);
-          return { nextPlayer: this.currentPlayer, winner: winner };
+          return { nextPlayer: this.currentPlayer, winner: this.winner };
         } else {
           this.checkAI();
           console.log('returning the new player' + this.currentPlayer);
@@ -298,16 +298,16 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
   this.startNewTurn = function () {
     console.log('apigame startnewturn');
 
-    
-    this.turn = this.turn + 1;
+    let winner = this.checkVictoryConditions();
     this.appendLog("Starting turn "+this.turn)
-    console.log('\n new turn:' + this.turn);
 
     Object.keys(this.locations).map((location, index) => {
       this.locations[location].setInfluencing();
     });
-
     this.checkForConquerer();
+
+    this.turn = this.turn + 1;
+    console.log('\n new turn:' + this.turn);
 
     console.log('player setup');
 
