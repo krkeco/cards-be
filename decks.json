@@ -234,7 +234,7 @@
 				 	"faith":0,
 				 	"abilities":["faithful","faith"]},
 			{"name":"Spies",
-				"img":"seacave",
+				"img":"spies",
 				"quantity":3,
 					"cost": 5,
 					"gold":0,

@@ -49,7 +49,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
         this.startNewTurn();
         this.checkAI();
         // let winner = this.checkVictoryConditions();
-        console.log("winner:"+winner)
+        
         return { nextPlayer: 0, winner: this.winner };
       } else {
         console.log('getting next player');
