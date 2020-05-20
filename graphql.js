@@ -60,6 +60,7 @@ type Location {
 },
 type Battlefield {
 	name: String,
+  poliBonus: Int,
 	influence: Int,
 	gold: Int,
 	cards: [Card]

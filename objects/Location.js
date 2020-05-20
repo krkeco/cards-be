@@ -148,7 +148,7 @@ module.exports.Location = function Location(deck, story) {
       owner.hand[card].abilities.indexOf('Ninevite') > -1 &&
       this.name == 'Nineveh'
     ) {
-      newField[owner.id].influence += 2;
+      newField[owner.id].influence += 1;
       //console.log('ninevite advantage bonus')
     }
 
@@ -286,7 +286,7 @@ module.exports.Location = function Location(deck, story) {
     };
 
     let runnerUp = 0;
-    let paul = -1;
+    // let paul = -1;
     if (this.battlefield.length > 0) {
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
@@ -307,8 +307,6 @@ module.exports.Location = function Location(deck, story) {
               this.battlefield[index].gold -= 3;
             }
           }
-
-          //haman
 
           if (player.haman) {
             let greatest = 0;
