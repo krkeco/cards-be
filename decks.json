@@ -141,8 +141,8 @@
 					"cost": 0,
 					"gold":0,
 					"draw":0,
-					"influence":3,
-					"abilities":["scrap"]
+					"influence":2,
+					"abilities":["scrap","edict"]
 			}}
 		}
 	},

@@ -69,7 +69,8 @@ type TurnInfo {
   log: [String],
 	turn: Int,
 	nextPlayer: Int,
-	winner: String
+	winner: String,
+  loser: String,
 },
 type WaitingRoom {
 	room: [String],
@@ -105,7 +106,7 @@ var root = {
     // console.log('game found?'+game.locations[0].name)
     let player = game.getCurrentPlayer();
     console.log('current player found? ' + player + 'winner:' + game.winner);
-    return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log };
+    return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log, loser: game.loser };
     // return player
   },
   newGame: ({ players, types }) => {
@@ -186,7 +187,7 @@ var root = {
         console.log('millcard!');
         let cardName = player.hand[cardIndex].name;
         player.millCard(cardIndex);
-        game.appendLog(player.name+" milled"+cardName)
+        game.appendLog(player.name+" milled "+cardName)
         return 'Milled ' + cardName;
       } else {
         return 'already milled this turn';
@@ -217,6 +218,7 @@ var root = {
       turn: game.turn,
       nextPlayer: npInfo.nextPlayer,
       winner: npInfo.winner,
+      loser: game.loser,
       log: game.log
     };
   },

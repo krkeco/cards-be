@@ -122,7 +122,7 @@ module.exports.Location = function Location(deck, story) {
   };
 
   this.playCard = function (card, owner, copyInfluence) {
-    console.log('playCard: owner id:'+owner.id)
+    console.log('playCard: owner id:'+owner.id+" on "+this.name)
     let newField = [...this.battlefield];
     //console.log('location:playcard:'+card)
     if (!newField[owner.id]) {
@@ -184,12 +184,15 @@ module.exports.Location = function Location(deck, story) {
     }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = 0;
+      let gpolitic = 0;
       newField[owner.id].cards.map((card, index) => {
         if (card.influence > greatest) {
           greatest = card.influence;
+          gpolitic = card.influence;
         }
       });
       newField[owner.id].influence += greatest;
+      newField[owner.id].politics += gpolitic;
       //console.log('mordecai added '+greatest+" to this location")
     }
 
@@ -248,6 +251,9 @@ module.exports.Location = function Location(deck, story) {
     //can't else this because some cards have both edict and politics
     if (owner.hand[card].abilities.indexOf('edict') > -1) {
       this.edicts++;
+      newField.map((bf, index)=>{
+        bf.poliBonus = bf.politics * this.edicts;
+      })
       //console.log('played an edict, now there are '+this.edicts)
     }
     if (owner.hand[card].politics) {
@@ -282,6 +288,7 @@ module.exports.Location = function Location(deck, story) {
       name: 'neutral',
       id: 0,
       influence: this.influence,
+      totalInfluence: this.influence,
       poliBonus: 0,
     };
 
@@ -290,13 +297,11 @@ module.exports.Location = function Location(deck, story) {
     if (this.battlefield.length > 0) {
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
-          //paul
+
           if (this.battlefield[index].playPaul) {
-            //console.log('paul is playign')
             this.apostle = index;
           }
 
-          //faithful report
           if (this.battlefield[index].faithfulReport) {
             while (
               this.battlefield[index].faithfulReport > 0 &&
@@ -319,9 +324,6 @@ module.exports.Location = function Location(deck, story) {
             });
             if (greatDex) {
               greatDex.influence -= greatest;
-              //console.log('haman reduce '+greatDex.name+"'s influence by "+greatest)
-            } else {
-              //console.log=('nothing to reduce for haman')
             }
           }
 
@@ -334,20 +336,20 @@ module.exports.Location = function Location(deck, story) {
             influencer = this.battlefield[index];
           } else if (
             this.battlefield[index] &&
-            this.battlefield[index].influence > runnerUp
+            this.battlefield[index].influence + influencer.poliBonus > runnerUp
           ) {
-            runnerUp = this.battlefield[index].influence;
+            runnerUp = this.battlefield[index].influence + influencer.poliBonus;
           }
         }
       });
     }
   
-    if (!runnerUp) {
-      runnerUp = 0;
-    }
+    // if (!runnerUp) {
+    //   runnerUp = 0;
+    // }
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
-      influencer.influence - runnerUp + influencer.poliBonus;
+      influencer.influence + influencer.poliBonus - runnerUp;
     return influencer;
   };
   this.setInfluencing = function () {
@@ -358,10 +360,11 @@ module.exports.Location = function Location(deck, story) {
     } else {
       //console.log('location:setInfluencing:')
       let influencer = this.compareInfluence();
-      let baseInfluence = this.influence;
+      // let baseInfluence = this.influence;
 
       if (this.apostle > -1) {
         if (influencer.name != 'Paul') {
+          this.wounds++;
           //console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
         } else {
           //influencer.influence > 6 && 
@@ -372,7 +375,7 @@ module.exports.Location = function Location(deck, story) {
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)
       if (
-        influencer.finalInfluence > baseInfluence + this.weariness * 2 &&
+        influencer.finalInfluence > this.influence + this.weariness * 2 &&
         influencer.name != 'neutral'
       ) {
         this.influencer = influencer;
@@ -381,7 +384,7 @@ module.exports.Location = function Location(deck, story) {
         if (this.name == 'Canaan' && influencer.name == 'Joshua') {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
-          this.card.influence += 2;
+          this.card.influence += 2*this.abilities[0] - 2;
           console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }
