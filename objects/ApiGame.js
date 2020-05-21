@@ -187,11 +187,11 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           console.log('checking esther win condition');
           let babylonian = this.locations[player.id].compareInfluence();
           console.log('babylonian influencer' + babylonian.name+babylonian.finalInfluence);
-          if (babylonian.name == 'Esther' && babylonian.finalInfluence > 17) {
+          if (babylonian.id == player.id && babylonian.finalInfluence > 17) {
             //17
             player.winning = true;
             this.winner = player.name+player.id;
-          }else if(babylonian.name != "Esther" && this.locations[player.id].edicts >= 4){
+          }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
             this.loser = player.name+player.id
           }
           break;
@@ -292,7 +292,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           }
           if(conquerer[location.influencer.id]>2
             || (conquerer[location.influencer.id]>1 && this.players.length == 1)){
-            this.winner = location.influencer.name
+            this.winner = location.influencer.name+location.influencer.id
           }
   
         }

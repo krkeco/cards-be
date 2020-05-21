@@ -12,6 +12,7 @@ module.exports.Location = function Location(deck, story) {
   this.proselytized = 0;
   this.angelic = false;
   this.apostle = -1;
+  this.switcheroo = [];
 
   this.wounds = 0;
   this.hardened = 0;
@@ -182,6 +183,9 @@ module.exports.Location = function Location(deck, story) {
       newField[owner.id].influence += newField[owner.id].cards.length - 1;
       card.influence += newField[owner.id].cards.length - 1;
     }
+    if (owner.hand[card].abilities.indexOf('xerxes') > -1) {
+      this.switcheroo = owner.id;
+    }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = 0;
       let gpolitic = 0;
@@ -189,11 +193,16 @@ module.exports.Location = function Location(deck, story) {
         if (card.influence > greatest) {
           greatest = card.influence;
           gpolitic = card.politics;
-          newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
+          
+
         }
       });
-      newField[owner.id].influence = greatest;
-      newField[owner.id].politics = gpolitic;
+      // newField[owner.id]
+      owner.hand[card].influence = greatest;
+      owner.hand[card].politics = gpolitic;
+      newField[owner.id].influence += greatest;
+      newField[owner.id].politics += gpolitic;
+      newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
       //console.log('mordecai added '+greatest+" to this location")
     }
 
@@ -354,7 +363,7 @@ module.exports.Location = function Location(deck, story) {
     return influencer;
   };
   this.setInfluencing = function () {
-
+    
     if (this.angelic) {
       //console.log('moments peace no influence today')
       this.postInfluencePhase();
@@ -399,6 +408,7 @@ module.exports.Location = function Location(deck, story) {
     this.battlefield = [];
     this.edicts = 0;
     this.apostle = -1;
+    this.switcheroo = [];
     if (this.name == 'Canaan') {
       this.weariness++;
       //console.log('end of turn weariness for canaan')
