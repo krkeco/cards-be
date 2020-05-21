@@ -35,7 +35,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     } else {
       this.currentPlayer += 1;
     }
-    this.appendLog('Next player is '+this.players[this.currentPlayer].name)
+    this.appendLog('Next player is '+this.players[this.currentPlayer].name+this.players[this.currentPlayer].id)
   };
 
   this.getCurrentPlayer = () => {
@@ -190,9 +190,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           if (babylonian.name == 'Esther' && babylonian.finalInfluence > 17) {
             //17
             player.winning = true;
-            this.winner = player.name;
+            this.winner = player.name+player.id;
           }else if(babylonian.name != "Esther" && this.locations[player.id].edicts >= 4){
-            this.loser = player.name
+            this.loser = player.name+player.id
           }
           break;
         case 'Jonah':
@@ -206,7 +206,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           );
           this.locations[player.id].battlefield.map((battlefield, ind) => {
             console.log('mapping nineveh');
-            if (battlefield && battlefield.name == 'Jonah') {
+            if (battlefield && battlefield.id == player.id) {
               console.log('found jonah');
               battlefield.cards.map((card, index) => {
                 console.log('mapping battlefield cards:' + card.name);
@@ -219,10 +219,10 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
                 //4
                 console.log('jonah is a winner!');
                 player.winning = true;
-                this.winner = player.name;
+                this.winner = player.name+player.id;
               }else
               if(this.locations[player.id].hardened >= 3){
-                this.loser = player.name
+                this.loser = player.name+player.id
               }
             } else {
               console.log('no jonah found');
@@ -245,9 +245,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           });
           if (pros >= 7) {
             player.winning = true;
-            this.winner = player.name;
+            this.winner = player.name+player.id;
           }else if(this.locations[player.id].wounds >= 6){
-            this.loser = player.name
+            this.loser = player.name+player.id
           }
           //check abilities
 
@@ -262,9 +262,9 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           })
           if (this.locations[player.id].abilities[0] > 2) {
             this.winning = true;
-            this.winner = player.name;
+            this.winner = player.name+player.id;
           }else if(fear >= 13){
-            this.loser = player.name
+            this.loser = player.name+player.id
           }
 
           break;
@@ -372,6 +372,10 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     let locationInfo = [];
     Object.keys(this.locations).map((loc, ind) => {
       let location = this.locations[loc];
+      let theInfluencer = location.influencer.name
+      if(theInfluencer != "neutral"){
+        theInfluencer = location.influencer.name+location.influencer.id
+      }
       let info = {
         name: location.name,
         id: location.id,
@@ -379,7 +383,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
         battlefield: location.battlefield,
         influence: location.influence,
         abilities: location.abilities,
-        influencer: location.influencer.name,
+        influencer: theInfluencer,
         influencerId: location.influencer.id,
         info: location.info,
         weariness: location.weariness,

@@ -188,11 +188,12 @@ module.exports.Location = function Location(deck, story) {
       newField[owner.id].cards.map((card, index) => {
         if (card.influence > greatest) {
           greatest = card.influence;
-          gpolitic = card.influence;
+          gpolitic = card.politics;
+          newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
         }
       });
-      newField[owner.id].influence += greatest;
-      newField[owner.id].politics += gpolitic;
+      newField[owner.id].influence = greatest;
+      newField[owner.id].politics = gpolitic;
       //console.log('mordecai added '+greatest+" to this location")
     }
 
@@ -243,7 +244,7 @@ module.exports.Location = function Location(deck, story) {
 
     if (
       owner.hand[card].abilities.indexOf('Harden') > -1 &&
-      this.name == 'Nineveh'
+      this.id == owner.id
     ) {
       this.hardened++;
       //console.log('Jonah has been hardened'+this.hardened)
@@ -381,7 +382,7 @@ module.exports.Location = function Location(deck, story) {
         this.influencer = influencer;
         // //console.log('new influencer is now'+influencer.name)
 
-        if (this.name == 'Canaan' && influencer.name == 'Joshua') {
+        if (this.name == 'Canaan' && influencer.name == 'Joshua' && this.id == influencer.id) {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
           this.card.influence += 2*this.abilities[0] - 2;
