@@ -9,12 +9,12 @@ module.exports.Location = function Location(deck, story) {
   this.weariness = 0;
   this.abilities = story.abilities;
   this.influencer = { name: 'neutral' };
-  this.proselytized = 0;
+  this.proselytized = [0,0,0,0];
   this.angelic = false;
   this.apostle = -1;
   this.switcheroo = [];
 
-  this.wounds = 0;
+  this.wounds = [0,0,0,0];
   this.hardened = 0;
   this.edicts = 0;
 
@@ -363,7 +363,7 @@ module.exports.Location = function Location(deck, story) {
     return influencer;
   };
   this.setInfluencing = function () {
-    
+
     if (this.angelic) {
       //console.log('moments peace no influence today')
       this.postInfluencePhase();
@@ -373,14 +373,17 @@ module.exports.Location = function Location(deck, story) {
       // let baseInfluence = this.influence;
 
       if (this.apostle > -1) {
-        if (influencer.name != 'Paul') {
-          this.wounds++;
-          //console.log('paul is not the influencer! damage time...'+influencer.influence+" less "+this.battlefield[paul].influence)
-        } else {
-          //influencer.influence > 6 && 
-          this.proselytized += 1;
-            //console.log('location has been proselytized')
-        }
+        this.battlefield.map((bf,index)=>{
+          if(bf.playPaul){
+            if(influencer.id == bf.id && influencer.finalInfluence > this.influence + this.weariness * 2){
+              this.proselytized[bf.id] += 1;
+              console.log('paul got a church')
+            }else{
+              this.wounds[bf.id] +=1;
+              console.log('paul got beat up')
+            }
+          }
+        })
       }
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)

@@ -233,20 +233,17 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
           //set proselytize
           console.log('checking paul win con');
           let pros = 0;
+          let wounds = 0;
           Object.keys(this.locations).map((location, index) => {
-            if (this.locations[location].proselytized > 0) {
-              pros += this.locations[location].proselytized;
-              console.log(
-                this.locations[location].name +
-                  ' has been proselytized to' +
-                  pros,
-              );
-            }
+            //if (this.locations[location].proselytized[player.id] > 0) {
+              pros += this.locations[location].proselytized[player.id];
+              wounds += this.locations[location].wounds[player.id];
+            // }
           });
-          if (pros >= 7) {
+          if (pros >= 2) {
             player.winning = true;
             this.winner = player.name+player.id;
-          }else if(this.locations[player.id].wounds >= 6){
+          }else if(wounds >= 2){
             this.loser = player.name+player.id
           }
           //check abilities
