@@ -240,10 +240,10 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
               wounds += this.locations[location].wounds[player.id];
             // }
           });
-          if (pros >= 2) {
+          if (pros >= 7) {
             player.winning = true;
             this.winner = player.name+player.id;
-          }else if(wounds >= 2){
+          }else if(wounds >= 6){
             this.loser = player.name+player.id
           }
           //check abilities
