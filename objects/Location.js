@@ -268,9 +268,10 @@ module.exports.Location = function Location(deck, story) {
     //can't else this because some cards have both edict and politics
     if (owner.hand[card].abilities.indexOf('edict') > -1) {
       this.edicts+=1;
-      newField.map((bf, index)=>{
-        bf.poliBonus = bf.politics * this.edicts;
-      })
+      console.log('edicts:'+this.edicts)
+      // newField.map((bf, index)=>{
+      //   bf.poliBonus = bf.politics * this.edicts;
+      // })
       //console.log('played an edict, now there are '+this.edicts)
     }
     if (owner.hand[card].politics) {
