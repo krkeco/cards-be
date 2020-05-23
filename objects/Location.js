@@ -12,6 +12,7 @@ module.exports.Location = function Location(deck, story) {
   this.proselytized = [0,0,0,0];
   this.angelic = false;
   this.apostle = -1;
+  this.traversal = 0;
   this.switcheroo = [];
 
   this.wounds = [0,0,0,0];
@@ -250,6 +251,12 @@ module.exports.Location = function Location(deck, story) {
       newField[owner.id].playPaul = true;
       //console.log('paul played on location')
     }
+    if (owner.hand[card].abilities.indexOf('traverse') > -1) {
+      // newField[owner.id].playPaul = true;
+      //console.log('paul played on location')
+      this.traversal+=1;
+      
+    }
 
     if (
       owner.hand[card].abilities.indexOf('Harden') > -1 &&
@@ -412,6 +419,7 @@ module.exports.Location = function Location(deck, story) {
     this.edicts = 0;
     this.apostle = -1;
     this.switcheroo = [];
+    this.traversal = 0;
     if (this.name == 'Canaan') {
       this.weariness++;
       //console.log('end of turn weariness for canaan')

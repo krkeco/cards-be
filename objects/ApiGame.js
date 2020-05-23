@@ -215,7 +215,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
                   console.log('ninevites' + ninevites);
                 }
               });
-              if (ninevites > 4) {
+              if (ninevites > 4 + this.locations[player.id].traversal) {
                 //4
                 console.log('jonah is a winner!');
                 player.winning = true;
