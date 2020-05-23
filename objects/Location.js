@@ -269,16 +269,19 @@ module.exports.Location = function Location(deck, story) {
     if (owner.hand[card].abilities.indexOf('edict') > -1) {
       this.edicts+=1;
       console.log('edicts:'+this.edicts)
-      // newField.map((bf, index)=>{
-      //   bf.poliBonus = bf.politics * this.edicts;
-      // })
+      
       //console.log('played an edict, now there are '+this.edicts)
     }
     if (owner.hand[card].politics) {
       newField[owner.id].politics += owner.hand[card].politics;
-      newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
+      // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
       //console.log('total politics bonus for loc is:'+newField[owner.id].politics +"*"+ this.edicts + newField[owner.id].poliBonus)
     }
+
+    newField.map((bf, index)=>{
+      bf.poliBonus = bf.politics * this.edicts;
+      console.log('new poli:'+bf.poliBonus)
+    })
 
     this.battlefield = newField;
     let theString = `played ${owner.hand[card].name} on ${this.name}`;
