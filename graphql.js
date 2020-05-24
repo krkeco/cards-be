@@ -152,7 +152,7 @@ var root = {
       'refreshing market' + gameId + '/' + playerId + '/' + locationId,
     );
     if (game.turn > 1) {
-      console.log('past turn 1 can refreshmarket');
+      console.log('past turn 1 can refreshmarket'+game.turn);
       let location = game.locations[locationId];
       console.log('location:' + location.name);
       let res = location.refreshMarket(playerId);
@@ -160,6 +160,7 @@ var root = {
       game.appendLog("Player refreshed the market at"+location.name)
       return res;
     } else {
+      game.appendLog("Cannot refresh market on Turn 1");
       return 'cannot refresh turn 1';
     }
     return 'something went wrong...';
