@@ -194,15 +194,18 @@ module.exports.Location = function Location(deck, story) {
         if (card.influence +card.politics > greatest + gpolitic*(this.edicts+1)) {
           greatest = card.influence;
           gpolitic = card.politics;
-          
-
         }
       });
       // newField[owner.id]
-      // owner.hand[card].influence = greatest;
-      // owner.hand[card].politics = gpolitic;
-      newField[owner.id].influence += greatest;
-      newField[owner.id].politics += gpolitic;
+      let newCard = { name:"Mordecai's Blessing",img:'mordecai',gold:0,cost:0,influence:0,politics:0,abilities:["scrap"]}
+      newCard.influence = greatest;
+      newCard.politics = gpolitic;
+      let newHand = [...owner.hand]
+      newHand.push(newCard)
+      owner.hand=[...newHand];
+      this.playCard(owner.hand.length-1,owner);
+      // newField[owner.id].influence += greatest;
+      // newField[owner.id].politics += gpolitic;
       // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
       //console.log('mordecai added '+greatest+" to this location")
     }
@@ -291,6 +294,10 @@ module.exports.Location = function Location(deck, story) {
     // //console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
     let cardName = owner.hand[card].name;
     if (owner.hand[card].abilities.indexOf('scrap') < 0) {
+      if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
+
+      }
+
       owner.playedCard(card);
       return theString;
     } else {
