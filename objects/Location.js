@@ -207,13 +207,13 @@ module.exports.Location = function Location(deck, story) {
       //console.log('mordecai added '+greatest+" to this location")
     }
 
-    if (owner.hand[card].abilities.indexOf('haman') > -1) {
-      newField.map((bf, ind) => {
-        if (bf && bf.id != owner.id) {
-          bf.haman = true;
-        }
-      });
-    }
+    // if (owner.hand[card].abilities.indexOf('haman') > -1) {
+    //   newField.map((bf, ind) => {
+    //     if (bf && bf.id != owner.id) {
+    //       bf.haman = true;
+    //     }
+    //   });
+    // }
 
     if (owner.hand[card].fear) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
@@ -336,19 +336,19 @@ module.exports.Location = function Location(deck, story) {
             }
           }
 
-          if (player.haman) {
-            let greatest = 0;
-            let greatDex;
-            player.cards.map((card, index) => {
-              if (card.influence > greatest) {
-                greatest = card.influence;
-                greatDex = player;
-              }
-            });
-            if (greatDex) {
-              greatDex.influence -= greatest;
-            }
-          }
+          // if (player.haman) {
+          //   let greatest = 0;
+          //   let greatDex;
+          //   player.cards.map((card, index) => {
+          //     if (card.influence > greatest) {
+          //       greatest = card.influence;
+          //       greatDex = player;
+          //     }
+          //   });
+          //   if (greatDex) {
+          //     greatDex.influence -= greatest;
+          //   }
+          // }
 
           // //console.log('player from battlefield'+player+index)
           if (

@@ -130,8 +130,7 @@
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
 					"Influence Bonus: 3 influence",
 					"Politics [X]: For each Edict on this location: gain [X] (this is sometimes negative)",
-					"Mordecai: copy the highest influence you played on this location",
-					"Haman: reduce your opponents best influence on this location to 0"
+					"Mordecai: copy the highest influence you played on this location"
 				],
 				"influence":3,
 				"abilities":["babylon"],
@@ -347,8 +346,8 @@
 				"quantity":3,
 				 	"cost": 3,
 				 	"gold":0,
-				 	"influence":2,
-				 	"abilities":["edict","haman"]},
+				 	"influence":4,
+				 	"abilities":["edict"]},
 			{"name":"Edict of Mordecai",
 				"img":"mordecai",
 				"quantity":2,
