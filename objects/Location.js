@@ -262,7 +262,7 @@ module.exports.Location = function Location(deck, story) {
       owner.hand[card].abilities.indexOf('Harden') > -1 &&
       this.id == owner.id
     ) {
-      this.hardened++;
+      this.hardened+=1;
       //console.log('Jonah has been hardened'+this.hardened)
     }
     //can't else this because some cards have both edict and politics
@@ -279,8 +279,10 @@ module.exports.Location = function Location(deck, story) {
     }
 
     newField.map((bf, index)=>{
-      bf.poliBonus = bf.politics * this.edicts;
-      console.log('new poli:'+bf.poliBonus)
+      if(bf){
+        bf.poliBonus = bf.politics * this.edicts;
+        console.log('new poli:'+bf.poliBonus)
+      }
     })
 
     this.battlefield = newField;
@@ -293,7 +295,7 @@ module.exports.Location = function Location(deck, story) {
       return theString;
     } else {
       owner.millCard(card);
-      owner.mills--;
+      owner.mills-=1;
 
       // let newHand = [...owner.hand]
       // newHand.splice(card,1)
@@ -329,7 +331,7 @@ module.exports.Location = function Location(deck, story) {
               this.battlefield[index].gold > 2
             ) {
               this.weariness -= 3;
-              this.battlefield[index].faithfulReport--;
+              this.battlefield[index].faithfulReport-=1;
               this.battlefield[index].gold -= 3;
             }
           }
@@ -425,7 +427,7 @@ module.exports.Location = function Location(deck, story) {
     this.switcheroo = [];
     this.traversal = 0;
     if (this.name == 'Canaan') {
-      this.weariness++;
+      this.weariness+=1;
       //console.log('end of turn weariness for canaan')
     }
   };
