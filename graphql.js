@@ -184,12 +184,12 @@ var root = {
     } else {
       //mill card
       console.log('milling!');
-      if (player.mills < 1) {
+      if (player.mills < 1 ) {
         console.log('millcard!');
-        let cardName = player.hand[cardIndex].name;
-        player.millCard(cardIndex);
-        game.appendLog(player.name+" milled "+cardName)
-        return 'Milled ' + cardName;
+        
+        let mill = player.millCard(cardIndex);
+        game.appendLog(mill)
+        return mill;
       } else {
         return 'already milled this turn';
       }
