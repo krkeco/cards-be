@@ -190,19 +190,41 @@ module.exports.Location = function Location(deck, story) {
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = 0;
       let gpolitic = 0;
+      let gGold = 0;
+      let blessing= false;
       newField[owner.id].cards.map((card, index) => {
-        if (card.influence +card.politics > greatest + gpolitic*(this.edicts+1)) {
-          greatest = card.influence;
-          gpolitic = card.politics;
+        let inf = card.influence || 0
+        let gol = card.gold || 0
+        let pol = card.politics || 0
+        if (card.abilities.indexOf('mordecai') < 0 && inf +pol +gol> greatest + gpolitic*(this.edicts+1) + gGold) {
+          greatest = inf;
+          gpolitic = pol;
+          gGold = gol;
+          // blessing =true;
+          console.log('new greatest card'+inf)
         }
+        // else if(blessing != true && gol > gGold){
+        //   greatest = inf;
+        //   gpolitic = pol;
+        //   gGold = gol;
+        //   blessing=true;
+        //   console.log('new richest card'+gol)
+        // }
       });
       // newField[owner.id]
-      let newCard = { name:"Mordecai's Blessing",img:'mordecai',gold:0,cost:0,influence:0,politics:0,abilities:["scrap"]}
-      newCard.influence = greatest;
-      newCard.politics = gpolitic;
-      let newHand = [...owner.hand]
-      newHand.push(newCard)
-      owner.hand=[...newHand];
+      let newCard = { 
+        name:"Mordecai's Blessing",
+        img:'mordecai',
+        gold:gGold,
+        cost:0,
+        influence:greatest,
+        politics:gpolitic,
+        abilities:["scrap"]
+      }
+      // newCard.influence = greatest;
+      // newCard.politics = gpolitic;
+      // newCard.gold = gGold;
+      owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
       // newField[owner.id].influence += greatest;
       // newField[owner.id].politics += gpolitic;
