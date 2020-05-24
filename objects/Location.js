@@ -199,8 +199,8 @@ module.exports.Location = function Location(deck, story) {
         }
       });
       // newField[owner.id]
-      owner.hand[card].influence = greatest;
-      owner.hand[card].politics = gpolitic;
+      // owner.hand[card].influence = greatest;
+      // owner.hand[card].politics = gpolitic;
       newField[owner.id].influence += greatest;
       newField[owner.id].politics += gpolitic;
       // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
