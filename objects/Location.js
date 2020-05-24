@@ -191,7 +191,7 @@ module.exports.Location = function Location(deck, story) {
       let greatest = 0;
       let gpolitic = 0;
       newField[owner.id].cards.map((card, index) => {
-        if (card.influence > greatest) {
+        if (card.influence +card.politics > greatest + gpolitic*(this.edicts+1)) {
           greatest = card.influence;
           gpolitic = card.politics;
           
