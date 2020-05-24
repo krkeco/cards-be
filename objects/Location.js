@@ -203,7 +203,7 @@ module.exports.Location = function Location(deck, story) {
       owner.hand[card].politics = gpolitic;
       newField[owner.id].influence += greatest;
       newField[owner.id].politics += gpolitic;
-      newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
+      // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
       //console.log('mordecai added '+greatest+" to this location")
     }
 
