@@ -114,16 +114,16 @@ module.exports.Player = function Player(
   this.millCard = function (index) {
     //console.log('millCard:')
     let cardName = this.hand[index].name;
-    if(this.hand[index].abilities.indexOf('Ninevite') == -1){
-        this.mills++;
-        let newHand = [...this.hand];
-        newHand.splice(index, 1);
-        this.hand = [...newHand];
-        return this.name+" milled "+cardName
-      }else{
-        return "Cannot mill a Ninevite"
-        console.log('cannot mill a ninevite')
-      }
+    // if(this.hand[index].abilities.indexOf('Ninevite') == -1){
+      this.mills++;
+      let newHand = [...this.hand];
+      newHand.splice(index, 1);
+      this.hand = [...newHand];
+      return this.name+" milled "+cardName
+      // }else{
+      //   return "Cannot mill a Ninevite"
+      //   console.log('cannot mill a ninevite')
+      // }
   };
 
   this.getTotalGold = function () {

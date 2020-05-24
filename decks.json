@@ -100,7 +100,7 @@
 					"Calling: Jonah must play 5 Ninevites AND Jonah on Nineveh to win",
 					"Bane: Hardened Heart- If Jonah is played (either by the player or reinforce) 3 times on Nineveh he loses the game",
 					"Influence Bonus: Reinforce 1",
-					"Ninevite: gain 1 influence when played on Nineveh; Cannot be scrapped",
+					"Ninevite: gain 1 influence when played on Nineveh",
 					"Reinforce [X]: This card draws and plays [X] cards on its location"
 				],
 				"influence":3,
