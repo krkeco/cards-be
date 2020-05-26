@@ -2,18 +2,35 @@ module.exports.AI = function AI(player, locations) {
   this.runStrategy = async (strategy) => {
     try {
       console.log('logging ai');
+      let golds = 0;
+      let infl = 0;
+      let apostles = 0;
+      let allCards = [...player.deck, ...player.hand, ...player.discard]
+      allCards.map((card,index)=>{
+        golds+= card.gold;
+        infl += card.influence;
+        if(card.abilities.indexOf('apostle')>-1){
+          apostle+=1;
+        }
+      })
       switch (player.name) {
         case 'Esther':
           if (player.getTotalInfluence() >= 18) {
             console.log('winner play on babylon')
             this.playLoc(player.id);
           } else {
-            this.standardStrat();
+            if(golds < 7){
+              this.buySomething('gold')
+            }else{
+              this.buySomething('influence')
+            }
+            this.millSomething();
+            this.attackSomething();
+            // this.standardStrat();
           }
           break;
           case 'Jonah':
           let ninevites = 0;
-          
               player.hand.map((card, index) => {
                 console.log('mapping battlefield cards:' + card.name);
                 if (card.abilities.indexOf('Ninevite') > -1) {
@@ -29,7 +46,10 @@ module.exports.AI = function AI(player, locations) {
               
             } else {
               console.log('no jonah found');
-              this.standardStrat();
+              // this.standardStrat();
+              this.buySomething('ninevite')
+              this.millSomething();
+              this.attackSomething();
             }
 
           break;
@@ -41,9 +61,9 @@ module.exports.AI = function AI(player, locations) {
             locations[player.id].weariness -= 1;
           }
 
-          this.buySomething()
+          this.buySomething('gold')
             
-          // }
+          // this actually adds 1 turn to play
           // this.millSomething();
           console.log('strat josh: '+totalInf+' vs '+locInf.finalInfluence+"/"+locations[player.id].weariness)
           // if (totalInf > locInf.finalInfluence) {
@@ -54,6 +74,27 @@ module.exports.AI = function AI(player, locations) {
           //   this.attackSomething();
           // }
           break;
+        case 'Paul':
+          this.buySomething('influence')
+          this.millSomething('gold');
+          // if(apostles > 1 && inf > 8){
+          //   let infOne = 0;
+          //   let apoOne = 0;
+          //   for (let c = player.hand.length - 1; c > -1; c--) {
+          //     if(infOne < 4 || (apoOne == 0 && player.hand[c].indexOf('apostle') > -1) ){
+          //       locations[locId].playCard(c, player,0);
+          //       if( player.hand[c].indexOf('apostle') > -1){
+          //         apoOne = 1;
+          //       }
+          //     }else{
+          //       locations[7].playCard(c, player,0);
+          //     }
+          //   }
+          // }else{
+            this.attackSomething()
+          // }
+
+        break;
         default:
           this.standardStrat();
       }
@@ -75,16 +116,6 @@ module.exports.AI = function AI(player, locations) {
       strategem = player.name;
     }
 
-    //console.log('getMaxCard:');
-    // let maxCard = 0;
-    // //console.log(player.hand);
-
-    // player.hand.map((card, index) => {
-    //   //console.log(card+index);
-    //   if (card.influence > maxCard) {
-    //     maxCard = card.influence;
-    //   }
-    // });
     this.buySomething();
     this.millSomething();
     this.attackSomething();
@@ -93,7 +124,7 @@ module.exports.AI = function AI(player, locations) {
   this.buySomething = function (preference) {
     let cashOnHand = player.getTotalGold();
 
-    let cardCost = 0;
+    let prefValue = 0;
     let cardLocation;
     let cardIndex;
 
@@ -103,14 +134,31 @@ module.exports.AI = function AI(player, locations) {
         console.log('locmarket:'+locMarket.map(card=>card.name+card.abilities))
         for (let x = 0; x < locMarket.length; x++) {
           if (locMarket[x] && cashOnHand >= locMarket[x].cost) {
-            if (locMarket[x].cost > cardCost) {
-              
+
+            if (!preference && locMarket[x].cost > prefValue) {
+
               console.log('found card with pref:'+preference)
-              cardCost = locMarket[x].cost;
+              prefValue = locMarket[x].cost;
               cardLocation = location;
               cardIndex = x;
             
+            }else if(preference == 'gold' && locMarket[x].gold > prefValue){
+              prefValue = locMarket[x].gold;
+              cardLocation = location;
+              cardIndex = x;  
+            
+            }else if(preference == 'influence' && locMarket[x].influence > prefValue){
+              prefValue = locMarket[x].influence;
+              cardLocation = location;
+              cardIndex = x;
+            }else if(preference == 'ninevite' && (locMarket[x].abilities.indexOf("Ninevite") > -1 || locMarket[x].reinforce > 0)){
+              prefValue = locMarket[x].cost;
+              cardLocation = location;
+              cardIndex = x;
             }
+
+
+
           }
         }
       }
@@ -128,7 +176,7 @@ module.exports.AI = function AI(player, locations) {
     }
   };
 
-  this.millSomething = function () {
+  this.millSomething = function (preference) {
     // player.hand.indexOf()
     let allTehGold = 0;
     let allCard = 0;
@@ -152,7 +200,7 @@ module.exports.AI = function AI(player, locations) {
         (card) => card.name == 'Influence',
       );
 
-      if (hasInfluence > -1) {
+      if (hasInfluence > -1  && preference != 'gold') {
         player.mills++;
         console.log(player.name+' is milling influence'+player.mills)
         player.millCard(hasInfluence);

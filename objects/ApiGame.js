@@ -5,7 +5,7 @@ const cards = require('./CardData.js');
 const deckData = new cards.data();
 const ai = require('./AI.js');
 
-module.exports.newGame = function Game(playerNames, playerTypes) {
+module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all") {
   let Jerusalem = new loc.Location([], deckData.stories.jerusalem);
   Jerusalem.id = 7;
   this.players = [];
@@ -88,7 +88,7 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
     if (this.players[this.currentPlayer].type == 'AI') {
       console.log('running ai');
       this.appendLog('Running AI for '+this.players[this.currentPlayer].name)
-      this.players[this.currentPlayer].AI.runStrategy('default');
+      this.players[this.currentPlayer].AI.runStrategy(gameType);
       if(this.simulation){
         // this.getNextPlayer();
       }
@@ -311,13 +311,17 @@ module.exports.newGame = function Game(playerNames, playerTypes) {
   this.startNewTurn = function () {
     console.log('apigame startnewturn');
 
+  if(gameType == "all" || gameType == "calling"){
     let winner = this.checkVictoryConditions();
+  }
     this.appendLog("Starting turn "+this.turn)
 
     Object.keys(this.locations).map((location, index) => {
       this.locations[location].setInfluencing();
     });
-    this.checkForConquerer();
+    if(gameType == "all" || gameType == "conquer"){
+      this.checkForConquerer();
+    }
 
     this.turn = this.turn + 1;
     console.log('\n new turn:' + this.turn);

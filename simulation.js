@@ -8,7 +8,7 @@ module.exports.gameSim = () => {
   let shortest = 100;
   let longest = 0;
 
-  let runs = 100;
+  let runs = 1000;
   let average = 0;
 
   let run = 0;
@@ -29,12 +29,12 @@ solo calling:
   joshua: 6 / 13 / 50
 */
 
-  let player1 = 'Joshua';
+  let player1 = 'Paul';
   let player2 = 'Paul';
-  let players = [player1, player2];
+  let players = [player1];
   let overload = 0;
 
-  let game = new GameBuilder.newGame(players, ['AI','AI']);
+  let game = new GameBuilder.newGame(players, ['AI','AI'],'calling');
 
   let turn = 'turns: ';
 
@@ -59,7 +59,7 @@ solo calling:
     console.log('---game: winner:'+game.winner)
     turn += '\n run' + run + 'turn' + gameTurn + 'winner:' + game.winner;
     if (game.turn >= turnLimit) {
-      overload++;
+      overload+=1;
     }
     if (shortest > game.turn) {
       shortest = game.turn;
