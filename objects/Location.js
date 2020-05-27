@@ -244,18 +244,22 @@ module.exports.Location = function Location(deck, story) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
       this.weariness += parseInt(owner.hand[card].fear);
     }
-    if (owner.hand[card].faith) {
-      this.weariness -= owner.hand[card].faith;
-      if (this.weariness < 0) {
-        this.weariness = 0;
-      }
-    }
+
+    //moved to faithful
+    // if (owner.hand[card].faith) {
+    //   this.weariness -= owner.hand[card].faith;
+    //   if (this.weariness < 0) {
+    //     this.weariness = 0;
+    //   }
+    // }
     if (owner.hand[card].abilities.indexOf('faithful') > -1) {
       if (!newField[owner.id].faithfulReport) {
         newField[owner.id].faithfulReport = 0;
       }
-      newField[owner.id].faithfulReport += 1;
+      newField[owner.id].faithfulReport += owner.hand[card].faith;
     }
+
+
     if (owner.hand[card].abilities.indexOf('balaam') > -1) {
       newField[owner.id].influence += copyInfluence;
       //console.log('balaam added '+copyInfluence+" to this location")
@@ -357,11 +361,11 @@ module.exports.Location = function Location(deck, story) {
           if (this.battlefield[index].faithfulReport) {
             while (
               this.battlefield[index].faithfulReport > 0 &&
-              this.battlefield[index].gold > 2
+              this.battlefield[index].gold > 0
             ) {
-              this.weariness -= 3;
+              this.weariness -= 1;
               this.battlefield[index].faithfulReport-=1;
-              this.battlefield[index].gold -= 3;
+              this.battlefield[index].gold -= 1;
             }
           }
 
