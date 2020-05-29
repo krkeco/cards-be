@@ -77,6 +77,7 @@ type WaitingRoom {
 	started: Boolean
 },
   type Query {
+    wakeup: String,
     waitingRoom(gameId: Int): WaitingRoom,
     newGame(players: [String], types: [String]): Int!,
     joinGame(players: [String],types: [String],gameId: Int): [String]!,
@@ -92,6 +93,9 @@ type WaitingRoom {
 
 // The root provides a resolver function for each API endpoint
 var root = {
+  wakeup: () => {
+    return 'awake';
+  },
   waitingRoom: ({ gameId }) => {
     let game = gameDB[gameId];
     let started = true;
