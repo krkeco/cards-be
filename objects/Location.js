@@ -343,8 +343,8 @@ module.exports.Location = function Location(deck, story) {
     let influencer = {
       name: 'neutral',
       id: 0,
-      influence: this.influence,
-      totalInfluence: this.influence,
+      influence: 0,
+      totalInfluence: 0,
       poliBonus: 0,
     };
 
@@ -385,10 +385,16 @@ module.exports.Location = function Location(deck, story) {
 
           // //console.log('player from battlefield'+player+index)
           if (
+            this.battlefield[index] &&
             this.battlefield[index].influence +
-              this.battlefield[index].poliBonus >
+            this.battlefield[index].poliBonus >
             influencer.influence + influencer.poliBonus
           ) {
+            
+            if(influencer.influence + influencer.poliBonus > 0){
+              runnerUp = influencer.influence + influencer.poliBonus;
+            }
+            
             influencer = this.battlefield[index];
           } else if (
             this.battlefield[index] &&
@@ -406,6 +412,7 @@ module.exports.Location = function Location(deck, story) {
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
       influencer.influence + influencer.poliBonus - runnerUp;
+      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus+ " minus:" + runnerUp)
     return influencer;
   };
   this.setInfluencing = function () {
