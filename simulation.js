@@ -29,7 +29,7 @@ solo calling:
   joshua: 6 / 13 / 50
 */
 
-  let player1 = 'Paul';
+  let player1 = 'Jonah';
   let player2 = 'Paul';
   let players = [player1];
   let overload = 0;

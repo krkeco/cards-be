@@ -154,28 +154,28 @@ module.exports.Location = function Location(deck, story) {
       //console.log('ninevite advantage bonus')
     }
 
-    if(owner.hand[card].abilities.indexOf('ark') > -1 ) {
-      // newField[owner.id].influence += 2;
-      let hasFaith = false;
-      if(this.battlefield[owner.id]){
-        this.battlefield[owner.id].cards.map((card,index)=>{
-          if(card.abilities.indexOf('faith') > -1){
-            hasFaith = true;
-          }
-        })
-      }
-      if(hasFaith){
-        console.log('has faith +3')
-        this.weariness-=3;
-        if (this.weariness < 0) {
-          this.weariness = 0;
-        }
-      }else{
-        console.log('has fear +3')
-        this.weariness+=3;
-      }
-      //console.log('ninevite advantage bonus')
-    }
+    // if(owner.hand[card].abilities.indexOf('ark') > -1 ) {
+    //   // newField[owner.id].influence += 2;
+    //   let hasFaith = false;
+    //   if(this.battlefield[owner.id]){
+    //     this.battlefield[owner.id].cards.map((card,index)=>{
+    //       if(card.abilities.indexOf('faith') > -1){
+    //         hasFaith = true;
+    //       }
+    //     })
+    //   }
+    //   if(hasFaith){
+    //     console.log('has faith +3')
+    //     this.weariness-=3;
+    //     if (this.weariness < 0) {
+    //       this.weariness = 0;
+    //     }
+    //   }else{
+    //     console.log('has fear +3')
+    //     this.weariness+=3;
+    //   }
+    //   //console.log('ninevite advantage bonus')
+    // }
 
     if (owner.hand[card].abilities.indexOf('angelic') > -1) {
       this.angelic = true;
@@ -244,6 +244,13 @@ module.exports.Location = function Location(deck, story) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
       this.weariness += parseInt(owner.hand[card].fear);
     }
+    if (owner.hand[card].faith) {
+      //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
+      this.weariness -= parseInt(owner.hand[card].faith);
+      if(this.weariness < 0){
+        this.weariness = 0;
+      }
+    }
 
     //moved to faithful
     // if (owner.hand[card].faith) {
@@ -252,18 +259,18 @@ module.exports.Location = function Location(deck, story) {
     //     this.weariness = 0;
     //   }
     // }
-    if (owner.hand[card].abilities.indexOf('faithful') > -1) {
-      if (!newField[owner.id].faithfulReport) {
-        newField[owner.id].faithfulReport = 0;
-      }
-      newField[owner.id].faithfulReport += owner.hand[card].faith;
-    }
+    // if (owner.hand[card].abilities.indexOf('faithful') > -1) {
+    //   if (!newField[owner.id].faithfulReport) {
+    //     newField[owner.id].faithfulReport = 0;
+    //   }
+    //   newField[owner.id].faithfulReport += owner.hand[card].faith;
+    // }
 
 
-    if (owner.hand[card].abilities.indexOf('balaam') > -1) {
-      newField[owner.id].influence += copyInfluence;
-      //console.log('balaam added '+copyInfluence+" to this location")
-    }
+    // if (owner.hand[card].abilities.indexOf('balaam') > -1) {
+    //   newField[owner.id].influence += copyInfluence;
+    //   //console.log('balaam added '+copyInfluence+" to this location")
+    // }
     if (owner.hand[card].reinforce > 0) {
       for (let x = 0; x < owner.hand[card].reinforce; x++) {
         //console.log('reinforcements!')
@@ -358,16 +365,16 @@ module.exports.Location = function Location(deck, story) {
             this.apostle = index;
           }
 
-          if (this.battlefield[index].faithfulReport) {
-            while (
-              this.battlefield[index].faithfulReport > 0 &&
-              this.battlefield[index].gold > 0
-            ) {
-              this.weariness -= 1;
-              this.battlefield[index].faithfulReport-=1;
-              this.battlefield[index].gold -= 1;
-            }
-          }
+          // if (this.battlefield[index].faithfulReport) {
+          //   while (
+          //     this.battlefield[index].faithfulReport > 0 &&
+          //     this.battlefield[index].gold > 0
+          //   ) {
+          //     this.weariness -= 1;
+          //     this.battlefield[index].faithfulReport-=1;
+          //     this.battlefield[index].gold -= 1;
+          //   }
+          // }
 
           // if (player.haman) {
           //   let greatest = 0;
@@ -428,7 +435,7 @@ module.exports.Location = function Location(deck, story) {
       if (this.apostle > -1) {
         this.battlefield.map((bf,index)=>{
           if(bf && bf.playPaul){
-            if(influencer.id == bf.id && influencer.finalInfluence > this.influence + this.weariness * 2){
+            if(influencer.id == bf.id && influencer.finalInfluence > this.influence + this.weariness){
               this.proselytized[bf.id] += 1;
               console.log('paul got a church')
             }else{
@@ -439,9 +446,9 @@ module.exports.Location = function Location(deck, story) {
         })
       }
 
-      // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness*2)
+      // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness)
       if (
-        influencer.finalInfluence > this.influence + this.weariness * 2 &&
+        influencer.finalInfluence > this.influence + this.weariness &&
         influencer.name != 'neutral'
       ) {
         this.influencer = influencer;
