@@ -23,11 +23,15 @@ module.exports.Player = function Player(
 
   this.startTurn = function () {
     this.discardHand();
+    this.removePlayed();
+    this.mills = 0;
+  };
+  this.removePlayed = function () {
     let newDiscard = [...this.played, ...this.discard];
     this.discard = [...newDiscard];
     this.played = [];
-    this.mills = 0;
-  };
+    return newDiscard;
+  }
 
   this.drawCards = function (cardCount) {
     //console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)
@@ -84,54 +88,61 @@ module.exports.Player = function Player(
     this.hand = [];
   };
   this.discardCard = function (index) {
-    let newHand = [...this.hand];
-    //console.log('discardCard:')
-    this.discard = [...this.discard, this.hand[index]];
-    newHand.splice(index, 1);
-    this.hand = [...newHand];
-    //console.log('hand now:'+this.hand.length)
+    if(index != null && index > -1 && this.hand.length > index){
+        let newHand = [...this.hand];
+        //console.log('discardCard:')
+        this.discard = [...this.discard, this.hand[index]];
+        newHand.splice(index, 1);
+        this.hand = [...newHand];
+        //console.log('hand now:'+this.hand.length)
+      }
   };
+
   this.playedCard = function (index) {
     // let newHand = [...this.hand]
     //console.log('discardCard:')
-    this.played = [...this.played, this.hand[index]];
-    // newHand.splice(index,1)
-    let newHand = [];
-    this.hand.map((card, i) => {
-      if (i != index) {
-        newHand.push(card);
+    if(index !=null &&index > -1){
+        this.played = [...this.played, this.hand[index]];
+        // newHand.splice(index,1)
+        let newHand = [];
+        this.hand.map((card, i) => {
+          if (i != index) {
+            newHand.push(card);
+          }
+        });
+        this.hand = [...newHand];
       }
-    });
-    this.hand = [...newHand];
     //console.log('hand now:'+this.hand.length)
   };
   this.buyCard = function (card) {
     //console.log('buyCard:')
     //console.log(card)
-    this.discard = [card, ...this.discard];
+    if(card != null){
+      this.discard = [card, ...this.discard];
+    }
   };
 
   this.millCard = function (index) {
-    //console.log('millCard:')
-    let cardName = this.hand[index].name;
-    // if(this.hand[index].abilities.indexOf('Ninevite') == -1){
+    if(index != null && index > -1 && this.hand.length > index){
+      let cardName = this.hand[index].name;
       this.mills++;
       let newHand = [...this.hand];
       newHand.splice(index, 1);
       this.hand = [...newHand];
       return this.name+" milled "+cardName
-      // }else{
-      //   return "Cannot mill a Ninevite"
-      //   console.log('cannot mill a ninevite')
-      // }
+    }else{
+      return 'card does not exist'
+    }
   };
 
   this.getTotalGold = function () {
     //console.log('getTotalGold:')
     let golds = 0;
-    this.hand.map((card, index) => {
-      golds += this.hand[index].gold;
-    });
+    if(this.hand.length > 0){
+      this.hand.map((card, index) => {
+        golds += this.hand[index].gold;
+      });
+    }
     //console.log('has '+golds+' golds')
     return golds;
   };
