@@ -9,13 +9,13 @@
 				"Influence cards: If you influence a location, you get a special influence card this turn. Influence cards don't go to your discard when you use them, but you automatically draw them if you influence locations",
 				"Scrapping Cards: Dragging a card into the scrap pile will remove it from your deck for the rest of the game.  This is helpful when you scrap influence and gold so you can get better cards more often"
 			],
-			"influence":3,
+			"influence":4,
 			"abilities":["jerusalem"],
 			"card":{
 				"name":"Jerusalem Influence",
 				"img":"leavestreak",
 				"cost": 0,
-				"gold":2,
+				"gold":1,
 				"draw":0,
 				"influence":2,
 				"abilities":["scrap"]
@@ -40,13 +40,13 @@
 				"Mob: +1 INF for every other card you already played here",
 				"Angelic: this location does not check influence this turn"
 			],
-				"influence":3,
+				"influence":4,
 				"abilities":["rome"],
 			"card":{
 				"name":"Romes's Influence",
 				"img":"leavestreak",
 				"cost": 0,
-				"gold":2,
+				"gold":1,
 				"draw":0,
 				"influence":0,
 				"abilities":["scrap"]
@@ -59,8 +59,8 @@
 				"cost": 0,
 				"gold":0,
 				"draw":0,
-				"influence":2,
-				"faith":2,
+				"influence":0,
+				"faith":3,
 				"abilities":[]},
 			"location":{
 				"name":"Canaan",
@@ -71,7 +71,7 @@
 					"Fear: Reduce all players influence by 1 for each Fear on a location",
 					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
 				],
-				"influence":2,
+				"influence":3,
 				"abilities":[0],
 			"card":{
 				"name":"Canaan's Influence",
@@ -101,7 +101,7 @@
 					"Ninevite: gain 1 influence when played on Nineveh",
 					"Reinforce [X]: This card draws and plays [X] cards on its location"
 				],
-				"influence":3,
+				"influence":4,
 				"abilities":["nineveh"],
 			"card":{
 				"name":"Nineveh's Influence",
@@ -130,7 +130,7 @@
 					"Politics [X]: For each Edict on this location: gain [X] influence",
 					"Mordecai: copy the card with the highest influence/politics/gold you played on this location"
 				],
-				"influence":3,
+				"influence":4,
 				"abilities":["babylon"],
 				"card":{
 					"name":"Babylon's Influence",
@@ -138,7 +138,7 @@
 					"cost": 0,
 					"gold":0,
 					"draw":0,
-					"influence":2,
+					"influence":1,
 					"abilities":["scrap","edict"]
 			}}
 		}
@@ -244,7 +244,7 @@
 				 	"gold":2,
 				 	"draw":0,
 				 	"influence":0,
-				 	"faith":4,
+				 	"faith":3,
 				 	"abilities":[]},
 			{"name":"The Nephalim",
 				"img":"corridor",
@@ -374,10 +374,10 @@
 			{"name":"Edict of Annihilation",
 				"img":"annihilation",
 				"quantity":2,
-					"cost": 6,
+					"cost": 7,
 					"gold":0,
 					"influence":12,
-					"politics":-2,
+					"politics":-1,
 					"abilities":["edict"]}
 		]
 

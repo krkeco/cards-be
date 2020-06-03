@@ -395,7 +395,7 @@ module.exports.Location = function Location(deck, story) {
         if (this.name == 'Canaan' && influencer.name == 'Joshua' && this.id == influencer.id) {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
-          this.card.influence += 2*this.abilities[0] - 2;
+          this.card.influence += this.abilities[0] - 1;
           console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }
