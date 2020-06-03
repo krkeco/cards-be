@@ -394,20 +394,21 @@ module.exports.Location = function Location(deck, story) {
           if (
             this.battlefield[index] &&
             this.battlefield[index].influence +
-            this.battlefield[index].poliBonus >
-            influencer.influence + influencer.poliBonus
+            this.battlefield[index].poliBonus -
+            this.weariness >
+            influencer.influence + influencer.poliBonus - this.weariness
           ) {
             
-            if(influencer.influence + influencer.poliBonus > 0){
-              runnerUp = influencer.influence + influencer.poliBonus;
+            if(influencer.influence + influencer.poliBonus - this.weariness > 0){
+              runnerUp = influencer.influence + influencer.poliBonus- this.weariness;
             }
             
             influencer = this.battlefield[index];
           } else if (
             this.battlefield[index] &&
-            this.battlefield[index].influence + influencer.poliBonus > runnerUp
+            this.battlefield[index].influence + influencer.poliBonus - this.weariness > runnerUp
           ) {
-            runnerUp = this.battlefield[index].influence + influencer.poliBonus;
+            runnerUp = this.battlefield[index].influence + influencer.poliBonus - this.weariness;
           }
         }
       });
@@ -418,7 +419,7 @@ module.exports.Location = function Location(deck, story) {
     // }
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
-      influencer.influence + influencer.poliBonus - runnerUp;
+      influencer.influence + influencer.poliBonus - runnerUp - this.weariness;
       console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus+ " minus:" + runnerUp)
     return influencer;
   };
@@ -435,7 +436,7 @@ module.exports.Location = function Location(deck, story) {
       if (this.apostle > -1) {
         this.battlefield.map((bf,index)=>{
           if(bf && bf.playPaul){
-            if(influencer.id == bf.id && influencer.finalInfluence > this.influence + this.weariness){
+            if(influencer.id == bf.id && influencer.finalInfluence > this.influence){
               this.proselytized[bf.id] += 1;
               console.log('paul got a church')
             }else{
@@ -448,7 +449,7 @@ module.exports.Location = function Location(deck, story) {
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness)
       if (
-        influencer.finalInfluence > this.influence + this.weariness &&
+        influencer.finalInfluence > this.influence  &&
         influencer.name != 'neutral'
       ) {
         this.influencer = influencer;

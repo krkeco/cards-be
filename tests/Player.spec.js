@@ -59,8 +59,10 @@ describe("drawCards function", () => {
     expect(player.deck.length).toEqual(0);
     expect(player.discard.length).toEqual(0);
   })
-  test("draw negative cards", ()=>{
+  test("draw broken cards", ()=>{
     player.drawCards(-3);
+    player.drawCards(undefined);
+    player.drawCards(['moose']);
     expect(player.hand.length).toEqual(6);
     expect(player.deck.length).toEqual(0);
     expect(player.discard.length).toEqual(0);

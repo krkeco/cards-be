@@ -17,9 +17,10 @@ module.exports.Player = function Player(
   this.firstPlayer = false;
   this.winning = false;
   this.name = story.character.name;
-  this.setAbilities = function (abilities) {
-    this.abilities = [...abilities];
-  };
+  
+  // this.setAbilities = function (abilities) {
+  //   this.abilities = [...abilities];
+  // };
 
   this.startTurn = function () {
     this.discardHand();
