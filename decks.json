@@ -59,14 +59,14 @@
 				"cost": 0,
 				"gold":0,
 				"draw":0,
-				"influence":3,
-				"faith":1,
+				"influence":2,
+				"faith":2,
 				"abilities":[]},
 			"location":{
 				"name":"Canaan",
 				"info":[
 					"Calling: Joshua must take control of Canaan and have it tier 3",
-					"Bane: If there are more than 13 Fear in the game, Joshua loses.  Every location gains 1 fear each turn",
+					"Bane: If there are more than 13 Fear on Canaan, Joshua loses.  Every location gains 1 fear each turn",
 					"Influence Bonus: 1 gold and 2 influence per tier",
 					"Fear: Reduce all players influence by 1 for each Fear on a location",
 					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
@@ -128,7 +128,7 @@
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
 					"Influence Bonus: 2 influence, edict",
 					"Politics [X]: For each Edict on this location: gain [X] influence",
-					"Mordecai: copy the highest influence/politics/gold you played on this location"
+					"Mordecai: copy the card with the highest influence/politics/gold you played on this location"
 				],
 				"influence":3,
 				"abilities":["babylon"],
@@ -227,7 +227,7 @@
 				"cost": 3,
 				"gold":2,
 				"influence":0,
-				"faith":1,
+				"faith":2,
 				"abilities":[]},
 			{"name":"Spies",
 				"img":"spies",
@@ -244,7 +244,7 @@
 				 	"gold":2,
 				 	"draw":0,
 				 	"influence":0,
-				 	"faith":3,
+				 	"faith":4,
 				 	"abilities":[]},
 			{"name":"The Nephalim",
 				"img":"corridor",
@@ -326,7 +326,7 @@
 			{"name":"Huge fish",
 				"img":"blunes",
 				"quantity":2,
-					"cost": 6,
+					"cost": 7,
 					"gold":0,
 					"reinforce":3,
 					"influence":2,

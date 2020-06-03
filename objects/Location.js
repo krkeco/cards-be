@@ -201,12 +201,10 @@ module.exports.Location = function Location(deck, story) {
     }
     if (owner.hand[card].faith) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
-      this.weariness -= parseInt(owner.hand[card].faith);
-      
-      newField[owner.id].influence += owner.hand[card].faith;
 
-      if(this.weariness < 0){
-        this.weariness = 0;
+      while(this.weariness > 0 && owner.hand[card].faith > 0){
+        this.weariness -= 1;
+        newField[owner.id].influence += 1;
       }
     }
 

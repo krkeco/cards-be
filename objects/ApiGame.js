@@ -260,13 +260,15 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
             'checking joshua wincon:' + this.locations[player.id].abilities[0],
           );
           let fear = 0;
-          Object.keys(this.locations).map((loc,ind)=>{
-            fear += this.locations[loc].weariness
-          })
+          // Object.keys(this.locations).map((loc,ind)=>{
+          // if(this.locations[loc].weariness > fear){
+          //   fear = this.locations[loc].weariness
+          // }
+          // })
           if (this.locations[player.id].abilities[0] > 2) {
             this.winning = true;
             this.winner = player.name+player.id;
-          }else if(fear >= 13){
+          }else if(this.locations[player.id].weariness >= 13){
             this.loser = player.name+player.id
           }
 
@@ -328,6 +330,12 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
     this.turn = this.turn + 1;
     console.log('\n new turn:' + this.turn);
 
+    Object.keys(this.locations).map((location) => {
+      if(this.canaan){
+        this.locations[location].weariness +=1;
+      }
+    });
+
     console.log('player setup');
 
     this.players.map((player, index) => {
@@ -336,9 +344,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
       //influence cards
       Object.keys(this.locations).map((location) => {
-        if(this.canaan){
-          this.locations[location].weariness +=1;
-        }
+        
         if (this.locations[location].influencer.id == player.id) {
           let newHand = [...player.hand];
           newHand.push(this.locations[location].card);
