@@ -154,29 +154,6 @@ module.exports.Location = function Location(deck, story) {
       //console.log('ninevite advantage bonus')
     }
 
-    // if(owner.hand[card].abilities.indexOf('ark') > -1 ) {
-    //   // newField[owner.id].influence += 2;
-    //   let hasFaith = false;
-    //   if(this.battlefield[owner.id]){
-    //     this.battlefield[owner.id].cards.map((card,index)=>{
-    //       if(card.abilities.indexOf('faith') > -1){
-    //         hasFaith = true;
-    //       }
-    //     })
-    //   }
-    //   if(hasFaith){
-    //     console.log('has faith +3')
-    //     this.weariness-=3;
-    //     if (this.weariness < 0) {
-    //       this.weariness = 0;
-    //     }
-    //   }else{
-    //     console.log('has fear +3')
-    //     this.weariness+=3;
-    //   }
-    //   //console.log('ninevite advantage bonus')
-    // }
-
     if (owner.hand[card].abilities.indexOf('angelic') > -1) {
       this.angelic = true;
     }
@@ -203,13 +180,6 @@ module.exports.Location = function Location(deck, story) {
           // blessing =true;
           console.log('new greatest card'+inf)
         }
-        // else if(blessing != true && gol > gGold){
-        //   greatest = inf;
-        //   gpolitic = pol;
-        //   gGold = gol;
-        //   blessing=true;
-        //   console.log('new richest card'+gol)
-        // }
       });
       // newField[owner.id]
       let newCard = { 
@@ -221,24 +191,9 @@ module.exports.Location = function Location(deck, story) {
         politics:gpolitic,
         abilities:["scrap"]
       }
-      // newCard.influence = greatest;
-      // newCard.politics = gpolitic;
-      // newCard.gold = gGold;
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
-      // newField[owner.id].influence += greatest;
-      // newField[owner.id].politics += gpolitic;
-      // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
-      //console.log('mordecai added '+greatest+" to this location")
     }
-
-    // if (owner.hand[card].abilities.indexOf('haman') > -1) {
-    //   newField.map((bf, ind) => {
-    //     if (bf && bf.id != owner.id) {
-    //       bf.haman = true;
-    //     }
-    //   });
-    // }
 
     if (owner.hand[card].fear) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
@@ -247,30 +202,14 @@ module.exports.Location = function Location(deck, story) {
     if (owner.hand[card].faith) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
       this.weariness -= parseInt(owner.hand[card].faith);
+      
+      newField[owner.id].influence += owner.hand[card].faith;
+
       if(this.weariness < 0){
         this.weariness = 0;
       }
     }
 
-    //moved to faithful
-    // if (owner.hand[card].faith) {
-    //   this.weariness -= owner.hand[card].faith;
-    //   if (this.weariness < 0) {
-    //     this.weariness = 0;
-    //   }
-    // }
-    // if (owner.hand[card].abilities.indexOf('faithful') > -1) {
-    //   if (!newField[owner.id].faithfulReport) {
-    //     newField[owner.id].faithfulReport = 0;
-    //   }
-    //   newField[owner.id].faithfulReport += owner.hand[card].faith;
-    // }
-
-
-    // if (owner.hand[card].abilities.indexOf('balaam') > -1) {
-    //   newField[owner.id].influence += copyInfluence;
-    //   //console.log('balaam added '+copyInfluence+" to this location")
-    // }
     if (owner.hand[card].reinforce > 0) {
       for (let x = 0; x < owner.hand[card].reinforce; x++) {
         //console.log('reinforcements!')
@@ -474,9 +413,10 @@ module.exports.Location = function Location(deck, story) {
     this.apostle = -1;
     this.switcheroo = [];
     this.traversal = 0;
-    if (this.name == 'Canaan') {
-      this.weariness+=1;
-      //console.log('end of turn weariness for canaan')
-    }
+    //moved to apigame
+    // if (this.name == 'Canaan') {
+    //   this.weariness+=1;
+    //   //console.log('end of turn weariness for canaan')
+    // }
   };
 };

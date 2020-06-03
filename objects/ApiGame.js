@@ -19,6 +19,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
   this.slug = 0;
   this.log = [];
   this.simulation= true;
+  this.canaan = false;
 
   this.getTurn = () => {
     return this.turn;
@@ -142,6 +143,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           this.Joshua.id = index;
           this.players.push(this.Joshua);
           this.locations[Canaan.id] = Canaan;
+          this.canaan = true;
           break;
         case 'Paul':
           let Rome = new loc.Location(
@@ -334,6 +336,9 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
       //influence cards
       Object.keys(this.locations).map((location) => {
+        if(this.canaan){
+          this.locations[location].weariness +=1;
+        }
         if (this.locations[location].influencer.id == player.id) {
           let newHand = [...player.hand];
           newHand.push(this.locations[location].card);

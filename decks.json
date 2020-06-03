@@ -34,7 +34,7 @@
 				"name":"Rome",
 			"info":[
 				"Calling: Plant 7 churches to win",
-				"Bane: If Paul tries to plant a church and loses the influence check he gains a wound, if he loses 7 wounds he loses the game",
+				"Bane: If Paul fails to plant a church he gains a wound, if he loses 7 wounds he loses the game",
 				"Influence Bonus: 2 gold",
 				"Church Plant: Play an apostle on a location and be the influencer for this turn",
 				"Mob: +1 INF for every other card you already played here",
@@ -66,14 +66,12 @@
 				"name":"Canaan",
 				"info":[
 					"Calling: Joshua must take control of Canaan and have it tier 3",
-					"Bane: If there are more than 13 Fear in the game, Joshua loses",
+					"Bane: If there are more than 13 Fear in the game, Joshua loses.  Every location gains 1 fear each turn",
 					"Influence Bonus: 1 gold and 2 influence per tier",
-					"Fear: Any player with influence on this location loses 2 influence for each Fear here",
-					"Faith [X]: This card removes [X] Fear from the location it is played on",
-					"Faithful report: if you don't use 3 gold, gain 3 faith",
-					"Ark: if played on a location with faith: +3 faith, otherwise +3 fear"
+					"Fear: Reduce all players influence by 1 for each Fear on a location",
+					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
 				],
-				"influence":1,
+				"influence":2,
 				"abilities":[0],
 			"card":{
 				"name":"Canaan's Influence",
@@ -126,11 +124,11 @@
 			"location":{
 				"name":"Babylon",
 				"info":[
-					"Calling: Esther must play 18 influence on Babylon to win",
+					"Calling: Esther must have 18 influence more than any other player on Babylon to win",
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
-					"Influence Bonus: 3 influence",
-					"Politics [X]: For each Edict on this location: gain [X] (this is sometimes negative)",
-					"Mordecai: copy the highest influence you played on this location"
+					"Influence Bonus: 2 influence, edict",
+					"Politics [X]: For each Edict on this location: gain [X] influence",
+					"Mordecai: copy the highest influence/politics/gold you played on this location"
 				],
 				"influence":3,
 				"abilities":["babylon"],
@@ -262,6 +260,7 @@
 					"cost": 5,
 					"gold":0,
 					"draw":0,
+					"faith":2,
 					"influence":6,
 					"abilities":[]},			
 			{"name":"Balaam's Prayer",
