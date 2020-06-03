@@ -66,7 +66,7 @@
 				"name":"Canaan",
 				"info":[
 					"Calling: Joshua must take control of Canaan and have it tier 3",
-					"Bane: If there are more than 13 Fear on Canaan, Joshua loses.  Every location gains 1 fear each turn",
+					"Bane: If there is more than 13 Fear on Canaan, Joshua loses.  Every location gains 1 fear each turn",
 					"Influence Bonus: 1 gold and 2 influence per tier",
 					"Fear: Reduce all players influence by 1 for each Fear on a location",
 					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
