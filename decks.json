@@ -325,7 +325,7 @@
 					"abilities":[]},
 			{"name":"Huge fish",
 				"img":"blunes",
-				"quantity":02,
+				"quantity":2,
 					"cost": 7,
 					"gold":0,
 					"reinforce":3,
