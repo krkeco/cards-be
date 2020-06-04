@@ -162,7 +162,7 @@ module.exports.Location = function Location(deck, story) {
       card.influence += newField[owner.id].cards.length - 1;
     }
     if (owner.hand[card].abilities.indexOf('xerxes') > -1) {
-      this.switcheroo = owner.id;
+      this.switcheroo.push(owner.id);
     }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = 0;
@@ -367,7 +367,7 @@ module.exports.Location = function Location(deck, story) {
         if (this.name == 'Canaan' && influencer.name == 'Joshua' && this.id == influencer.id) {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
-          this.card.influence += this.abilities[0];
+          this.card.influence += this.abilities[0]-1;
           console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }

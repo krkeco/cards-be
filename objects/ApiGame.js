@@ -321,8 +321,92 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
     this.appendLog("Starting turn "+this.turn)
 
     Object.keys(this.locations).map((location, index) => {
+      //xerxes edict...
+      console.log('checking xerxes edict'+this.locations[location].switcheroo)
+
+       if(this.locations[location].switcheroo.length > 0){
+          console.log('we have a xerxes')
+        this.locations[location].switcheroo.map((king, ind)=>{
+          console.log('kingId:'+king)
+          let maxCardCost = 0;
+          let maxCard;
+          let switchId = -1;
+          this.locations[location].battlefield.map((bf, i)=>{
+
+            if(bf.id != king){
+            console.log('bf near king:'+JSON.stringify(bf.cards))
+
+              bf.cards.map((c,cInd)=>{
+                console.log('card check: '+JSON.stringify(c))
+                if(c.cost > maxCardCost){
+                  maxCard = c;
+                  maxCardCost = c.cost;
+                  switchId = bf.id
+                }
+              })
+            }
+            if(maxCard){
+              console.log('swap '+maxCard.name+' with xerxes')
+              let switchPlay = [...this.players[switchId].played]
+              console.log(switchPlay)
+              let swapper;
+              let swapperId = -1;
+              let kingId = -1;
+              switchPlay.map((card,cInd)=>{
+                if(card.name == maxCard.name){
+                  console.log('found the maxCard: '+card.name)
+                  swapper = {...card};
+                  swapperId = cInd;
+                  console.log('swapper is '+swapper.name)
+                  console.log('spliced switch'+switchPlay)
+                  
+                }})
+
+              let kingPlay = [...this.players[king].played]
+              console.log(kingPlay)
+              let xerxes;
+              kingPlay.map((card,cInd)=>{
+                if(card.abilities.indexOf('xerxes') > -1){
+                  console.log('found xerxes')
+                  xerxes = {...card};
+                  kingId = cInd;
+                  // break;
+                }
+              })
+              if(swapper && xerxes){
+                this.appendLog('Xerxes chooses: '+swapper.name)
+                kingPlay.splice(kingId,1);
+                console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
+                switchPlay.splice(swapperId,1);
+                console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
+                kingPlay = [...kingPlay, swapper]
+                switchPlay = [...switchPlay, xerxes]
+                this.players[switchId].played = [...switchPlay]
+                this.players[king].played = [...kingPlay]
+                console.log('swap successful:'+JSON.stringify(this.players[king].played))
+              }
+              // console.log('swapping'+xerxes.name+" with "+swapper.name)
+
+            }
+          });
+
+        })    
+       }
       this.locations[location].setInfluencing();
+    //       // console.log('so far so good:'+xerxes.name)
+    //       // let bestPlayed = [...this.players[switchId].played]
+    //       // let best = bestPlayed.slice(bestPlayed.map((c)=>c.name == kingsCard.name))
+    //       // console.log('so far so good:'+best.name)
+    //       // xerxesPlayed.push(best);
+    //       // bestPlayed.push(xerxes);
+    //       // this.players[king].played = [...xerxesPlayed]
+    //       // this.players[switchId].played = [...bestPlayed]
+    //       // console.log('xerxes switch xerxes:'+this.players[king].played.map((c)=>c.name+","))
+    //       // console.log('xerxes switch other:'+this.players[switchId].played.map((c)=>c.name+","))
+    //     })
+    // }
     });
+
     if(gameType == "all" || gameType == "conquer"){
       this.checkForConquerer();
     }

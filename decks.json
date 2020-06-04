@@ -120,7 +120,7 @@
 				"gold":2,
 				"influence":0,
 				"politics":2,
-				"abilities":["esther"]},
+				"abilities":[]},
 			"location":{
 				"name":"Babylon",
 				"info":[
@@ -366,7 +366,7 @@
 					"abilities":["edict","mordecai"]},
 			{"name":"Edict of Xerxes",
 				"img":"king",
-				"quantity":0,
+				"quantity":2,
 					"cost": 4,
 					"gold":0,
 					"influence":0,
