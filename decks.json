@@ -36,7 +36,7 @@
 				"Calling: Plant 7 churches to win",
 				"Bane: If Paul fails to plant a church he gains a wound, if he loses 7 wounds he loses the game",
 				"Influence Bonus: 2 gold",
-				"Church Plant: Play an apostle on a location and be the influencer for this turn",
+				"Apostle: Play an apostle on a location and be the influencer for this turn to plant a church or gain a wound if you are paul",
 				"Mob: +1 INF for every other card you already played here",
 				"Angelic: this location does not check influence this turn"
 			],
@@ -60,7 +60,7 @@
 				"gold":0,
 				"draw":0,
 				"influence":1,
-				"faith":2,
+				"faith":3,
 				"abilities":[]},
 			"location":{
 				"name":"Canaan",
@@ -90,7 +90,7 @@
 				"cost": 0,
 				"gold":0,
 				"reinforce":1,
-				"influence":2,
+				"influence":3,
 				"abilities":["Harden"]},
 			"location":{
 				"name":"Nineveh",
@@ -325,7 +325,7 @@
 					"abilities":[]},
 			{"name":"Huge fish",
 				"img":"blunes",
-				"quantity":2,
+				"quantity":02,
 					"cost": 7,
 					"gold":0,
 					"reinforce":3,
