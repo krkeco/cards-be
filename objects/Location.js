@@ -297,32 +297,6 @@ module.exports.Location = function Location(deck, story) {
             this.apostle = index;
           }
 
-          // if (this.battlefield[index].faithfulReport) {
-          //   while (
-          //     this.battlefield[index].faithfulReport > 0 &&
-          //     this.battlefield[index].gold > 0
-          //   ) {
-          //     this.weariness -= 1;
-          //     this.battlefield[index].faithfulReport-=1;
-          //     this.battlefield[index].gold -= 1;
-          //   }
-          // }
-
-          // if (player.haman) {
-          //   let greatest = 0;
-          //   let greatDex;
-          //   player.cards.map((card, index) => {
-          //     if (card.influence > greatest) {
-          //       greatest = card.influence;
-          //       greatDex = player;
-          //     }
-          //   });
-          //   if (greatDex) {
-          //     greatDex.influence -= greatest;
-          //   }
-          // }
-
-          // //console.log('player from battlefield'+player+index)
           if (
             this.battlefield[index] &&
             this.battlefield[index].influence +

@@ -9,10 +9,9 @@ module.exports.AI = function AI(player, locations) {
       allCards.map((card,index)=>{
         golds+= card.gold;
         infl += card.influence;
-        if(card.abilities.indexOf('apostle')>-1){
-          apostle+=1;
-        }
+
       })
+      console.log('checking player specific strategy '+player.name)
       switch (player.name) {
         case 'Esther':
           if (player.getTotalInfluence() >= 18) {
@@ -75,8 +74,12 @@ module.exports.AI = function AI(player, locations) {
           // }
           break;
         case 'Paul':
+          // let totalInf = player.getTotalInfluence();
+          // let locInf = locations[player.id].compareInfluence();
+          
           this.buySomething('influence')
           this.millSomething('gold');
+          this.attackSomething()
           // if(apostles > 1 && inf > 8){
           //   let infOne = 0;
           //   let apoOne = 0;
@@ -91,9 +94,8 @@ module.exports.AI = function AI(player, locations) {
           //     }
           //   }
           // }else{
-            this.attackSomething()
           // }
-
+          
         break;
         default:
           this.standardStrat();
