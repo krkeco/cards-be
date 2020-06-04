@@ -169,22 +169,24 @@ module.exports.Location = function Location(deck, story) {
       let gpolitic = 0;
       let gGold = 0;
       let blessing= false;
-      newField[owner.id].cards.map((card, index) => {
-        let inf = card.influence || 0
-        let gol = card.gold || 0
-        let pol = card.politics || 0
-        if (card.abilities.indexOf('mordecai') < 0 && inf +pol +gol> greatest + gpolitic*(this.edicts+1) + gGold) {
+      let greatCard = {name:"nothing",influence:0,abilities:['scrap']};
+      newField[owner.id].cards.map((c, index) => {
+        let inf = c.influence || 0
+        let gol = c.gold || 0
+        let pol = c.politics || 0
+        if (c.abilities.indexOf('mordecai') < 0 && inf +pol +gol> greatest + gpolitic*(this.edicts+1) + gGold) {
           greatest = inf;
           gpolitic = pol;
           gGold = gol;
-          let greatCard = card;
+          greatCard = c;
           // blessing =true;
           console.log('new greatest card'+inf)
         }
       });
       // newField[owner.id]
-      let newCard = {...card,
-        abilities:[...card.abilities,"scrap"]
+      let newCard = {...greatCard,
+        name: "mordecai's blessing: "+greatCard.name,
+        abilities:[...greatCard.abilities,"scrap"]
       }
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
