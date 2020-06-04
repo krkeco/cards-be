@@ -401,6 +401,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
         abilities: location.abilities,
         influencer: theInfluencer,
         influencerId: location.influencer.id,
+        edicts:location.edicts,
         info: location.info,
         weariness: location.weariness,
         wounds: location.wounds,

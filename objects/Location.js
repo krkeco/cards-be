@@ -177,19 +177,14 @@ module.exports.Location = function Location(deck, story) {
           greatest = inf;
           gpolitic = pol;
           gGold = gol;
+          let greatCard = card;
           // blessing =true;
           console.log('new greatest card'+inf)
         }
       });
       // newField[owner.id]
-      let newCard = { 
-        name:"Mordecai's Blessing",
-        img:'mordecai',
-        gold:gGold,
-        cost:0,
-        influence:greatest,
-        politics:gpolitic,
-        abilities:["scrap"]
+      let newCard = {...card,
+        abilities:[...card.abilities,"scrap"]
       }
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
@@ -286,7 +281,7 @@ module.exports.Location = function Location(deck, story) {
     //console.log('location:compareInfluence:')
     let influencer = {
       name: 'neutral',
-      id: 0,
+      id: -1,
       influence: 0,
       totalInfluence: 0,
       poliBonus: 0,
@@ -357,7 +352,7 @@ module.exports.Location = function Location(deck, story) {
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
       influencer.influence + influencer.poliBonus - runnerUp - this.weariness;
-      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus+ " minus:" + runnerUp)
+      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus+ " minus:" + runnerUp + " vs "+this.influence)
     return influencer;
   };
   this.setInfluencing = function () {
@@ -392,18 +387,17 @@ module.exports.Location = function Location(deck, story) {
         this.influencer = influencer;
         // //console.log('new influencer is now'+influencer.name)
 
+        if (this.name == 'Canaan' && influencer.name == 'Joshua' && this.id == influencer.id) {
+          this.abilities = [this.abilities[0] + 1];
+          this.influence += 3;
+          this.card.influence += this.abilities[0];
+          console.log('canaan conquered, tier up'+this.abilities[0])
+        }
       }
 
-      if (this.name == 'Canaan' && this.id == influencer.id) {
-        this.abilities = [this.abilities[0] + 1];
-        this.influence += 3;
-        this.card.influence += this.abilities[0] - 1;
-        console.log('canaan conquered, tier up'+this.abilities[0])
-      }
 
       this.postInfluencePhase();
-      //console.log('influence for '+this.name+' checked; Influencer is now: '+this.influencer.name+" \n battlefield:"+JSON.stringify(this.battlefield))
-    }
+    }//angelic
   };
   this.postInfluencePhase = function () {
     this.angelic = false;

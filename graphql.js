@@ -54,6 +54,7 @@ type Location {
 	battlefield: [Battlefield]
 	proselytized: [Int],
 	hardened:Int,
+  edicts:Int,
 	wounds: [Int],
 	weariness: Int,
 			

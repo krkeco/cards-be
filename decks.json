@@ -376,8 +376,8 @@
 				"quantity":2,
 					"cost": 7,
 					"gold":0,
-					"influence":12,
-					"politics":-1,
+					"influence":13,
+					"politics":-2,
 					"abilities":["edict"]}
 		]
 
