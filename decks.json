@@ -128,7 +128,8 @@
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
 					"Influence Bonus: 2 influence, edict",
 					"Politics [X]: For each Edict on this location: gain [X] influence",
-					"Mordecai: copy the card with the highest influence/politics/gold you played on this location"
+					"Mordecai: copy the card with the highest influence/politics/gold you played on this location",
+					"Xerxe's Edict: At the end of the turn, after influence checks, exchange this card with the highest cost card on the location"
 				],
 				"influence":4,
 				"abilities":["babylon"],

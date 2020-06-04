@@ -338,7 +338,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
               bf.cards.map((c,cInd)=>{
                 console.log('card check: '+JSON.stringify(c))
-                if(c.cost > maxCardCost){
+                if(c.cost > maxCardCost && c.name != "Edict of Xerxes"){
                   maxCard = c;
                   maxCardCost = c.cost;
                   switchId = bf.id
