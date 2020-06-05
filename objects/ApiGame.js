@@ -414,11 +414,11 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
     this.turn = this.turn + 1;
     console.log('\n new turn:' + this.turn);
 
-    Object.keys(this.locations).map((location) => {
-      if(this.canaan){
-        this.locations[location].weariness +=1;
-      }
-    });
+    // Object.keys(this.locations).map((location) => {
+    //   if(this.canaan){
+    //     this.locations[location].weariness +=1;
+    //   }
+    // });
 
     console.log('player setup');
 

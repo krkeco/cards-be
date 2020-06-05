@@ -384,9 +384,9 @@ module.exports.Location = function Location(deck, story) {
     this.switcheroo = [];
     this.traversal = 0;
     //moved to apigame
-    // if (this.name == 'Canaan') {
-    //   this.weariness+=1;
-    //   //console.log('end of turn weariness for canaan')
-    // }
+    if (this.name == 'Canaan') {
+      this.weariness+=1;
+      //console.log('end of turn weariness for canaan')
+    }
   };
 };
