@@ -371,7 +371,7 @@
 					"cost": 4,
 					"gold":0,
 					"influence":0,
-					"abilities":["xerxes"]},
+					"abilities":["xerxes","edict"]},
 			{"name":"Edict of Annihilation",
 				"img":"annihilation",
 				"quantity":2,
