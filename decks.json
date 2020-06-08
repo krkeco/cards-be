@@ -34,11 +34,11 @@
 				"name":"Rome",
 			"info":[
 				"Calling: Plant 7 churches to win",
-				"Bane: If Paul fails to plant a church he gains a wound, if he loses 7 wounds he loses the game",
-				"Influence Bonus: 2 gold",
-				"Apostle: Play an apostle on a location and be the influencer for this turn to plant a church or gain a wound if you are paul",
+				"Bane: If Paul fails to plant a church he gains a wound, if he has 7 wounds he loses the game",
+				"Influence Bonus: 1 gold",
+				"Apostle: If you play an apostle on a location and become influencer, you plant a church, otherwise you gain a wound",
 				"Mob: +1 INF for every other card you already played here",
-				"Angelic: this location does not check influence this turn"
+				"Angelic: If you are not the greatest influencer this turn, this location does not check influence this turn"
 			],
 				"influence":4,
 				"abilities":["rome"],
@@ -65,9 +65,9 @@
 			"location":{
 				"name":"Canaan",
 				"info":[
-					"Calling: Joshua must take control of Canaan and have it tier 3",
-					"Bane: If there is more than 13 Fear on Canaan, Joshua loses.  Every location gains 1 fear each turn",
-					"Influence Bonus: 1 gold and 2 influence per tier",
+					"Calling: Every time Joshua plays enough influence to become influencer of Canaan (even if he already is) it will go up 1 tier.  When it reaches Tier 4, Joshua wins",
+					"Bane: If there is more than 13 Fear on Canaan, Joshua loses.  Canaan gains 1 fear each turn",
+					"Influence Bonus: 1 Fear per tier",
 					"Fear: Reduce all players influence by 1 for each Fear on a location",
 					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
 				],
@@ -77,7 +77,8 @@
 				"name":"Canaan's Influence",
 				"img":"leavestreak",
 				"cost": 0,
-				"gold":1,
+				"gold":0,
+				"fear":1,
 				"draw":0,
 				"influence":0,
 				"abilities":["scrap"]
@@ -126,10 +127,10 @@
 				"info":[
 					"Calling: Esther must have 18 influence more than any other player on Babylon to win",
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
-					"Influence Bonus: 2 influence, edict",
+					"Influence Bonus: 1 influence, edict",
 					"Politics [X]: For each Edict on this location: gain [X] influence",
 					"Mordecai: copy the card with the highest influence/politics/gold you played on this location",
-					"Xerxe's Edict: At the end of the turn, after influence checks, exchange this card with the highest cost card on the location"
+					"Xerxe's Edict: At the end of the turn, after influence checks, permanently trade this card with the highest cost card on the location"
 				],
 				"influence":4,
 				"abilities":["babylon"],
@@ -165,14 +166,6 @@
 			"draw":0,
 			"influence":4,
 			"abilities":["apostle"]},
-			{"name":"Timothy",
-		"img":"jellyfishcarn",
-		"quantity":1,
-			"cost": 3,
-			"gold":1,
-			"draw":0,
-			"influence":2,
-			"abilities":["apostle"]},
 			{"name":"Titus",
 		"img":"bedazzlejewel",
 		"quantity":1,
@@ -180,6 +173,14 @@
 			"gold":2,
 			"draw":0,
 			"influence":0,
+			"abilities":["apostle"]},
+			{"name":"Timothy",
+		"img":"jellyfishcarn",
+		"quantity":1,
+			"cost": 3,
+			"gold":1,
+			"draw":0,
+			"influence":2,
 			"abilities":["apostle"]},
 			{"name":"Epistle",
 				"img":"crackplaster",
