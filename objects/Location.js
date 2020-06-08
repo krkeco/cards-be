@@ -10,7 +10,7 @@ module.exports.Location = function Location(deck, story) {
   this.abilities = story.abilities;
   this.influencer = { name: 'neutral' };
   this.proselytized = [0,0,0,0];
-  this.angelic = false;
+  this.angelic = -1;
   this.apostle = -1;
   this.traversal = 0;
   this.switcheroo = [];
@@ -155,7 +155,7 @@ module.exports.Location = function Location(deck, story) {
     }
 
     if (owner.hand[card].abilities.indexOf('angelic') > -1) {
-      this.angelic = true;
+      this.angelic = owner.id;
     }
     if (owner.hand[card].abilities.indexOf('mob') > -1) {
       newField[owner.id].influence += newField[owner.id].cards.length - 1;
@@ -334,12 +334,13 @@ module.exports.Location = function Location(deck, story) {
   };
   this.setInfluencing = function () {
 
-    if (this.angelic) {
+    let influencer = this.compareInfluence();
+
+    if (this.angelic > -1 && influencer.id != this.angelic) {
       //console.log('moments peace no influence today')
       this.postInfluencePhase();
     } else {
       //console.log('location:setInfluencing:')
-      let influencer = this.compareInfluence();
       // let baseInfluence = this.influence;
 
       if (this.apostle > -1) {
@@ -377,7 +378,7 @@ module.exports.Location = function Location(deck, story) {
     }//angelic
   };
   this.postInfluencePhase = function () {
-    this.angelic = false;
+    this.angelic = -1;
     this.battlefield = [];
     this.edicts = 0;
     this.apostle = -1;

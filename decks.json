@@ -117,8 +117,8 @@
 			"character":{"name":"Esther",
 				"img":"esther",
 				"cost": 0,
-				"gold":2,
-				"influence":0,
+				"gold":1,
+				"influence":1,
 				"politics":2,
 				"abilities":[]},
 			"location":{
@@ -360,7 +360,7 @@
 				 	"abilities":["edict"]},
 			{"name":"Edict of Mordecai",
 				"img":"mordecai",
-				"quantity":2,
+				"quantity":3,
 					"cost": 5,
 					"gold":0,
 					"influence":0,
@@ -378,7 +378,7 @@
 					"cost": 7,
 					"gold":0,
 					"influence":13,
-					"politics":-2,
+					"politics":-1,
 					"abilities":["edict"]}
 		]
 
