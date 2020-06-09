@@ -387,7 +387,7 @@ module.exports.Location = function Location(deck, story) {
     this.traversal = 0;
     //moved to apigame
     if (this.name == 'Canaan') {
-      this.weariness+=1;
+      this.weariness+=2;
       //console.log('end of turn weariness for canaan')
     }
   };
