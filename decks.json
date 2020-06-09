@@ -9,7 +9,7 @@
 				"Influence cards: If you influence a location, you get a special influence card this turn. Influence cards don't go to your discard when you use them, but you automatically draw them if you influence locations",
 				"Scrapping Cards: Dragging a card into the scrap pile will remove it from your deck for the rest of the game.  This is helpful when you scrap influence and gold so you can get better cards more often"
 			],
-			"influence":5,
+			"influence":3,
 			"abilities":["jerusalem"],
 			"card":{
 				"name":"Jerusalem Influence",
@@ -17,7 +17,7 @@
 				"cost": 0,
 				"gold":1,
 				"draw":0,
-				"influence":2,
+				"influence":1,
 				"abilities":["scrap"]
 			}
 		},
@@ -28,7 +28,7 @@
 				"cost": 0,
 				"gold":1,
 				"draw":0,
-				"influence":3,
+				"influence":2,
 				"abilities":["apostle"]},
 			"location":{
 				"name":"Rome",
@@ -40,7 +40,7 @@
 				"Mob: +1 INF for every other card you already played here",
 				"Angelic: If you are not the greatest influencer this turn, this location does not check influence this turn"
 			],
-				"influence":5,
+				"influence":3,
 				"abilities":["rome"],
 			"card":{
 				"name":"Romes's Influence",
@@ -71,7 +71,7 @@
 					"Fear: Reduce all players influence by 1 for each Fear on a location",
 					"Faith [X]: Remove [X] fear on a location, gain [X] influence if you do"
 				],
-				"influence":4,
+				"influence":2,
 				"abilities":[0],
 			"card":{
 				"name":"Canaan's Influence",
@@ -102,7 +102,7 @@
 					"Ninevite: gain 1 influence when played on Nineveh",
 					"Reinforce [X]: This card draws and plays [X] cards on its location"
 				],
-				"influence":5,
+				"influence":3,
 				"abilities":["nineveh"],
 			"card":{
 				"name":"Nineveh's Influence",
@@ -132,7 +132,7 @@
 					"Mordecai: copy the card with the highest influence/politics/gold you played on this location",
 					"Xerxe's Edict: At the end of the turn, after influence checks, permanently trade this card with the highest cost card on the location"
 				],
-				"influence":5,
+				"influence":3,
 				"abilities":["babylon"],
 				"card":{
 					"name":"Babylon's Influence",
