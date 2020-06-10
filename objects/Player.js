@@ -2,8 +2,8 @@ module.exports.Player = function Player(
   story,
   deck,
   type = 'AI',
-  color = 'red',
   id = 0,
+  color = 'red',
 ) {
   this.deck = [story.character, ...deck];
   this.hand = [];

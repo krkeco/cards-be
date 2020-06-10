@@ -1,4 +1,4 @@
-module.exports.Location = function Location(deck, story) {
+module.exports.Location = function Location(deck, story, id = 7) {
   this.deck = [...deck];
   this.card = {...story.card};
   this.info = story.info;
@@ -15,6 +15,7 @@ module.exports.Location = function Location(deck, story) {
   this.traversal = 0;
   this.switcheroo = [];
   this.prison = [];
+  this.id = id;
 
   this.wounds = [0,0,0,0];
   this.hardened = 0;
@@ -69,6 +70,7 @@ module.exports.Location = function Location(deck, story) {
     //console.log('location:drawOne:')
     if (newDeck.length > 0) {
       let ranCard = Math.floor(Math.random() * (newDeck.length - 1));
+      newDeck[ranCard].origin = this.id;
       newMarket.push(newDeck[ranCard]);
       newDeck.splice(ranCard, 1);
     } else {

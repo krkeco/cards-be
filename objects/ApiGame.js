@@ -103,14 +103,16 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Nineveh = new loc.Location(
             deckData.decks.jonah,
             deckData.stories.jonah.location,
+            index
           );
-          Nineveh.id = index;
+          // Nineveh.id = index;
           this.Jonah = new pl.Player(
             deckData.stories.jonah,
             deckData.decks.starter,
             this.playerTypes[index],
+            index
           );
-          this.Jonah.id = index;
+          // this.Jonah.id = index;
           this.players.push(this.Jonah);
           this.locations[Nineveh.id] = Nineveh;
           break;
@@ -119,13 +121,15 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
             deckData.stories.esther,
             deckData.decks.starter,
             this.playerTypes[index],
+            index
           );
-          this.Esther.id = index;
+          // this.Esther.id = index;
           let Babylon = new loc.Location(
             deckData.decks.esther,
             deckData.stories.esther.location,
+            index
           );
-          Babylon.id = index;
+          // Babylon.id = index;
           this.players.push(this.Esther);
           this.locations[Babylon.id] = Babylon;
           break;
@@ -133,14 +137,16 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Canaan = new loc.Location(
             deckData.decks.joshua,
             deckData.stories.joshua.location,
+            index
           );
-          Canaan.id = index;
+          // Canaan.id = index;
           this.Joshua = new pl.Player(
             deckData.stories.joshua,
             deckData.decks.starter,
             this.playerTypes[index],
+            index
           );
-          this.Joshua.id = index;
+          // this.Joshua.id = index;
           this.players.push(this.Joshua);
           this.locations[Canaan.id] = Canaan;
           this.canaan = true;
@@ -149,14 +155,16 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Rome = new loc.Location(
             deckData.decks.paul,
             deckData.stories.paul.location,
+            index
           );
-          Rome.id = index;
+          // Rome.id = index;
           this.Paul = new pl.Player(
             deckData.stories.paul,
             deckData.decks.starter,
             this.playerTypes[index],
+            index
           );
-          this.Paul.id = index;
+          // this.Paul.id = index;
           this.players.push(this.Paul);
           this.locations[Rome.id] = Rome;
           break;
@@ -325,8 +333,12 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
       console.log('checking xerxes edict'+this.locations[location].switcheroo)
 
        if(this.locations[location].switcheroo.length > 0){
-        this.checkXerxes();
+        this.checkXerxes(location);
        }
+       if(this.locations[location].prison.length > 0){
+        this.checkPrison(location);
+       }
+
       this.locations[location].setInfluencing();
     //       // console.log('so far so good:'+xerxes.name)
     //       // let bestPlayed = [...this.players[switchId].played]
@@ -384,7 +396,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
     return true;
   };
-  this.checkPrison = function(){
+  this.checkPrison = function(location){
 
           console.log('we have a imprisonment/warrant')
         this.locations[location].prison.map((king, ind)=>{
@@ -443,9 +455,14 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
                 kingPlay = [...kingPlay]
                 switchPlay = [...switchPlay]
 
-                this.locations[king].deck = [...this.locations[king].deck,prison]
-                this.locations[switchId].deck = [...this.locations[switchId].deck,swapper]
-                
+                this.locations[prison.origin].deck = [...this.locations[king].deck,prison]
+                if(this.locations[prison.origin].market.length < 3){
+                  this.locations[prison.origin].drawOne()
+                }
+                this.locations[swapper.origin].deck = [...this.locations[switchId].deck,swapper]
+                if(this.locations[swapper.origin].market.length < 3){
+                  this.locations[swapper.origin].drawOne()
+                }
                 this.players[switchId].played = [...switchPlay]
                 this.players[king].played = [...kingPlay]
                 console.log('swap successful:'+JSON.stringify(this.players[king].played))
@@ -457,7 +474,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
         })    
   }
-  this.checkXerxes = function(){
+  this.checkXerxes = function(location){
 
           console.log('we have a xerxes')
         this.locations[location].switcheroo.map((king, ind)=>{

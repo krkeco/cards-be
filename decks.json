@@ -153,14 +153,14 @@
 		"paul":[
 			{"name":"Exhortation",
 				"img":"blossomgrove",
-				"quantity":3,
+				"quantity":4,
 				"cost": 2,
 				"gold":0,
 				"influence":3,
 				"abilities":[]},			
 				{"name":"Tithe",
 				"img":"crackplaster",
-				"quantity":3,
+				"quantity":4,
 				"cost": 2,
 				"gold":2,
 				"influence":0,
@@ -212,7 +212,7 @@
 					"influence":0,
 					"abilities":["angelic"]},
 			{"name":"Imprisonment",
-				"img":"floralite",
+				"img":"verdentfire",
 				"quantity":2,
 					"cost": 4,
 					"gold":0,
@@ -225,16 +225,7 @@
 					"gold":0,
 					"draw":0,
 					"influence":9,
-					"abilities":[]},
-
-			{"name":"Imprisonment",
-				"img":"verdentfire",
-				"quantity":0,
-					"cost": 5,
-					"gold":0,
-					"draw":0,
-					"influence":0,
-					"abilities":["imprison"]}
+					"abilities":[]}
 		],
 		"joshua":[
 			{"name":"Milk and Honey",
