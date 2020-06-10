@@ -184,9 +184,10 @@ module.exports.Location = function Location(deck, story) {
         }
       });
       // newField[owner.id]
-      let newCard = {...greatCard,
+      let newCard = {
+        ...greatCard,
         name: "mordecai's blessing: "+greatCard.name,
-        abilities:[...greatCard.abilities,"scrap","edict"]
+        abilities:["scrap","edict"]
       }
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
@@ -387,7 +388,7 @@ module.exports.Location = function Location(deck, story) {
     this.traversal = 0;
     //moved to apigame
     if (this.name == 'Canaan') {
-      this.weariness+=2;
+      this.weariness+=1;
       //console.log('end of turn weariness for canaan')
     }
   };

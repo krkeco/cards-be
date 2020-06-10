@@ -424,7 +424,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
     this.players.map((player, index) => {
       player.startTurn();
-      let draws = 5;
+      let draws = 4;
 
       //influence cards
       Object.keys(this.locations).map((location) => {
