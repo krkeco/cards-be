@@ -325,6 +325,140 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
       console.log('checking xerxes edict'+this.locations[location].switcheroo)
 
        if(this.locations[location].switcheroo.length > 0){
+        this.checkXerxes();
+       }
+      this.locations[location].setInfluencing();
+    //       // console.log('so far so good:'+xerxes.name)
+    //       // let bestPlayed = [...this.players[switchId].played]
+    //       // let best = bestPlayed.slice(bestPlayed.map((c)=>c.name == kingsCard.name))
+    //       // console.log('so far so good:'+best.name)
+    //       // xerxesPlayed.push(best);
+    //       // bestPlayed.push(xerxes);
+    //       // this.players[king].played = [...xerxesPlayed]
+    //       // this.players[switchId].played = [...bestPlayed]
+    //       // console.log('xerxes switch xerxes:'+this.players[king].played.map((c)=>c.name+","))
+    //       // console.log('xerxes switch other:'+this.players[switchId].played.map((c)=>c.name+","))
+    //     })
+    // }
+    });
+
+    if(gameType == "all" || gameType == "conquer"){
+      this.checkForConquerer();
+    }
+
+    this.turn = this.turn + 1;
+    console.log('\n new turn:' + this.turn);
+
+    // Object.keys(this.locations).map((location) => {
+    //   if(this.canaan){
+    //     this.locations[location].weariness +=1;
+    //   }
+    // });
+
+    console.log('player setup');
+
+    this.players.map((player, index) => {
+      player.startTurn();
+      let draws = 4;
+
+      //influence cards
+      Object.keys(this.locations).map((location) => {
+        
+        if (this.locations[location].influencer.id == player.id) {
+          let newHand = [...player.hand];
+          newHand.push(this.locations[location].card);
+          player.hand = [...newHand];
+          // console.log(
+          //   'adding influence card to hand' + JSON.stringify(player.hand),
+          // );
+          if (this.locations[location].card.draw > 0) {
+            // player.drawCards(1);
+            draws += this.locations[location].card.draw;
+          }
+        }
+      });
+
+      player.drawCards(draws);
+      // console.log('player hand' + JSON.stringify(player.hand));
+    });
+
+    return true;
+  };
+  this.checkPrison = function(){
+
+          console.log('we have a imprisonment/warrant')
+        this.locations[location].prison.map((king, ind)=>{
+          console.log('prisonId:'+king)
+          let maxCardCost = 0;
+          let maxCard;
+          let switchId = -1;
+          this.locations[location].battlefield.map((bf, i)=>{
+
+            if(bf.id != king){
+            console.log('bf near prison:'+JSON.stringify(bf.cards))
+
+              bf.cards.map((c,cInd)=>{
+                console.log('card check: '+JSON.stringify(c))
+                if(c.cost > maxCardCost && c.name != "Imprisonment"){
+                  maxCard = c;
+                  maxCardCost = c.cost;
+                  switchId = bf.id
+                }
+              })
+            }
+            if(maxCard){
+              console.log('removing '+maxCard.name+' with imprison')
+              let switchPlay = [...this.players[switchId].played]
+              console.log(switchPlay)
+              let swapper;
+              let swapperId = -1;
+              let kingId = -1;
+              switchPlay.map((card,cInd)=>{
+                if(card.name == maxCard.name){
+                  console.log('found the maxCard: '+card.name)
+                  swapper = {...card};
+                  swapperId = cInd;
+                  console.log('swapper is '+swapper.name)
+                  console.log('spliced switch'+switchPlay)
+                  
+                }})
+
+              let kingPlay = [...this.players[king].played]
+              console.log(kingPlay)
+              let prison;
+              kingPlay.map((card,cInd)=>{
+                if(card.abilities.indexOf('prison') > -1){
+                  console.log('found prison')
+                  prison = {...card};
+                  kingId = cInd;
+                  // break;
+                }
+              })
+              if(swapper && prison){
+                this.appendLog('imprisoned: '+swapper.name)
+                kingPlay.splice(kingId,1);
+                console.log('no prison right?:'+kingId+JSON.stringify(kingPlay))
+                switchPlay.splice(swapperId,1);
+                console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
+                kingPlay = [...kingPlay]
+                switchPlay = [...switchPlay]
+
+                this.locations[king].deck = [...this.locations[king].deck,prison]
+                this.locations[switchId].deck = [...this.locations[switchId].deck,swapper]
+                
+                this.players[switchId].played = [...switchPlay]
+                this.players[king].played = [...kingPlay]
+                console.log('swap successful:'+JSON.stringify(this.players[king].played))
+              }
+              // console.log('swapping'+xerxes.name+" with "+swapper.name)
+
+            }
+          });
+
+        })    
+  }
+  this.checkXerxes = function(){
+
           console.log('we have a xerxes')
         this.locations[location].switcheroo.map((king, ind)=>{
           console.log('kingId:'+king)
@@ -391,64 +525,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           });
 
         })    
-       }
-      this.locations[location].setInfluencing();
-    //       // console.log('so far so good:'+xerxes.name)
-    //       // let bestPlayed = [...this.players[switchId].played]
-    //       // let best = bestPlayed.slice(bestPlayed.map((c)=>c.name == kingsCard.name))
-    //       // console.log('so far so good:'+best.name)
-    //       // xerxesPlayed.push(best);
-    //       // bestPlayed.push(xerxes);
-    //       // this.players[king].played = [...xerxesPlayed]
-    //       // this.players[switchId].played = [...bestPlayed]
-    //       // console.log('xerxes switch xerxes:'+this.players[king].played.map((c)=>c.name+","))
-    //       // console.log('xerxes switch other:'+this.players[switchId].played.map((c)=>c.name+","))
-    //     })
-    // }
-    });
-
-    if(gameType == "all" || gameType == "conquer"){
-      this.checkForConquerer();
-    }
-
-    this.turn = this.turn + 1;
-    console.log('\n new turn:' + this.turn);
-
-    // Object.keys(this.locations).map((location) => {
-    //   if(this.canaan){
-    //     this.locations[location].weariness +=1;
-    //   }
-    // });
-
-    console.log('player setup');
-
-    this.players.map((player, index) => {
-      player.startTurn();
-      let draws = 4;
-
-      //influence cards
-      Object.keys(this.locations).map((location) => {
-        
-        if (this.locations[location].influencer.id == player.id) {
-          let newHand = [...player.hand];
-          newHand.push(this.locations[location].card);
-          player.hand = [...newHand];
-          // console.log(
-          //   'adding influence card to hand' + JSON.stringify(player.hand),
-          // );
-          if (this.locations[location].card.draw > 0) {
-            // player.drawCards(1);
-            draws += this.locations[location].card.draw;
-          }
-        }
-      });
-
-      player.drawCards(draws);
-      // console.log('player hand' + JSON.stringify(player.hand));
-    });
-
-    return true;
-  };
+  }
 
   this.getPlayerInfo = function () {
     let playerInfo = [];

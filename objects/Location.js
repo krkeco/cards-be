@@ -14,6 +14,7 @@ module.exports.Location = function Location(deck, story) {
   this.apostle = -1;
   this.traversal = 0;
   this.switcheroo = [];
+  this.prison = [];
 
   this.wounds = [0,0,0,0];
   this.hardened = 0;
@@ -163,6 +164,9 @@ module.exports.Location = function Location(deck, story) {
     }
     if (owner.hand[card].abilities.indexOf('xerxes') > -1) {
       this.switcheroo.push(owner.id);
+    }
+    if (owner.hand[card].abilities.indexOf('prison') > -1) {
+      this.prison.push(owner.id);
     }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = 0;
@@ -385,6 +389,7 @@ module.exports.Location = function Location(deck, story) {
     this.edicts = 0;
     this.apostle = -1;
     this.switcheroo = [];
+    this.prison = [];
     this.traversal = 0;
     //moved to apigame
     if (this.name == 'Canaan') {
