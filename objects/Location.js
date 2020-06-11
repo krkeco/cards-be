@@ -227,6 +227,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
     }
     if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].playPaul = true;
+      newField[owner.id].influence += this.proselytized[owner.id];
       //console.log('paul played on location')
     }
     if (owner.hand[card].abilities.indexOf('traverse') > -1) {
