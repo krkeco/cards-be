@@ -98,32 +98,32 @@ module.exports.Location = function Location(deck, story, id = 7) {
       this.battlefield[player.id] &&
       this.battlefield[player.id].gold >= this.market[index].cost
     ) {
-      //console.log('location:buy:'+JSON.stringify(this.market[index].name))
+      console.log('location:buy:'+JSON.stringify(this.market[index].name))
       let newBattleField = [...this.battlefield];
       newBattleField[player.id].gold -= this.market[index].cost;
-
-      player.buyCard(this.market[index]);
+      let cardBuy = this.market[index];
+      player.buyCard(cardBuy);
       let newMarket = [...this.market];
       newMarket.splice(index, 1);
       this.market = [...newMarket];
       this.battlefield = [...newBattleField];
       this.drawOne();
-      return `bought ${player.discard[0].name}`;
+      return `bought ${cardBuy.name}`;
     } else {
       //can't afford card
       return `can't afford card`;
     }
-    if (player.type == 'AI') {
-      //AI cheat ... if it has gold it floats it
+    // if (player.type == 'AI') {
+    //   //AI cheat ... if it has gold it floats it
 
-      player.buyCard(this.market[index]);
-      let newMarket = [...this.market];
-      newMarket.splice(index, 1);
-      this.market = [...newMarket];
-      this.battlefield = [...newBattleField];
-      this.drawOne();
-      return `bought ${player.discard[0].name}`;
-    }
+    //   player.buyCard(this.market[index]);
+    //   let newMarket = [...this.market];
+    //   newMarket.splice(index, 1);
+    //   this.market = [...newMarket];
+    //   this.battlefield = [...newBattleField];
+    //   this.drawOne();
+    //   return `bought ${player.discard[0].name}`;
+    // }
   };
 
   this.playCard = function (card, owner, copyInfluence) {
@@ -225,11 +225,13 @@ module.exports.Location = function Location(deck, story, id = 7) {
         }
       }
     }
-    if (owner.hand[card].abilities.indexOf('zeal') > -1) {
+
+    if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].influence += this.proselytized[owner.id];
     }
     if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].playPaul = true;
+      // newField[owner.id].influence += this.proselytized[owner.id];
       //console.log('paul played on location')
     }
     if (owner.hand[card].abilities.indexOf('traverse') > -1) {

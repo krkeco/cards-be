@@ -23,7 +23,7 @@ module.exports.AI = function AI(player, locations) {
             }else{
               this.buySomething('influence')
             }
-            this.millSomething();
+            // this.millSomething();
             this.attackSomething();
             // this.standardStrat();
           }
@@ -124,6 +124,7 @@ module.exports.AI = function AI(player, locations) {
   };
 
   this.buySomething = function (preference) {
+    console.log('buy something')
     let cashOnHand = player.getTotalGold();
 
     let prefValue = 0;
@@ -131,6 +132,7 @@ module.exports.AI = function AI(player, locations) {
     let cardIndex;
 
     Object.keys(locations).map((location, index) => {
+      console.log('checking for buy')
       let locMarket = locations[location].market;
       if (locMarket.length > 0) {
         console.log('locmarket:'+locMarket.map(card=>card.name+card.abilities))
@@ -164,7 +166,9 @@ module.exports.AI = function AI(player, locations) {
           }
         }
       }
+
     });
+
     if (cardLocation) {
       //we can afford a card
       for (let c = player.hand.length - 1; c > -1; c--) {
@@ -172,13 +176,16 @@ module.exports.AI = function AI(player, locations) {
           locations[cardLocation].playCard(c, player);
         }
       }
+      console.log('start buy')
       locations[cardLocation].buy(cardIndex, player);
     }else if(preference){
+      console.log('failed prefrence, buying anything')
       this.buySomething();
     }
   };
 
   this.millSomething = function (preference) {
+    console.log('milling something')
     // player.hand.indexOf()
     let allTehGold = 0;
     let allCard = 0;
@@ -215,6 +222,7 @@ module.exports.AI = function AI(player, locations) {
   };
 
   this.attackSomething = function (maxCard) {
+    console.log('attacking something')
     let target;
     Object.keys(locations).map((location, index) => {
       let locationDifficulty = locations[location].compareInfluence();
