@@ -119,7 +119,7 @@ module.exports.Player = function Player(
     //console.log('buyCard:')
     //console.log(card)
     if(card != null){
-      this.discard = [card, ...this.discard];
+      this.played = [card, ...this.played];
     }
   };
 
