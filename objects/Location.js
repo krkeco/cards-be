@@ -184,7 +184,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
       this.prison.push(owner.id);
     }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
-      let greatest = 0;
+      let greatest = -1;
       // let gpolitic = 0;
       // let gGold = 0;
       // let blessing= false;
