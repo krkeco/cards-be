@@ -63,6 +63,8 @@ type Battlefield {
 	name: String,
   poliBonus: Int,
 	influence: Int,
+  fear: Int,
+  faith: Int,
 	gold: Int,
 	cards: [Card]
 },
