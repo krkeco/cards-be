@@ -141,6 +141,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
         fear:0,
         weariness:0,
         faith:0,
+        faithing: false,
         cards: [],
         finalInfluence:0,
       };
@@ -315,6 +316,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
       poliBonus: 0,
       fear:0,
       faith:0,
+      faithing: false,
       weariness:0,
       politics:0,
     };
@@ -327,19 +329,20 @@ module.exports.Location = function Location(deck, story, id = 7) {
           
           this.battlefield[index].weariness=0;
 
-          this.battlefield.map((pl,ind)=>{
-            
-            if(pl && pl.id != this.battlefield[index].id){
-              this.battlefield[index].weariness += pl.fear;
-              console.log('fear to weary:'+pl.fear)
-            }
-            
-          })
+          if(!this.battlefield[index].faithing){
+            this.battlefield.map((pl,ind)=>{
+              if(pl && pl.id != this.battlefield[index].id){
+                this.battlefield[index].weariness += pl.fear;
+                console.log('fear to weary:'+pl.fear)
+              }
+              
+            })
+          }
 
           if(this.battlefield[index].influence <= 0 && this.battlefield[index].faith > 0){
             this.battlefield[index].influence = this.battlefield[index].faith;
-            // player.faith = 0;
             this.battlefield[index].weariness = 0;
+            this.battlefield[index].faithing = true;
           }
 
           if (this.battlefield[index].playPaul) {
