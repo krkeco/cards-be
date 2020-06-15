@@ -6,7 +6,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
   this.battlefield = [];
   this.name = story.name;
   this.influence = story.influence;
-  this.weariness = 0;
+  // this.weariness = 0;
   this.abilities = story.abilities;
   this.influencer = { name: 'neutral' };
   this.proselytized = [0,0,0,0];
@@ -21,10 +21,10 @@ module.exports.Location = function Location(deck, story, id = 7) {
   this.hardened = 0;
   this.edicts = 0;
 
-  this.setWeariness = function (newfear) {
-    this.weariness = newfear;
-    //console.log('weariness:'+this.weariness)
-  };
+  // this.setWeariness = function (newfear) {
+  //   this.weariness = newfear;
+  //   //console.log('weariness:'+this.weariness)
+  // };
 
   this.refreshMarket = function (playerId) {
     let newField = [...this.battlefield];
@@ -138,6 +138,8 @@ module.exports.Location = function Location(deck, story, id = 7) {
         gold: 0,
         politics: 0,
         poliBonus: 0,
+        fear:0,
+        faith:0,
         cards: [],
         finalInfluence:0,
       };
@@ -200,17 +202,18 @@ module.exports.Location = function Location(deck, story, id = 7) {
     }
 
     if (owner.hand[card].fear) {
+      newField[owner.id].fear += owner.hand[card].fear;
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
-      this.weariness += parseInt(owner.hand[card].fear);
+      // this.weariness += parseInt(owner.hand[card].fear);
     }
     if (owner.hand[card].faith) {
       //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
-      let faith = owner.hand[card].faith
-      while(this.weariness > 0 && faith > 0){
-        this.weariness -= 1;
-        faith -=1;
-        newField[owner.id].influence += 1;
-      }
+      newField[owner.id].faith += owner.hand[card].faith;
+      // while(this.weariness > 0 && faith > 0){
+        // this.weariness -= 1;
+        // faith -=1;
+        // newField[owner.id].influence += 1;
+      // }
     }
 
     if (owner.hand[card].reinforce > 0) {
@@ -300,6 +303,9 @@ module.exports.Location = function Location(deck, story, id = 7) {
       influence: 0,
       totalInfluence: 0,
       poliBonus: 0,
+      fear:0,
+      faith:0,
+      politics:0,
     };
 
     let runnerUp = 0;
@@ -308,6 +314,18 @@ module.exports.Location = function Location(deck, story, id = 7) {
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
 
+          if(player.influence == 0 && player.faith > 0){
+            player.influence = player.faith;
+          }
+          if(player.fear > 0){
+            this.battlefield.map((pl,iN)=>{
+              if(pl.id != player.id){
+                pl.influence -= player.fear;
+              }
+            })
+            player.fear = 0;
+          }
+
           if (this.battlefield[index].playPaul) {
             this.apostle = index;
           }
@@ -315,21 +333,20 @@ module.exports.Location = function Location(deck, story, id = 7) {
           if (
             this.battlefield[index] &&
             this.battlefield[index].influence +
-            this.battlefield[index].poliBonus -
-            this.weariness >
-            influencer.influence + influencer.poliBonus - this.weariness
+            this.battlefield[index].poliBonus >
+            influencer.influence + influencer.poliBonus
           ) {
             
-            if(influencer.influence + influencer.poliBonus - this.weariness > 0){
-              runnerUp = influencer.influence + influencer.poliBonus- this.weariness;
+            if(influencer.influence + influencer.poliBonus > 0){
+              runnerUp = influencer.influence + influencer.poliBonus;
             }
             
             influencer = this.battlefield[index];
           } else if (
             this.battlefield[index] &&
-            this.battlefield[index].influence + influencer.poliBonus - this.weariness > runnerUp
+            this.battlefield[index].influence + influencer.poliBonus  > runnerUp
           ) {
-            runnerUp = this.battlefield[index].influence + influencer.poliBonus - this.weariness;
+            runnerUp = this.battlefield[index].influence + influencer.poliBonus;
           }
         }
       });
@@ -340,7 +357,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
     // }
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
-      influencer.influence + influencer.poliBonus - runnerUp - this.weariness;
+      influencer.influence + influencer.poliBonus - runnerUp ;
       console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus+ " minus:" + runnerUp + " vs "+this.influence)
     return influencer;
   };
@@ -399,9 +416,9 @@ module.exports.Location = function Location(deck, story, id = 7) {
     this.prison = [];
     this.traversal = 0;
     //moved to apigame
-    if (this.name == 'Canaan') {
-      this.weariness+=1;
+    // if (this.name == 'Canaan') {
+      // this.weariness+=1;
       //console.log('end of turn weariness for canaan')
-    }
+    // }
   };
 };
