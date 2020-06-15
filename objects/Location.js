@@ -185,24 +185,13 @@ module.exports.Location = function Location(deck, story, id = 7) {
     }
     if (owner.hand[card].abilities.indexOf('mordecai') > -1) {
       let greatest = -1;
-      // let gpolitic = 0;
-      // let gGold = 0;
-      // let blessing= false;
       let greatCard = {name:"nothing",influence:0,abilities:['scrap']};
       newField[owner.id].cards.map((c, index) => {
-        // let inf = c.influence || 0
-        // let gol = c.gold || 0
-        // let pol = c.politics || 0
         if (c.abilities.indexOf('mordecai') < 0 && c.cost > greatest) {
           greatest = c.cost;
-          // gpolitic = pol;
-          // gGold = gol;
           greatCard = c;
-          // blessing =true;
-          // console.log('new greatest card'+inf)
         }
       });
-      // newField[owner.id]
       let newCard = {
         ...greatCard,
         name: "mordecai's blessing: "+greatCard.name,
@@ -211,21 +200,6 @@ module.exports.Location = function Location(deck, story, id = 7) {
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
     }
-
-    // if (owner.hand[card].fear) {
-    //   newField[owner.id].fear += owner.hand[card].fear;
-    //   //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
-    //   // this.weariness += parseInt(owner.hand[card].fear);
-    // }
-    // if (owner.hand[card].faith) {
-    //   //console.log('adding influence to location:'+this.weariness+" add "+owner.hand[card].wear)
-    //   newField[owner.id].faith += owner.hand[card].faith;
-    //   // while(this.weariness > 0 && faith > 0){
-    //     // this.weariness -= 1;
-    //     // faith -=1;
-    //     // newField[owner.id].influence += 1;
-    //   // }
-    // }
 
     if (owner.hand[card].reinforce > 0) {
       for (let x = 0; x < owner.hand[card].reinforce; x++) {
@@ -245,12 +219,8 @@ module.exports.Location = function Location(deck, story, id = 7) {
     }
     if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].playPaul = true;
-      // newField[owner.id].influence += this.proselytized[owner.id];
-      //console.log('paul played on location')
     }
     if (owner.hand[card].abilities.indexOf('traverse') > -1) {
-      // newField[owner.id].playPaul = true;
-      //console.log('paul played on location')
       this.traversal+=1;
       
     }
@@ -271,8 +241,6 @@ module.exports.Location = function Location(deck, story, id = 7) {
     }
     if (owner.hand[card].politics) {
       newField[owner.id].politics += owner.hand[card].politics;
-      // newField[owner.id].poliBonus = newField[owner.id].politics * this.edicts;
-      //console.log('total politics bonus for loc is:'+newField[owner.id].politics +"*"+ this.edicts + newField[owner.id].poliBonus)
     }
 
     newField.map((bf, index)=>{
