@@ -166,7 +166,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
       owner.hand[card].abilities.indexOf('Ninevite') > -1 &&
       this.name == 'Nineveh'
     ) {
-      newField[owner.id].influence += 1;
+      // newField[owner.id].influence += 1;
       //console.log('ninevite advantage bonus')
     }
 
