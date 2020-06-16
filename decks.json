@@ -5,7 +5,7 @@
 			"name":"Jerusalem",
 			"info":[
 				"Calling: Any player can win the game by influencing 3 locations at once",
-				"Influence Bonus: 1 gold 1 influence",
+				"Influence Bonus: 1 gold 2 influence",
 				"Influence cards: If you influence a location, you get a special influence card this turn. Influence cards don't go to your discard when you use them, but you automatically draw them if you influence locations",
 				"Scrapping Cards: Dragging a card into the scrap pile will remove it from your deck for the rest of the game.  This is helpful when you scrap influence and gold so you can get better cards more often"
 			],
@@ -47,7 +47,7 @@
 				"name":"Romes's Influence",
 				"img":"leavestreak",
 				"cost": 0,
-				"gold":1,
+				"gold":2,
 				"draw":0,
 				"influence":0,
 				"abilities":["scrap"]
@@ -79,7 +79,7 @@
 				"img":"leavestreak",
 				"cost": 0,
 				"gold":0,
-				"fear":1,
+				"fear":2,
 				"draw":0,
 				"influence":0,
 				"abilities":["scrap"]
@@ -141,7 +141,7 @@
 					"cost": 0,
 					"gold":0,
 					"draw":0,
-					"influence":1,
+					"influence":2,
 					"abilities":["scrap","edict"]
 			}}
 		}
