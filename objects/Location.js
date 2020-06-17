@@ -363,7 +363,7 @@ module.exports.Location = function Location(deck, story, id = 7) {
 
       if (this.apostle > -1) {
         this.battlefield.map((bf,index)=>{
-          if(bf && bf.playPaul){
+          if(bf && bf.playPaul && bf.name == "Paul"){
             if(influencer.id == bf.id && influencer.finalInfluence > this.influence){
               this.proselytized[bf.id] += 1;
               console.log('paul got a church')
