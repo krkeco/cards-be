@@ -264,19 +264,13 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
 
           break;
         case 'Joshua':
-          console.log(
-            'checking joshua wincon:' + this.locations[player.id].abilities[0],
-          );
-          let fear = 0;
-          // Object.keys(this.locations).map((loc,ind)=>{
-          // if(this.locations[loc].weariness > fear){
-          //   fear = this.locations[loc].weariness
-          // }
-          // })
+          console.log('checking joshua wincon:' + this.locations[player.id].abilities[0]);
+
           if (this.locations[player.id].abilities[0] > 2) {
             this.winning = true;
             this.winner = player.name+player.id;
-          }else if(this.locations[player.id].weariness >= 13){
+            
+          }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear - this.locations[player.id].battlefield[player.id].faith > 12){
             this.loser = player.name+player.id
           }
 
@@ -340,18 +334,6 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
        }
 
       this.locations[location].setInfluencing();
-    //       // console.log('so far so good:'+xerxes.name)
-    //       // let bestPlayed = [...this.players[switchId].played]
-    //       // let best = bestPlayed.slice(bestPlayed.map((c)=>c.name == kingsCard.name))
-    //       // console.log('so far so good:'+best.name)
-    //       // xerxesPlayed.push(best);
-    //       // bestPlayed.push(xerxes);
-    //       // this.players[king].played = [...xerxesPlayed]
-    //       // this.players[switchId].played = [...bestPlayed]
-    //       // console.log('xerxes switch xerxes:'+this.players[king].played.map((c)=>c.name+","))
-    //       // console.log('xerxes switch other:'+this.players[switchId].played.map((c)=>c.name+","))
-    //     })
-    // }
     });
 
     if(gameType == "all" || gameType == "conquer"){

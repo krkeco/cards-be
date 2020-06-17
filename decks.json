@@ -67,10 +67,10 @@
 				"name":"Canaan",
 				"info":[
 					"Calling: Every time Joshua plays enough influence to become influencer of Canaan (even if he already is) it will go up 1 tier.  When it reaches Tier 4, Joshua wins",
-					"Bane: If there is more than 13 Fear on Canaan, Joshua loses.  Canaan gains 1 fear each turn",
-					"Influence Bonus: 1 Fear per tier",
+					"Bane: If there is 13 more fear than faith on Canaan, Joshua loses.",
+					"Influence Bonus: 2+1 Fear per tier",
 					"Fear [X]: Reduce all other player's influence by [X] on this location",
-					"Faith [X]: If you have 0 influence on this location, use faith instead of influence, faith ignores fear."
+					"Faith: If you have 0 influence on this location, you may use your faith instead.  Faith is not affected by fear."
 				],
 				"influence":3,
 				"abilities":[0],
@@ -128,8 +128,8 @@
 				"info":[
 					"Calling: Esther must have 18 influence more than any other player on Babylon to win",
 					"Bane: If there are 4 edicts played on babylon in one turn and Esther is not the influencer there",
-					"Influence Bonus: 1 influence, edict",
-					"Politics [X]: For each Edict on this location: gain [X] influence; In other words: add up all Edicts on a location and multiply it by your total politics: gain/lose that much influence.",
+					"Influence Bonus: 2 influence, edict",
+					"Politics: Add up your total politics on this location and multiply it by the total number of edicts on the location.  Add that to your influence.",
 					"Mordecai: copy the card with the highest cost you played on this location-- characters 'cost' is 0",
 					"Xerxe's Edict: At the end of the turn, after influence checks, permanently trade this card with the highest cost card on the location"
 				],
