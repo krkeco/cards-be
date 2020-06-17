@@ -214,16 +214,16 @@ module.exports.Location = function Location(deck, story, id = 7) {
       }
     }
 
-    if (owner.hand[card].abilities.indexOf('apostle') > -1) {
+    if (owner.hand[card].abilities.indexOf('zeal') > -1) {
       newField[owner.id].influence += this.proselytized[owner.id];
     }
     if (owner.hand[card].abilities.indexOf('apostle') > -1) {
       newField[owner.id].playPaul = true;
     }
-    if (owner.hand[card].abilities.indexOf('traverse') > -1) {
-      this.traversal+=1;
+    // if (owner.hand[card].abilities.indexOf('traverse') > -1) {
+    //   this.traversal+=1;
       
-    }
+    // }
 
     if (
       owner.hand[card].abilities.indexOf('Harden') > -1 &&
