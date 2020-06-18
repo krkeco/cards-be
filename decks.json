@@ -14,7 +14,7 @@
 			"abilities":["jerusalem"],
 			"card":{
 				"name":"Jerusalem Influence",
-				"img":"leavestreak",
+				"img":"infJerusalem",
 				"quote":"",
 				"cost": 0,
 				"gold":1,
@@ -40,9 +40,9 @@
 				"Paul is called to be an apostle and lead others to Christ.  In his ministry he works alongside Barnabas, Titus, and Timothy(3) writing numerous Epistles(4) to the churches they plant, as well as being assaulted by angry mobs(5) on numerous occassions. He is eventually imprisoned(4).  While in prison he Exhorts(2) the church helping them stay on course, is caught in a huge storm(6) and shipwrecked but saved by Angelic protection(4)",
 				"Calling: Plant 7 churches to win",
 				"Bane: If Paul fails to plant a church he gains a wound, if he has 7 wounds he loses the game",
-				"Influence Bonus: 1 gold",
+				"Influence Bonus: 2 gold",
 				"Apostle: If you play an apostle on a location and become influencer, you plant a church, otherwise you gain a wound",
-				"Zeal: Apostles gains 1 influence for each church on a location he is played on",
+				"Zeal: Apostles gains 1 influence for each church on a location they are played on (even if you are not Paul)",
 				"Mob: +1 INF for every other card you already played here",
 				"Angelic: If you are not the greatest influencer this turn, this location does not check influence this turn"
 			],
@@ -50,7 +50,7 @@
 				"abilities":["rome"],
 			"card":{
 				"name":"Romes's Influence",
-				"img":"leavestreak",
+				"img":"infRome",
 				"quote":"",
 				"cost": 0,
 				"gold":2,
@@ -77,7 +77,7 @@
 					"Joshua sees the land filled with milk and honey(2) and has himself made a faithful report of it (4) but other spies(3) caused fear in the Israelite camp due to the rumors of giants(4) and armies as vast as the sand on the sea (5) they must choose whether to follow God faithfully as promised on Mt Gerazim(7) or recant their covanent with Him and suffer the curses of Mt Ebal(6)",
 					"Calling: Every time Joshua plays enough influence to become influencer of Canaan (even if he already is) it will go up 1 tier.  When it reaches Tier 4, Joshua wins",
 					"Bane: If there is 13 more fear than faith on Canaan, Joshua loses.",
-					"Influence Bonus: 2+1 Fear per tier",
+					"Influence Bonus: 3 Fear; +1 at T2 and +1 more at T3",
 					"Fear [X]: Reduce all other player's influence by [X] on this location",
 					"Faith: If you have 0 influence on this location, you may use your faith instead.  Faith is not affected by fear."
 				],
@@ -85,7 +85,7 @@
 				"abilities":[0],
 			"card":{
 				"name":"Canaan's Influence",
-				"img":"leavestreak",
+				"img":"infCanaan",
 				"quote":"",
 				"cost": 0,
 				"gold":0,
@@ -111,16 +111,15 @@
 					"Jonah: called to save a people so wicked he would rather die.  Jonah must rely on God's provision to exhort the people of Nineveh in order to lead them to repentence without becoming so hardened himself that he gives up.",
 					"Initially he leaves for Tarshish(5) in order to escape God's call, but God provides a huge fish(6) to bring him back to his mission to the foolish(2) and wicked(3) people of Nineveh.  He eventually exhorts the city into repentence, but does not himself repent of his hardness until he has seen his shade(3) get destroyed(4)",
 					"Calling: Jonah must play 5 Ninevites AND Jonah on Nineveh to win",
-					"Bane: Hardened Heart- If Jonah is played (either by the player or provision) 3 times on Nineveh he loses the game",
-					"Influence Bonus: provision 1",
-					"Ninevite: gain 1 influence when played on Nineveh",
+					"Bane: Hardened Heart- If Jonah is played (either by the player or provision) 3 times NOT on Nineveh he loses the game",
+					"Influence Bonus: Provision 1",
 					"Provision [X]: This card draws and plays [X] cards on its location"
 				],
 				"influence":3,
 				"abilities":["nineveh"],
 			"card":{
 				"name":"Nineveh's Influence",
-				"img":"leavestreak",
+				"img":"infNineveh",
 				"quote":"",
 				"cost": 0,
 				"gold":0,
@@ -154,7 +153,7 @@
 				"abilities":["babylon"],
 				"card":{
 					"name":"Babylon's Influence",
-					"img":"leavestreak",
+					"img":"infBabylon",
 				"quote":"",
 					"cost": 0,
 					"gold":0,

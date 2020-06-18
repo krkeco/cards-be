@@ -229,13 +229,13 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       
     }
 
-    if (
-      owner.hand[card].abilities.indexOf('Harden') > -1 &&
-      this.id == owner.id
-    ) {
-      this.hardened+=1;
-      //console.log('Jonah has been hardened'+this.hardened)
-    }
+    // if (
+    //   owner.hand[card].abilities.indexOf('Harden') > -1 &&
+    //   this.id != owner.id
+    // ) {
+    //   this.hardened+=1;
+    //   //console.log('Jonah has been hardened'+this.hardened)
+    // }
     //can't else this because some cards have both edict and politics
     if (owner.hand[card].abilities.indexOf('edict') > -1) {
       this.edicts+=1;

@@ -217,39 +217,53 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           console.log('checking jona win condition');
 
           //	let bf;
+          let hardened = 0;
           let ninevites = 0;
           let jonah = 0;
-          console.log(
-            'checkforninevites' +
-              JSON.stringify(this.locations[player.id].battlefield),
-          );
-          this.locations[player.id].battlefield.map((battlefield, ind) => {
-            console.log('mapping nineveh');
-            if (battlefield && battlefield.id == player.id) {
-              console.log('found jonah');
-              battlefield.cards.map((card, index) => {
-                console.log('mapping battlefield cards:' + card.name);
-                if (card.abilities.indexOf('Ninevite') > -1) {
-                  ninevites++;
-                  console.log('ninevites' + ninevites);
+          // console.log(
+          //   'checkforninevites' +
+          //     JSON.stringify(this.locations[player.id].battlefield),
+          // );
+          // this.locations.map((l, i)=>{
+            Object.keys(this.locations).map((l,i) =>{
+
+            this.locations[l].battlefield.map((battlefield, ind) => {
+              console.log('mapping nineveh');
+              if (battlefield && battlefield.id == player.id) {
+                console.log('found jonah');
+                battlefield.cards.map((card, index) => {
+                  console.log('mapping battlefield cards:' + card.name);
+                  if(this.locations[l].id == player.id){
+                    console.log('played on nineveh')
+                    if (card.abilities.indexOf('Ninevite') > -1) {
+                      ninevites++;
+                      console.log('ninevites' + ninevites);
+                    }
+                    if(card.abilities.indexOf('Harden') > -1){
+                      jonah = 1;
+                    }
+                  }else{
+                    if(card.abilities.indexOf('Harden') > -1){
+                      // jonah = 1;
+                      console.log('hardening')
+                      this.locations[player.id].hardened+=1;
+                    }
+                  }
+                });
+                if (jonah > 0 && ninevites > 4 ) {
+                  //4
+                  console.log('jonah is a winner!');
+                  player.winning = true;
+                  this.winner = player.name+player.id;
+                }else
+                if(this.locations[player.id].hardened >= 3){
+                  this.loser = player.name+player.id
                 }
-                if(card.abilities.indexOf('Harden') > -1){
-                  jonah = 1;
-                }
-              });
-              if (jonah > 0 && ninevites > 4 + this.locations[player.id].traversal) {
-                //4
-                console.log('jonah is a winner!');
-                player.winning = true;
-                this.winner = player.name+player.id;
-              }else
-              if(this.locations[player.id].hardened >= 3){
-                this.loser = player.name+player.id
+              } else {
+                console.log('no jonah found');
               }
-            } else {
-              console.log('no jonah found');
-            }
-          });
+            });
+          })
           break;
         case 'Paul':
           //set proselytize
