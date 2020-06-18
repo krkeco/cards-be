@@ -274,7 +274,7 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
         case 'Joshua':
           console.log('checking joshua wincon:' + this.locations[player.id].abilities[0]);
 
-          if (this.locations[player.id].abilities[0] > 2) {
+          if (this.locations[player.id].abilities[0] > 3) {
             this.winning = true;
             this.winner = player.name+player.id;
             
