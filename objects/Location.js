@@ -1,5 +1,7 @@
-module.exports.Location = function Location(deck, story, id = 7) {
+module.exports.Location = function Location(deck, story, id = 7, infoDeck, character) {
   this.deck = [...deck];
+  this.character = {...character}
+  this.infoDeck = [...infoDeck];
   this.card = {...story.card};
   this.info = story.info;
   this.market = [];
@@ -201,15 +203,15 @@ module.exports.Location = function Location(deck, story, id = 7) {
       this.playCard(owner.hand.length-1,owner);
     }
 
-    if (owner.hand[card].reinforce > 0) {
-      for (let x = 0; x < owner.hand[card].reinforce; x++) {
-        //console.log('reinforcements!')
+    if (owner.hand[card].provision > 0) {
+      for (let x = 0; x < owner.hand[card].provision; x++) {
+        //console.log('provisionments!')
         if (owner.deck.length > 0 || owner.discard.length > 0) {
           owner.drawCards(1);
           this.battlefield = [...newField];
           this.playCard(owner.hand.length - 1, owner);
         } else {
-          //console.log('your deck is empty cannot reinforce')
+          //console.log('your deck is empty cannot provision')
         }
       }
     }

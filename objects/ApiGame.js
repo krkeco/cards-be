@@ -6,7 +6,7 @@ const deckData = new cards.data();
 const ai = require('./AI.js');
 
 module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all") {
-  let Jerusalem = new loc.Location([], deckData.stories.jerusalem);
+  let Jerusalem = new loc.Location([], deckData.stories.jerusalem, 7, deckData.infoDecks.starter);
   Jerusalem.id = 7;
   this.players = [];
   this.playerNames = [...playerNames];
@@ -103,7 +103,9 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Nineveh = new loc.Location(
             deckData.decks.jonah,
             deckData.stories.jonah.location,
-            index
+            index,
+            deckData.infoDecks.jonah,
+            deckData.stories.jonah.character
           );
           // Nineveh.id = index;
           this.Jonah = new pl.Player(
@@ -127,7 +129,9 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Babylon = new loc.Location(
             deckData.decks.esther,
             deckData.stories.esther.location,
-            index
+            index,
+            deckData.infoDecks.esther,
+            deckData.stories.esther.character
           );
           // Babylon.id = index;
           this.players.push(this.Esther);
@@ -137,7 +141,9 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Canaan = new loc.Location(
             deckData.decks.joshua,
             deckData.stories.joshua.location,
-            index
+            index,
+            deckData.infoDecks.joshua,
+            deckData.stories.joshua.character
           );
           // Canaan.id = index;
           this.Joshua = new pl.Player(
@@ -155,7 +161,9 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
           let Rome = new loc.Location(
             deckData.decks.paul,
             deckData.stories.paul.location,
-            index
+            index,
+            deckData.infoDecks.paul,
+            deckData.stories.paul.character
           );
           // Rome.id = index;
           this.Paul = new pl.Player(
@@ -554,8 +562,10 @@ module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all
       }
       let info = {
         name: location.name,
+        character: location.character,
         id: location.id,
         market: location.market,
+        infoDeck: location.infoDeck,
         battlefield: location.battlefield,
         influence: location.influence,
         abilities: location.abilities,

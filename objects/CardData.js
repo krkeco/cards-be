@@ -11,7 +11,7 @@ module.exports.data = function CardData() {
     });
   });
 
-  let cardData = { stories: {...deckData.stories}, decks: {...decks} };
+  let cardData = { stories: {...deckData.stories}, decks: {...decks}, infoDecks: {...deckData.decks} };
   
   return cardData;
 };

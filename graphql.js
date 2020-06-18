@@ -21,6 +21,7 @@ var schema = buildSchema(`
 	type Card {
 		name:String,
     img:String,
+    quote: String,
 	  quantity: Int,
 	  cost: Int,
 	  gold:Int,
@@ -30,7 +31,7 @@ var schema = buildSchema(`
 	  faith:Int,
 	  fear: Int,
 	  politics: Float,
-	  reinforce: Int,
+	  provision: Int,
 },
 
 type Player {	
@@ -50,8 +51,10 @@ type Location {
 	info: [String],
 	abilities: [String],
 	influencer: String,
+  character: Card,
 	market: [Card],
-	battlefield: [Battlefield]
+  infoDeck: [Card],
+	battlefield: [Battlefield],
 	proselytized: [Int],
 	hardened:Int,
   edicts:Int,
@@ -79,8 +82,12 @@ type WaitingRoom {
 	room: [String],
 	started: Boolean
 },
+type Game {
+  players: [Player],
+  locations: [Location]
+},
   type Query {
-    wakeup: String,
+    wakeup: [Location],
     waitingRoom(gameId: Int): WaitingRoom,
     newGame(players: [String], types: [String]): Int!,
     joinGame(players: [String],types: [String],gameId: Int): [String]!,
@@ -97,7 +104,14 @@ type WaitingRoom {
 // The root provides a resolver function for each API endpoint
 var root = {
   wakeup: () => {
-    return 'awake';
+    let game = new GameBuilder.newGame(["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
+    
+    game.setStartingPlayers(game.playerNames);
+    game.startNewTurn();
+    console.log('waking up')
+    console.log(game.locations[1].character)
+    return game.getLocationInfo();
+    // return 'awake';
   },
   waitingRoom: ({ gameId }) => {
     let game = gameDB[gameId];

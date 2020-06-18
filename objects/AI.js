@@ -155,7 +155,7 @@ module.exports.AI = function AI(player, locations) {
               prefValue = locMarket[x].influence;
               cardLocation = location;
               cardIndex = x;
-            }else if(preference == 'ninevite' && (locMarket[x].abilities.indexOf("Ninevite") > -1 || locMarket[x].reinforce > 0)){
+            }else if(preference == 'ninevite' && (locMarket[x].abilities.indexOf("Ninevite") > -1 || locMarket[x].provision > 0)){
               prefValue = locMarket[x].cost;
               cardLocation = location;
               cardIndex = x;
