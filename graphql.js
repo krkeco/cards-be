@@ -19,6 +19,7 @@ var gameDB = []; //this is going to be mongo some day
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
 	type Card {
+    chrono:Int,
 		name:String,
     img:String,
     quote: String,
