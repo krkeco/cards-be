@@ -1,11 +1,11 @@
 const pl = require('./Player.js');
 const loc = require('./Location.js');
 const tu = require('./Turn.js');
-const cards = require('./CardData.js');
-const deckData = new cards.data();
+
 const ai = require('./AI.js');
 
-module.exports.newGame = function Game(playerNames, playerTypes, gameType = "all") {
+module.exports.newGame = function Game(deckData,playerNames, playerTypes, gameType = "all") {
+  console.log('dd:'+JSON.stringify(deckData))
   let Jerusalem = new loc.Location([], deckData.stories.jerusalem, 7, deckData.infoDecks.starter);
   Jerusalem.id = 7;
   this.players = [];

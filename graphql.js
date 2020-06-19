@@ -12,9 +12,7 @@ var gameDB = []; //this is going to be mongo some day
 // let players = ['Jonah','Esther']
 // let game = GameBuilder.newGame(players)
 // game.startNewTurn();
-
-// let gameId = gameDB.length
-// gameDB[gameId] = game
+const cards = require('./objects/CardData.js');
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -104,8 +102,9 @@ type Game {
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  wakeup: () => {
-    let game = new GameBuilder.newGame(["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
+  wakeup: async() => {
+    let deckData = await cards.data();
+    let game = new GameBuilder.newGame(deckData,["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
     
     game.setStartingPlayers(game.playerNames);
     game.startNewTurn();
@@ -131,10 +130,12 @@ var root = {
     return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log, loser: game.loser };
     // return player
   },
-  newGame: ({ players, types }) => {
+  newGame: async({ players, types }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
-    let game = new GameBuilder.newGame(players, types);
+
+    let deckData = await cards.data();
+    let game = new GameBuilder.newGame(deckData,players, types);
     let gameId = gameDB.length;
     gameDB[gameId] = game;
     return gameId;
