@@ -43,8 +43,8 @@
 				"Bane: If Paul fails to plant a church he gains a wound, if he has 7 wounds he loses the game",
 				"Influence Bonus: 2 gold",
 				"Special Rules:",
-				"Apostle: If you play an apostle on a location and become influencer, you plant a church, otherwise you gain a wound",
-				"Fellowship: Apostles gains 1 influence for each church on a location they are played on (even if you are not Paul)",
+				"Apostle: If Paul plays an apostle on a location and become influencer, Paul plants a church, otherwise Paul gains a wound",
+				"Fellowship: Apostles gain +1 INF for each church on a location they are played on (even if you are not Paul)",
 				"Mob: +1 INF for every other card you already played here",
 "Angelic: If you are not the greatest influencer this turn, this location does not check influence this turn"
 			],
