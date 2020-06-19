@@ -38,7 +38,7 @@
 				"name":"Rome",
 			"info":[
 				"Intro:  The story of Paul revolves closely around Rome and his very long trip there.  Paul is one of the most impactful individuals in the new testament, following Christ and leading the Gentiles (most of us) to Christ.  He does this by evangalizing and church planting and so his story is about planting churches throughout the lands to anywhere he can, all the while being opposed by Jews and Pagans alike.",
-				"Story: Paul is called to be an apostle and lead others to Christ.  In his ministry he works alongside [Barnabas], [Titus], and [Timothy] writing numerous [Epistles] to the churches they plant, as well as being assaulted and worshipped by [Mob]s on numerous occassions. He is eventually [imprisoned] (multiple times).  While in prison he [Exhorts] the church helping them stay on course, is caught in a [huge storm] and shipwrecked but saved by [Angelic protection]",
+				"Story: Paul is called to be an apostle and lead others to Christ.  In his ministry he works alongside [Barnabas], [Priscilla and Aquila], and [Timothy] writing numerous [Epistles] to the churches they plant, as well as being assaulted and worshipped by [Mob]s on numerous occassions. He is eventually [imprisoned] (multiple times).  While in prison he [Exhorts] the church helping them stay on course, is caught in a [huge storm] and shipwrecked but saved by [Angelic protection]",
 				"Calling: Plant 7 churches to win",
 				"Bane: If Paul fails to plant a church he gains a wound, if he has 7 wounds he loses the game",
 				"Influence Bonus: 2 gold",
@@ -212,7 +212,7 @@
 			"influence":3,
 			"abilities":["apostle","fellowship"]},
 			{"name":"Priscilla and Aquilla",
-				"chrono":8,
+				"chrono":6,
 				"img":"priscilla",
 				"quote":"The churches in the province of Asian send you greetings.  Aquila and Priscilla greet you warmly in the Lord (1Cor 16:19)",
 				"quantity":1,
