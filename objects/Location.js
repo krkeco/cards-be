@@ -296,13 +296,19 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     let runnerUp = 0;
     // let paul = -1;
     if (this.battlefield.length > 0) {
+      
+      this.battlefield.map((player, index) => {
+        if (player && this.battlefield[index]) {
+          this.battlefield[index].poliBonus = this.battlefield[index].politics * this.edicts;
+          // if(this.battlefield[index].poliBonus < 0){
+          //   this.battlefield[index].poliBonus = 0;
+          // }
+        }
+      });
+
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
           
-          this.battlefield[index].poliBonus = this.battlefield[index].politics * this.edicts;
-          if(this.battlefield[index].poliBonus < 0){
-            this.battlefield[index].poliBonus = 0;
-          }
 
           this.battlefield[index].weariness=0;
 
@@ -354,7 +360,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
       influencer.influence + influencer.poliBonus -influencer.weariness - runnerUp ;
-      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus + "less weari" +influencer.weariness+ " minus:" + runnerUp + " vs "+this.influence)
+      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus + "less weari" +influencer.weariness+ " minus:" + runnerUp + " vs "+this.influence+" on "+this.name)
     return influencer;
   };
   this.setInfluencing = function () {
