@@ -299,6 +299,11 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
           
+          this.battlefield[index].poliBonus = this.battlefield[index].politics * this.edicts;
+          if(this.battlefield[index].poliBonus < 0){
+            this.battlefield[index].poliBonus = 0;
+          }
+
           this.battlefield[index].weariness=0;
 
           if(!this.battlefield[index].faithing){
