@@ -137,6 +137,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
         name: owner.name,
         id: owner.id,
         influence: 0,
+        runningTotal:0,
         gold: 0,
         politics: 0,
         poliBonus: 0,
@@ -285,6 +286,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       id: -1,
       influence: 0,
       totalInfluence: 0,
+      runningTotal:0,
       poliBonus: 0,
       fear:0,
       faith:0,
@@ -332,23 +334,24 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
             this.apostle = index;
           }
 
+          //new influencer
           if (
-            this.battlefield[index] &&
             this.battlefield[index].influence +
             this.battlefield[index].poliBonus - this.battlefield[index].weariness >
             influencer.influence + influencer.poliBonus - influencer.weariness
           ) {
-            
+            //influencer becomes runner up?
             if(influencer.influence + influencer.poliBonus - influencer.weariness > 0){
               runnerUp = influencer.influence + influencer.poliBonus - influencer.weariness;
             }
-            
+            //new influencer
             influencer = this.battlefield[index];
+
+            //new runnerup
           } else if (
-            this.battlefield[index] &&
-            this.battlefield[index].influence + influencer.poliBonus - influencer.weariness  > runnerUp
+            this.battlefield[index].influence + this.battlefield[index].poliBonus - this.battlefield[index].weariness  > runnerUp
           ) {
-            runnerUp = this.battlefield[index].influence + influencer.poliBonus - influencer.weariness;
+            runnerUp = this.battlefield[index].influence + this.battlefield[index].poliBonus - this.battlefield[index].weariness;
           }
         }
       });
