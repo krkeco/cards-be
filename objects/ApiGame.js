@@ -220,6 +220,11 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, gameTy
           let hardened = 0;
           let ninevites = 0;
           let jonah = 0;
+          let isInfluencer = true;
+          if(this.locations[player.id].influencer.id == player.id){
+            console.log('jonah is the influencer')
+            isInfluencer = true;
+          }
           // console.log(
           //   'checkforninevites' +
           //     JSON.stringify(this.locations[player.id].battlefield),
@@ -250,7 +255,8 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, gameTy
                     }
                   }
                 });
-                if (jonah > 0 && ninevites > 4 ) {
+                //jonah > 0 && 
+                if (ninevites > 4 && isInfluencer) {
                   //4
                   console.log('jonah is a winner!');
                   player.winning = true;
