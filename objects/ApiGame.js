@@ -493,61 +493,62 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, gameTy
           let maxCard;
           let switchId = -1;
           this.locations[location].battlefield.map((bf, i)=>{
-
-            if(bf.id != king){
-            console.log('bf near king:'+JSON.stringify(bf.cards))
-
-              bf.cards.map((c,cInd)=>{
-                console.log('card check: '+JSON.stringify(c))
-                if(c.cost > maxCardCost && c.name != "Edict of Xerxes"){
-                  maxCard = c;
-                  maxCardCost = c.cost;
-                  switchId = bf.id
-                }
-              })
-            }
-            if(maxCard){
-              console.log('swap '+maxCard.name+' with xerxes')
-              let switchPlay = [...this.players[switchId].played]
-              console.log(switchPlay)
-              let swapper;
-              let swapperId = -1;
-              let kingId = -1;
-              switchPlay.map((card,cInd)=>{
-                if(card.name == maxCard.name){
-                  console.log('found the maxCard: '+card.name)
-                  swapper = {...card};
-                  swapperId = cInd;
-                  console.log('swapper is '+swapper.name)
-                  console.log('spliced switch'+switchPlay)
-                  
-                }})
-
-              let kingPlay = [...this.players[king].played]
-              console.log(kingPlay)
-              let xerxes;
-              kingPlay.map((card,cInd)=>{
-                if(card.abilities.indexOf('xerxes') > -1){
-                  console.log('found xerxes')
-                  xerxes = {...card};
-                  kingId = cInd;
-                  // break;
-                }
-              })
-              if(swapper && xerxes){
-                this.appendLog('Xerxes chooses: '+swapper.name)
-                kingPlay.splice(kingId,1);
-                console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
-                switchPlay.splice(swapperId,1);
-                console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
-                kingPlay = [...kingPlay, swapper]
-                switchPlay = [...switchPlay, xerxes]
-                this.players[switchId].played = [...switchPlay]
-                this.players[king].played = [...kingPlay]
-                console.log('swap successful:'+JSON.stringify(this.players[king].played))
+            if(bf){
+              if(bf.id != king){
+              console.log('bf near king:'+JSON.stringify(bf.cards))
+  
+                bf.cards.map((c,cInd)=>{
+                  console.log('card check: '+JSON.stringify(c))
+                  if(c.cost > maxCardCost && c.name != "Edict of Xerxes"){
+                    maxCard = c;
+                    maxCardCost = c.cost;
+                    switchId = bf.id
+                  }
+                })
               }
-              // console.log('swapping'+xerxes.name+" with "+swapper.name)
-
+              if(maxCard != null){
+                console.log('swap '+maxCard.name+' with xerxes')
+                let switchPlay = [...this.players[switchId].played]
+                console.log(switchPlay)
+                let swapper;
+                let swapperId = -1;
+                let kingId = -1;
+                switchPlay.map((card,cInd)=>{
+                  if(card.name == maxCard.name){
+                    console.log('found the maxCard: '+card.name)
+                    swapper = {...card};
+                    swapperId = cInd;
+                    console.log('swapper is '+swapper.name)
+                    console.log('spliced switch'+switchPlay)
+                    
+                  }})
+  
+                let kingPlay = [...this.players[king].played]
+                console.log(kingPlay)
+                let xerxes;
+                kingPlay.map((card,cInd)=>{
+                  if(card.abilities.indexOf('xerxes') > -1){
+                    console.log('found xerxes')
+                    xerxes = {...card};
+                    kingId = cInd;
+                    // break;
+                  }
+                })
+                if(swapper && xerxes){
+                  this.appendLog('Xerxes chooses: '+swapper.name)
+                  kingPlay.splice(kingId,1);
+                  console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
+                  switchPlay.splice(swapperId,1);
+                  console.log('no xerxes right?:'+kingId+JSON.stringify(kingPlay))
+                  kingPlay = [...kingPlay, swapper]
+                  switchPlay = [...switchPlay, xerxes]
+                  this.players[switchId].played = [...switchPlay]
+                  this.players[king].played = [...kingPlay]
+                  console.log('swap successful:'+JSON.stringify(this.players[king].played))
+                }
+                // console.log('swapping'+xerxes.name+" with "+swapper.name)
+  
+              }
             }
           });
 
