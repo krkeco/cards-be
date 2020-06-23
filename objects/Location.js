@@ -86,10 +86,12 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
   //all decks start with 1 2cost and 1 3 cost card atm
   if (this.deck.length > 0) {
     //otherwise jerusalem has no market
-    this.market.push(this.deck[0]);
-    this.deck.splice(0, 1);
-    this.market.push(this.deck[5]);
-    this.deck.splice(5, 1);
+    // this.market.push(this.deck[0]);
+    // this.deck.splice(0, 1);
+    // this.market.push(this.deck[5]);
+    // this.deck.splice(5, 1);
+    this.drawOne();
+    this.drawOne();
     this.drawOne();
     // //console.log('market: '+this.market)
     // //console.log('market: '+JSON.stringify(this.deck))
