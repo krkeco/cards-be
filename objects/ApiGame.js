@@ -4,11 +4,13 @@ const tu = require('./Turn.js');
 
 const ai = require('./AI.js');
 
-module.exports.newGame = function Game(deckData,playerNames, playerTypes, gameType = "all") {
+module.exports.newGame = function Game(deckData,playerNames, playerTypes, refreshMarket, scrapCard, gameType = "all") {
   console.log('dd:'+JSON.stringify(deckData))
   let Jerusalem = new loc.Location(deckData.decks.jerry, deckData.stories.jerusalem, 7, deckData.infoDecks.starter);
   Jerusalem.id = 7;
   this.players = [];
+  this.refreshMarket = refreshMarket;
+  this.scrapCard = scrapCard;
   this.playerNames = [...playerNames];
   this.playerTypes = [...playerTypes];
   this.locations = { 7: Jerusalem };

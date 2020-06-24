@@ -79,7 +79,9 @@ type TurnInfo {
 },
 type WaitingRoom {
 	room: [String],
-	started: Boolean
+	started: Boolean,
+  refreshMarket:Boolean,
+  scrapCard:Boolean
 },
 type Game {
   players: [Player],
@@ -88,7 +90,7 @@ type Game {
   type Query {
     wakeup: [Location],
     waitingRoom(gameId: Int): WaitingRoom,
-    newGame(players: [String], types: [String]): Int!,
+    newGame(players: [String], types: [String], refreshMarket: Boolean, scrapCard: Boolean): Int!,
     joinGame(players: [String],types: [String],gameId: Int): [String]!,
     startGame(gameId: Int): String,
     players(gameId: Int): [Player],
@@ -119,7 +121,7 @@ var root = {
     if (!game.players || game.players.length <= 0) {
       started = false;
     }
-    return { room: game.playerNames, started: started };
+    return { room: game.playerNames, started: started, refreshMarket:game.refreshMarket, scrapCard: game.scrapCard };
   },
   currentPlayer: ({ gameId }) => {
     console.log('currentplayer for ' + gameId);
@@ -130,12 +132,12 @@ var root = {
     return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log, loser: game.loser };
     // return player
   },
-  newGame: async({ players, types }) => {
+  newGame: async({ players, types, refreshMarket, scrapCard }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
 
     let deckData = await cards.data();
-    let game = new GameBuilder.newGame(deckData,players, types);
+    let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard);
     let gameId = gameDB.length;
     gameDB[gameId] = game;
     return gameId;
