@@ -4,20 +4,22 @@ const tu = require('./Turn.js');
 
 const ai = require('./AI.js');
 
-module.exports.newGame = function Game(deckData,playerNames, playerTypes, refreshMarket, scrapCard, gameType = "all") {
+module.exports.newGame = function Game(deckData,playerNames, playerTypes, refreshMarket, scrapCard, banes, gameType = "all") {
   console.log('dd:'+JSON.stringify(deckData))
   let Jerusalem = new loc.Location(deckData.decks.jerry, deckData.stories.jerusalem, 7, deckData.infoDecks.starter);
   Jerusalem.id = 7;
   this.players = [];
+  this.banes = banes;
   this.refreshMarket = refreshMarket;
   this.scrapCard = scrapCard;
   this.playerNames = [...playerNames];
   this.playerTypes = [...playerTypes];
   this.locations = { 7: Jerusalem };
   this.currentPlayer = 0;
-  this.turn = 0;
+  this.turn = 1;
   this.winner = '';
   this.loser = '';
+  this.losers = 0;
   this.slug = 0;
   this.log = [];
   this.simulation= true;
@@ -37,6 +39,9 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
       this.currentPlayer = 0;
     } else {
       this.currentPlayer += 1;
+    }
+    if(this.players[this.currentPlayer].baned){
+      this.incrementPlayer();
     }
     this.appendLog('Next player is '+this.players[this.currentPlayer].name+this.players[this.currentPlayer].id)
   };
@@ -212,7 +217,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
             player.winning = true;
             this.winner = player.name+player.id;
           }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
-            this.loser = player.name+player.id
+            this.setLoser(player)
           }
           break;
         case 'Jonah':
@@ -265,7 +270,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
                   this.winner = player.name+player.id;
                 }else
                 if(this.locations[player.id].hardened >= 3){
-                  this.loser = player.name+player.id
+                  this.setLoser(player)
                 }
               } else {
                 console.log('no jonah found');
@@ -288,7 +293,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
             player.winning = true;
             this.winner = player.name+player.id;
           }else if(wounds >= 6){
-            this.loser = player.name+player.id
+            this.setLoser(player)
           }
           //check abilities
 
@@ -301,7 +306,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
             this.winner = player.name+player.id;
             
           }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear - this.locations[player.id].battlefield[player.id].faith > 12){
-            this.loser = player.name+player.id
+            this.setLoser(player)
           }
 
           break;
@@ -314,6 +319,23 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
     }
     return this.winner;
   };
+
+  this.setLoser = function(player) {
+    this.appendLog(player.name+player.id+ " lost to their bane! They have been removed.")
+    // this.loser = player.name+player.id
+    this.players[player.id].baned = true;
+    this.losers +=1;
+    
+    if(this.losers +1 == this.players.length){
+      this.players.map((play,index)=>{
+        if(!play.baned){
+          this.winning = true;
+          this.winner = play.name+play.id;
+            
+        }
+      })
+    }
+  }
   this.checkForConquerer = function () {
     let conquerer = {};
     // let chief = null;

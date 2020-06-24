@@ -16,6 +16,7 @@ module.exports.Player = function Player(
   this.played = [];
   this.firstPlayer = false;
   this.winning = false;
+  this.baned = false;
   this.name = story.character.name;
   
   // this.setAbilities = function (abilities) {

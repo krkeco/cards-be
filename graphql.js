@@ -137,7 +137,8 @@ var root = {
     // let players = ['Jonah','Esther']
 
     let deckData = await cards.data();
-    let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard);
+    let banes = true;
+    let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard, banes);
     let gameId = gameDB.length;
     gameDB[gameId] = game;
     return gameId;

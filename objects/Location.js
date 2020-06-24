@@ -91,8 +91,10 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     // this.market.push(this.deck[5]);
     // this.deck.splice(5, 1);
     this.drawOne();
-    this.drawOne();
-    this.drawOne();
+    if(this.name != "Jerusalem"){
+      this.drawOne();
+      this.drawOne();
+    }
     // //console.log('market: '+this.market)
     // //console.log('market: '+JSON.stringify(this.deck))
   }
@@ -176,6 +178,9 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     }
 
     if (owner.hand[card].abilities.indexOf('angelic') > -1) {
+      //if you want to scrap it into the market after play..
+      // this.deck = [...this.deck, {...owner.hand[card]}]
+      // owner.hand[card].abilities.push("scrap")
       this.angelic = owner.id;
     }
     if (owner.hand[card].abilities.indexOf('mob') > -1) {
@@ -374,6 +379,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
 
     if (this.angelic > -1 && (influencer.id != this.angelic || influencer.finalInfluence <= this.influence)) {
       //console.log('moments peace no influence today')
+
       this.postInfluencePhase();
     } else {
       //console.log('location:setInfluencing:')
