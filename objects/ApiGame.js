@@ -246,11 +246,11 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
                       ninevites++;
                       console.log('ninevites' + ninevites);
                     }
-                    if(card.abilities.indexOf('Harden') > -1){
+                    if(battlefield.id == player.id && card.abilities.indexOf('Harden') > -1){
                       jonah = 1;
                     }
                   }else{
-                    if(card.abilities.indexOf('Harden') > -1){
+                    if(battlefield.id == player.id && card.abilities.indexOf('Harden') > -1){
                       // jonah = 1;
                       console.log('hardening')
                       this.locations[player.id].hardened+=1;
@@ -417,7 +417,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           let maxCard;
           let switchId = -1;
           this.locations[location].battlefield.map((bf, i)=>{
-
+            if(bf){
             if(bf.id != king){
             console.log('bf near prison:'+JSON.stringify(bf.cards))
 
@@ -480,7 +480,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
                 console.log('swap successful:'+JSON.stringify(this.players[king].played))
               }
               // console.log('swapping'+xerxes.name+" with "+swapper.name)
-
+            }
             }
           });
 
