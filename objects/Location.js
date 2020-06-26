@@ -245,7 +245,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     //   //console.log('Jonah has been hardened'+this.hardened)
     // }
     //can't else this because some cards have both edict and politics
-    if (owner.hand[card].abilities.indexOf('edict') > -1) {
+    if (owner.hand[card].abilities.indexOf('promise') > -1) {
       this.edicts+=1;
       console.log('edicts:'+this.edicts)
       
