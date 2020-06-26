@@ -205,7 +205,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       let newCard = {
         ...greatCard,
         name: "mordecai's blessing: "+greatCard.name,
-        abilities:["scrap","edict"]
+        abilities:["scrap","promise"]
       }
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
