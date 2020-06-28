@@ -325,20 +325,22 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
   };
 
   this.setLoser = function(player) {
-    this.appendLog(player.name+player.id+ " lost to their bane! They have been removed.")
+    this.appendLog(player.name+player.id+ " fell to their bane!")
     // this.loser = player.name+player.id
-    this.players[player.id].baned = true;
-    this.losers +=1;
-    
-    if(this.losers +1 == this.players.length){
-      this.players.map((play,index)=>{
-        if(!play.baned){
-          this.winning = true;
-          this.winner = play.name+play.id;
-            
+    if(this.banes){
+        this.players[player.id].baned = true;
+        this.losers +=1;
+        
+        if(this.losers +1 == this.players.length){
+          this.players.map((play,index)=>{
+            if(!play.baned){
+              this.winning = true;
+              this.winner = play.name+play.id;
+                
+            }
+          })
         }
-      })
-    }
+      }
   }
   this.checkForConquerer = function () {
     let conquerer = {};

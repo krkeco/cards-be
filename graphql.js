@@ -90,7 +90,7 @@ type Game {
   type Query {
     wakeup: [Location],
     waitingRoom(gameId: Int): WaitingRoom,
-    newGame(players: [String], types: [String], refreshMarket: Boolean, scrapCard: Boolean): Int!,
+    newGame(players: [String], types: [String], refreshMarket: Boolean, scrapCard: Boolean, banes: Boolean): Int!,
     joinGame(players: [String],types: [String],gameId: Int): [String]!,
     startGame(gameId: Int): String,
     players(gameId: Int): [Player],
@@ -132,12 +132,12 @@ var root = {
     return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log, loser: game.loser };
     // return player
   },
-  newGame: async({ players, types, refreshMarket, scrapCard }) => {
+  newGame: async({ players, types, refreshMarket, scrapCard, banes }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
 
     let deckData = await cards.data();
-    let banes = true;
+    // let banes = true;
     let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard, banes);
     let gameId = gameDB.length;
     gameDB[gameId] = game;
