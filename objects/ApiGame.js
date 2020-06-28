@@ -321,6 +321,19 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
     if(this.winner != ""){
       this.appendLog(this.winner+ " won the game by finishing their calling!")
     }
+    if(this.losers +1 == this.players.length){
+      this.players.map((play,index)=>{
+        if(!play.baned){
+          this.winning = true;
+          this.winner = play.name+play.id;
+            
+        }
+      })
+    }else if(this.banes && this.losers == this.players.length){
+      this.winning = true;
+      this.winner = "No one!"
+      this.appendLog("Everyone fell for their banes!")
+    }
     return this.winner;
   };
 
@@ -331,15 +344,6 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
         this.players[player.id].baned = true;
         this.losers +=1;
         
-        if(this.losers +1 == this.players.length){
-          this.players.map((play,index)=>{
-            if(!play.baned){
-              this.winning = true;
-              this.winner = play.name+play.id;
-                
-            }
-          })
-        }
       }
   }
   this.checkForConquerer = function () {
@@ -358,13 +362,11 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           if(conquerer[location.influencer.id]>2
             || (conquerer[location.influencer.id]>1 && this.players.length == 1)){
             this.winner = location.influencer.name+location.influencer.id
+            this.appendLog(this.winner+ " won the game by influencing 3 locations!")
           }
   
         }
       });
-    }
-    if(this.winner != ""){
-      this.appendLog(this.winner+ " won the game by influencing 3 locations!")
     }
   };
   // console.log('starting new game with '+playerNames)
