@@ -205,7 +205,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       let newCard = {
         ...greatCard,
         name: "mordecai's blessing: "+greatCard.name,
-        abilities:["scrap","vow"]
+        abilities:["scrap","endeavor"]
       }
       owner.hand=[...owner.hand,newCard];
       this.playCard(owner.hand.length-1,owner);
@@ -245,7 +245,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     //   //console.log('Jonah has been hardened'+this.hardened)
     // }
     //can't else this because some cards have both edict and politics
-    if (owner.hand[card].abilities.indexOf('vow') > -1) {
+    if (owner.hand[card].abilities.indexOf('endeavor') > -1) {
       this.edicts+=1;
       console.log('edicts:'+this.edicts)
       
@@ -309,6 +309,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
           this.battlefield[index].poliBonus = this.battlefield[index].politics * this.edicts;
+          // console.log(player.name+' has polibonus '+this.battlefield[index].poliBonus)
           // if(this.battlefield[index].poliBonus < 0){
           //   this.battlefield[index].poliBonus = 0;
           // }

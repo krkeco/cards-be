@@ -216,8 +216,14 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
             //17
             player.winning = true;
             this.winner = player.name+player.id;
-          }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
-            this.setLoser(player)
+          // }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
+          }else {
+            this.locations[player.id].battlefield.map((bf,ind)=>{
+              if(bf.id == player.id && bf.poliBonus +bf.influence < 0 ){
+                console.log('esther has a polibonus'+bf.poliBonus +' so she loses')  
+                this.setLoser(player)
+              }
+            })
           }
           break;
         case 'Jonah':
