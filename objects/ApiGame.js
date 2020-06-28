@@ -212,7 +212,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           console.log('checking esther win condition');
           let babylonian = this.locations[player.id].compareInfluence();
           console.log('babylonian influencer' + babylonian.name+babylonian.finalInfluence);
-          if (babylonian.id == player.id && babylonian.finalInfluence > 17) {
+          if (babylonian.id == player.id && babylonian.finalInfluence > 14) {//og 14
             //17
             player.winning = true;
             this.winner = player.name+player.id;
@@ -269,7 +269,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
                   player.winning = true;
                   this.winner = player.name+player.id;
                 }else
-                if(this.locations[player.id].hardened >= 3){
+                if(this.locations[player.id].hardened >= 2){
                   this.setLoser(player)
                 }
               } else {
@@ -284,12 +284,10 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           let pros = 0;
           let wounds = 0;
           Object.keys(this.locations).map((location, index) => {
-            //if (this.locations[location].proselytized[player.id] > 0) {
               pros += this.locations[location].proselytized[player.id];
               wounds += this.locations[location].wounds[player.id];
-            // }
           });
-          if (pros >= 7) {
+          if (pros >= 5) {//og 7
             player.winning = true;
             this.winner = player.name+player.id;
           }else if(wounds >= 6){
@@ -301,11 +299,11 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
         case 'Joshua':
           console.log('checking joshua wincon:' + this.locations[player.id].abilities[0]);
 
-          if (this.locations[player.id].abilities[0] > 3) {
+          if (this.locations[player.id].abilities[0] > 2) {
             this.winning = true;
             this.winner = player.name+player.id;
             
-          }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear - this.locations[player.id].battlefield[player.id].faith > 12){
+          }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear - this.locations[player.id].battlefield[player.id].faith >= 9){
             this.setLoser(player)
           }
 

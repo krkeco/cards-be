@@ -411,7 +411,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
           // this.card.influence += this.abilities[0]-1;
-          this.card.fear += 1;
+          this.card.fear += 2;
           // console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }
