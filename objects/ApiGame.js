@@ -219,7 +219,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           // }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
           }else {
             this.locations[player.id].battlefield.map((bf,ind)=>{
-              if(bf.id == player.id && bf.poliBonus +bf.influence < 0 ){
+              if(bf && bf.id == player.id && bf.totalInfluence < 0){//bf.poliBonus +bf.influence < 0 ){//totalinfluence
                 console.log('esther has a polibonus'+bf.poliBonus +' so she loses')  
                 this.setLoser(player)
               }
