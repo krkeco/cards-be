@@ -402,7 +402,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness)
       if (
-        influencer.finalInfluence > this.influence  &&
+        influencer.finalInfluence > this.influence  && //this.influence
         influencer.name != 'neutral'
       ) {
         this.influencer = influencer;
