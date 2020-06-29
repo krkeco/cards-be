@@ -14,7 +14,7 @@ module.exports.AI = function AI(player, locations) {
       console.log('checking player specific strategy '+player.name)
       switch (player.name) {
         case 'Esther':
-          if (player.getTotalInfluence() >= 18) {
+          if (player.getTotalInfluence() >= 14) {
             console.log('winner play on babylon')
             this.playLoc(player.id);
           } else {
@@ -37,7 +37,7 @@ module.exports.AI = function AI(player, locations) {
                   console.log('ninevites' + ninevites);
                 }
               });
-              if (ninevites > 4) {
+              if (ninevites > 3) {
                 //4
                 console.log('jonah can win!');
                 this.playLoc(player.id)
