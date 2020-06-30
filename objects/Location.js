@@ -332,7 +332,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
             })
           }
 
-          if(this.battlefield[index].influence <= this.battlefield[index].faith){
+          if(this.battlefield[index].influence <= 0 && this.battlefield[index].faith > 0){
             this.battlefield[index].influence = this.battlefield[index].faith;
             this.battlefield[index].weariness = 0;
             this.battlefield[index].faithing = true;
