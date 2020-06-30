@@ -332,7 +332,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
             })
           }
 
-          if(this.battlefield[index].influence <= 0 && this.battlefield[index].faith > 0){
+          if(this.battlefield[index].influence <= this.battlefield[index].faith){
             this.battlefield[index].influence = this.battlefield[index].faith;
             this.battlefield[index].weariness = 0;
             this.battlefield[index].faithing = true;
@@ -412,7 +412,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
           // this.card.influence += this.abilities[0]-1;
-          this.card.fear += 2;
+          this.card.fear += 1;
           // console.log('canaan conquered, tier up'+this.abilities[0])
         }
       }
