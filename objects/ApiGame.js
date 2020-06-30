@@ -306,8 +306,8 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
           if (this.locations[player.id].abilities[0] > 2) {
             
             this.setWinner(player)
-            
-          }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear - this.locations[player.id].battlefield[player.id].faith >= 9){
+            //add ALL fear subtract ALL faith
+          }else if(this.locations[player.id].battlefield[player.id] && this.locations[player.id].battlefield[player.id].fear + this.locations[player.id].battlefield[player.id].weariness >= 9){
             this.setLoser(player)
           }
 
