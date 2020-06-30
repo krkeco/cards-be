@@ -274,7 +274,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
                   //4
                   this.setWinner(player)
                 }else
-                if(this.locations[player.id].hardened >= 2){
+                if(this.locations[player.id].hardened >= 3){
                   this.setLoser(player)
                 }
               } else {
@@ -292,7 +292,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
               pros += this.locations[location].proselytized[player.id];
               wounds += this.locations[location].wounds[player.id];
           });
-          if (pros >= 5) {//og 7
+          if (pros >= 7) {//og 7
             this.setWinner(player)
           }else if(wounds >= 6){
             this.setLoser(player)
