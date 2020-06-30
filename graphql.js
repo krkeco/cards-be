@@ -147,13 +147,15 @@ var root = {
   joinGame: ({ players, types, gameId }) => {
     console.log('new players are:' + JSON.stringify(players));
     let game = gameDB[gameId];
-    if (!game || game.turn < 2) {
+    if (!game.started) {
       let newPlayerList = [...game.playerNames, ...players];
       game.playerNames = newPlayerList;
 
       let newPlayerType = [...game.playerTypes, ...types];
       game.playerTypes = newPlayerType;
       return newPlayerList;
+    } else if(players == []) {
+      return game.playerNames
     } else {
       return 'this game is not available any more';
     }

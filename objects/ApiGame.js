@@ -10,6 +10,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
   Jerusalem.id = 7;
   this.players = [];
   this.banes = banes;
+  this.started = false;
   this.refreshMarket = refreshMarket;
   this.scrapCard = scrapCard;
   this.playerNames = [...playerNames];
@@ -103,6 +104,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
     }
   };
   this.setStartingPlayers = function () {
+    this.started = true;
     console.log('playerTypes:'+this.playerTypes)
     this.playerNames.map((player, index) => {
       switch (player) {
