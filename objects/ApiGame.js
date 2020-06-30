@@ -317,7 +317,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
 
     console.log('finish checking winconditions'+this.winner);
     
-    if(this.losers +1 == this.players.length){
+    if(this.losers +1 == this.players.length && this.players.length != 1){
       this.players.map((play,index)=>{
         if(!play.baned){
           this.winning = true;
