@@ -90,17 +90,19 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
       );
     }
   };
-  this.checkAI = () => {
+  this.checkAI = async() => {
     console.log(
       'checking ai' + this.players[this.currentPlayer].type + this.turn,
     );
     if (this.players[this.currentPlayer].type == 'AI') {
       console.log('running ai');
       this.appendLog('Running AI for '+this.players[this.currentPlayer].name)
-      this.players[this.currentPlayer].AI.runStrategy(gameType);
-      if(this.simulation){
-        // this.getNextPlayer();
-      }
+      let newLog = await this.players[this.currentPlayer].AI.runStrategy(gameType);
+      console.log('new logs:'+newLog)
+      this.log = [...this.log,...newLog];
+      // if(this.simulation){
+      //   // this.getNextPlayer();
+      // }
     }
   };
   this.setStartingPlayers = function () {
