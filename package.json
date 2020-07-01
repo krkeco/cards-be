@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prodpush": "",
+    "prodpush": "npm version minor && npm run test && git push heroku master",
     "pretty": "prettier --single-quote --trailing-comma all --write ./*.js ./objects/*.js",
     "mongo": "mongod --dbpath=./data",
     "start": "npx nodemon index.js",

@@ -6,7 +6,7 @@ const ai = require('./AI.js');
 
 module.exports.newGame = function Game(deckData,playerNames, playerTypes, refreshMarket, scrapCard, banes, gameType = "all") {
   console.log('dd:'+JSON.stringify(deckData))
-  let Jerusalem = new loc.Location(deckData.decks.jerry, deckData.stories.jerusalem, 7, deckData.infoDecks.starter);
+  let Jerusalem = new loc.Location([...deckData.decks.jerry], {...deckData.stories.jerusalem}, 7, [...deckData.infoDecks.starter]);
   Jerusalem.id = 7;
   this.players = [];
   this.banes = banes;

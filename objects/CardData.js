@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-// const deckData = require('../decks.json');
+const localData = require('../json/decks.json');
 const getDeckData = async() => {
   try{
     console.log('trying call')
@@ -23,6 +23,7 @@ const getDeckData = async() => {
   let decks = {};
   console.log('getting deck')
   let deckData = await getDeckData();
+  
   Object.keys(deckData.decks).map((deck) => {
     decks[deck] = [];
     deckData.decks[deck].map((card, index) => {
@@ -34,8 +35,28 @@ const getDeckData = async() => {
   });
 
   let cardData = { stories: {...deckData.stories}, decks: {...decks}, infoDecks: {...deckData.decks} };
-  console.log('return dd'+cardData)
+  // console.log('return dd'+cardData)
+  return cardData;
+};
+ const testData = () => {
+  let decks = {};
+  console.log('getting deck')
+  let deckData= localData;  
+  
+  Object.keys(deckData.decks).map((deck) => {
+    decks[deck] = [];
+    deckData.decks[deck].map((card, index) => {
+      for (let y = 0; y < card.quantity; y++) {
+        decks[deck].push(card);
+        // console.log('pushing'+card.name)
+       }
+    });
+  });
+
+  let cardData = { stories: {...deckData.stories}, decks: {...decks}, infoDecks: {...deckData.decks} };
+  // console.log('return dd'+cardData)
   return cardData;
 };
 
 module.exports.data = async() => cardData();
+module.exports.testData = ()=> testData();

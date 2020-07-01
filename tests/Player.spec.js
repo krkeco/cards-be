@@ -1,7 +1,10 @@
 
 const pl = require("../objects/Player");
+
 const cards = require('../objects/CardData.js');
-const deckData = new cards.data();
+let deckData = cards.testData();
+// let deckData = { stories: {...cards.stories}, decks: {...cards.decks}, infoDecks: {...cards.decks} };
+
 const seed = [{name:'gold',abilities:[],quantity:2,cost:1,gold:1,influence:1},{name:'influence',abilities:[],quantity:2,cost:1,gold:2,influence:2},{name:'prince',abilities:[],quantity:2,cost:1,gold:1,influence:2}]
 
 describe("initialize player object", () => {
@@ -11,7 +14,7 @@ let player = new pl.Player({...deckData.stories.esther},[...deckData.decks.start
       expect(player.hand).toEqual([]);
     });
     test("full deck", () => {
-      expect(player.deck.length).toEqual(10);
+      expect(player.deck.length).toEqual(8);
     });
     test("empty discard", () => {
       expect(player.discard).toEqual([]);
@@ -22,7 +25,7 @@ let player = new pl.Player({...deckData.stories.esther},[...deckData.decks.start
 });
 
 describe("removePlayed function", () => {
-  let player = new pl.Player(deckData.stories.esther,deckData.decks.starter,"player",);  
+  let player = new pl.Player({...deckData.stories.esther},[...deckData.decks.starter],"player",);  
    const discard = [{name:'gold'},{name:'influence'},{name:'influence'}]
    const played = [{name:'influence'},{name:'influence'}]
    // player.hand = [{name:'influence'},{name:'gold'},{name:'influence'}];
@@ -133,11 +136,11 @@ describe("buyCard function", () => {
   player.discard = [];
   test("buy card",()=>{
     player.buyCard(seed[0]);
-    expect(player.discard).toEqual([seed[0]])
+    expect(player.played).toEqual([seed[0]])
   })
   test("buy null card",()=>{
     player.buyCard(null);
-    expect(player.discard).toEqual([seed[0]])
+    expect(player.played).toEqual([seed[0]])
   })
 });
 
