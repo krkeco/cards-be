@@ -8,13 +8,16 @@ module.exports.AI = function AI(player, locations) {
       let infl = 0;
       let politics= 0;
       let apostles = 0;
+      let faith = 0;
       let allCards = [...player.deck, ...player.hand, ...player.discard]
       allCards.map((card,index)=>{
         golds+= card.gold;
-        politics = card.politics;
+        politics += card.politics ? card.politics : 0;
         infl += card.influence;
+        faith += card.faith ? card.faith : 0;
 
       })
+      console.log('faith ai '+faith)
       console.log('checking player specific strategy '+player.name)
       switch (player.name) {
         case 'Esther':
@@ -22,12 +25,14 @@ module.exports.AI = function AI(player, locations) {
             console.log('winner play on babylon')
             this.playLoc(player.id);
           } else {
-            if(golds < 7){
+            if(golds < 7 && infl < 14){
               this.buySomething('gold')
+              this.buySomething();
             }else{
               this.buySomething('influence')
+              this.buySomething();
             }
-            // this.millSomething();
+            this.millSomething('gold');
             this.attackSomething();
             // this.standardStrat();
           }
@@ -53,26 +58,38 @@ module.exports.AI = function AI(player, locations) {
               console.log('no jonah found');
               // this.standardStrat();
               this.buySomething('ninevite')
+              this.buySomething();
               this.millSomething();
               this.attackSomething();
             }
 
           break;
         case 'Joshua':
+          
           this.buySomething('faith')
-          this.millSomething('influence');
-          let faith = 0;
-          player.hand.map((card,ind)=>{
-            if(card.faith != null){
-              faith+= card.faith;
+          let faithGold = 0;
+          if(faith > locations[player.id].influence){
+            for (let c = player.hand.length - 1; c > -1; c--) {
+              if(player.hand[c].faith > 0){
+                faithGold += player.hand[c].gold;
+                locations[player.id].playCard(c, player);
+
+              }
             }
-          })
+            locations[player.id].market.map((card,index)=>{
+              if(faithGold >= card.cost){
+                locations[player.id].buy(index, player);
+              }
+            })
 
-          this.attackSomething();
-
+          }
+          this.millSomething('influence');
+          this.buySomething('gold');
+          this.attackSomething('nonCanaan');
           break;
         case 'Paul':
           this.buySomething('influence')
+          this.buySomething();
           this.millSomething('gold');
           this.attackSomething()
         break;
@@ -91,7 +108,7 @@ module.exports.AI = function AI(player, locations) {
     this.log.push(player.name+' is attacking '+locations[locId].name)
       // console.log('playing on '+locations[locId].name)
     for (let c = player.hand.length - 1; c > -1; c--) {
-      locations[locId].playCard(c, player,0);
+      locations[locId].playCard(c, player);
     }
   };
   this.standardStrat = (strategy) => {
@@ -167,33 +184,38 @@ module.exports.AI = function AI(player, locations) {
       this.log.push(player.name+' is buying '+locations[cardLocation].market[cardIndex].name)
       locations[cardLocation].buy(cardIndex, player);
 
-    }else if(preference){
-      console.log('failed prefrence, buying anything')
-      this.buySomething();
     }
+    // else if(preference){
+    //   console.log('failed prefrence, buying anything')
+    //   if(preference != 'faith'){//joshua will need to check play on canaan first
+    //     this.buySomething();
+    //   }
+    // }
   };
 
   this.millSomething = function (preference) {
     console.log('milling something')
     // player.hand.indexOf()
     let allTehGold = 0;
-    let allCard = 0;
-    player.hand.map((card, index) => {
-      allTehGold += player.hand[index].gold;
-      allCard++;
-    });
-    player.deck.map((card, index) => {
-      allTehGold += player.deck[index].gold;
-      allCard++;
-    });
-    player.discard.map((card, index) => {
-      allTehGold += player.discard[index].gold;
-      allCard++;
+    let starters = 0;
+    let highestCost = 0;
+    let allCards = [...player.hand, ...player.deck, ...player.discard]
+    let allCard = allCards.length;
+    allCards.map((card, index) => {
+      allTehGold += card.gold;
+      if(card.cost > highestCost){
+        highestCost = card.cost
+      }
+      else if(card.cost == 0){
+        starters++;
+      }
+
     });
     //console.log('alltehgold' + allTehGold + ' all the cards:'+allCard)
 
     if (allCard > 8) {
       let hasPurse = player.hand.findIndex((card) => card.name == 'Gold');
+      let hasTaxes = player.hand.findIndex((card) => card.name == 'Tax Collector');
       let hasInfluence = player.hand.findIndex(
         (card) => card.name == 'Influence',
       );
@@ -201,22 +223,28 @@ module.exports.AI = function AI(player, locations) {
       if (hasInfluence > -1  && preference != 'gold') {
         this.log.push(player.name+' is milling an influence')
         player.millCard(hasInfluence);
-      } else if (hasPurse > -1 && allTehGold > 8) {
+      } else if (hasPurse > -1 && allTehGold > 7) {
         this.log.push(player.name+' is milling a gold')
         player.millCard(hasPurse);
+      }else if(hasTaxes > -1 && starters < 3){
+        player.millCard(hasTaxes);
       }
     }
   };
 
-  this.attackSomething = function (maxCard) {
+  this.attackSomething = function (preference) {
     console.log('attacking something')
     let target;
     Object.keys(locations).map((location, index) => {
       let locationDifficulty = locations[location].compareInfluence();
       if (!target || locations[location].influencer.name != player.name) {
         ////console.log('targeting '+locationDifficulty.name + " on "+locations[location].name);
+        if(preference == 'nonCanaan' && locations[location].name == "Canaan"){
+          //don't attack canaan if noncanaan
+        }else{
 
-        target = locations[location];
+          target = locations[location];
+        }
       }
     });
 
@@ -225,7 +253,7 @@ module.exports.AI = function AI(player, locations) {
     this.log.push(player.name+' is attacking '+target.name)
     for (let x = player.hand.length - 1; x > -1; x--) {
       //console.log('playing card:'+player.hand[x].name);
-      target.playCard(x, player, maxCard);
+      target.playCard(x, player);
     }
   };
 };
