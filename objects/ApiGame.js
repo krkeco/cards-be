@@ -98,7 +98,7 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
       console.log('running ai');
       this.appendLog('Running AI for '+this.players[this.currentPlayer].name)
       let newLog = await this.players[this.currentPlayer].AI.runStrategy(gameType);
-      console.log('new logs:'+newLog)
+      // console.log('new logs:'+newLog)
       this.log = [...this.log,...newLog];
       // if(this.simulation){
       //   // this.getNextPlayer();
@@ -396,8 +396,11 @@ module.exports.newGame = function Game(deckData,playerNames, playerTypes, refres
        if(this.locations[location].prison.length > 0){
         this.checkPrison(location);
        }
-
+      let  old = this.locations[location].influencer;
       this.locations[location].setInfluencing();
+      if(old.name != this.locations[location].influencer.name){
+        this.appendLog(this.locations[location].influencer.name + " has taken " +this.locations[location].name + " from "+ old.name)
+      }
     });
 
     if(gameType == "all" || gameType == "conquer"){

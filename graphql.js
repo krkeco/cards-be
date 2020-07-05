@@ -105,7 +105,11 @@ type Game {
 // The root provides a resolver function for each API endpoint
 var root = {
   wakeup: async() => {
-    let deckData = await cards.data();
+    // let deckData = await cards.data();
+    let deckData = cards.testData();
+    if(process.env.PORT){
+      deckData = await cards.data();
+    }
     let game = new GameBuilder.newGame(deckData,["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
     
     game.setStartingPlayers(game.playerNames);
@@ -135,8 +139,10 @@ var root = {
   newGame: async({ players, types, refreshMarket, scrapCard, banes }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
-
-    let deckData = await cards.data();
+    let deckData = cards.testData();
+    if(process.env.PORT){
+      deckData = await cards.data();
+    }
     // let banes = true;
     let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard, banes);
     let gameId = gameDB.length;

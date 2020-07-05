@@ -1,5 +1,5 @@
 module.exports.AI = function AI(player, locations) {
-  this.runStrategy = async (strategy, log) => {
+  this.runStrategy = async (strategy) => {
     this.log = []
     // this.log = [...log]
     try {
@@ -59,6 +59,7 @@ module.exports.AI = function AI(player, locations) {
               // this.standardStrat();
               this.buySomething('ninevite')
               this.buySomething();
+              this.buySomething();
               this.millSomething();
               this.attackSomething();
             }
@@ -67,10 +68,12 @@ module.exports.AI = function AI(player, locations) {
         case 'Joshua':
           
           this.buySomething('faith')
+          this.buySomething('faith')
+          this.millSomething();
           let faithGold = 0;
           if(faith > locations[player.id].influence){
             for (let c = player.hand.length - 1; c > -1; c--) {
-              if(player.hand[c].faith > 0){
+              if(player.hand[c].faith > 0 || (player.hand[c].gold > 0 && player.hand[c].influence < 1)){
                 faithGold += player.hand[c].gold;
                 locations[player.id].playCard(c, player);
 
@@ -83,8 +86,8 @@ module.exports.AI = function AI(player, locations) {
             })
 
           }
-          this.millSomething('influence');
-          this.buySomething('gold');
+          this.buySomething();
+          // this.buySomething();
           this.attackSomething('nonCanaan');
           break;
         case 'Paul':
@@ -118,6 +121,7 @@ module.exports.AI = function AI(player, locations) {
       strategem = player.name;
     }
 
+    this.buySomething();
     this.buySomething();
     this.millSomething();
     this.attackSomething();
@@ -175,8 +179,10 @@ module.exports.AI = function AI(player, locations) {
 
     if (cardLocation) {
       //we can afford a card
+      let currGold = 0;
       for (let c = player.hand.length - 1; c > -1; c--) {
-        if (player.hand[c].gold > 0) {
+        if (player.hand[c].gold > 0 && currGold < locations[cardLocation].market[cardIndex].cost) {
+          currGold += player.hand[c].gold;
           locations[cardLocation].playCard(c, player);
         }
       }
