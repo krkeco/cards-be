@@ -104,18 +104,22 @@ type Game {
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  wakeup: async() => {
+  wakeup: async () => {
     // let deckData = await cards.data();
     let deckData = cards.testData();
-    if(process.env.PORT){
+    if (process.env.PORT) {
       deckData = await cards.data();
     }
-    let game = new GameBuilder.newGame(deckData,["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
-    
+    let game = new GameBuilder.newGame(
+      deckData,
+      ['Jonah', 'Esther', 'Joshua', 'Paul'],
+      ['player', 'player', 'player', 'player'],
+    );
+
     game.setStartingPlayers(game.playerNames);
     game.startNewTurn();
-    console.log('waking up')
-    console.log(game.locations[1].character)
+    console.log('waking up');
+    console.log(game.locations[1].character);
     return game.getLocationInfo();
     // return 'awake';
   },
@@ -125,7 +129,12 @@ var root = {
     if (!game.players || game.players.length <= 0) {
       started = false;
     }
-    return { room: game.playerNames, started: started, refreshMarket:game.refreshMarket, scrapCard: game.scrapCard };
+    return {
+      room: game.playerNames,
+      started: started,
+      refreshMarket: game.refreshMarket,
+      scrapCard: game.scrapCard,
+    };
   },
   currentPlayer: ({ gameId }) => {
     console.log('currentplayer for ' + gameId);
@@ -133,18 +142,31 @@ var root = {
     // console.log('game found?'+game.locations[0].name)
     let player = game.getCurrentPlayer();
     console.log('current player found? ' + player + 'winner:' + game.winner);
-    return { turn: game.turn, nextPlayer: player, winner: game.winner, log: game.log, loser: game.loser };
+    return {
+      turn: game.turn,
+      nextPlayer: player,
+      winner: game.winner,
+      log: game.log,
+      loser: game.loser,
+    };
     // return player
   },
-  newGame: async({ players, types, refreshMarket, scrapCard, banes }) => {
+  newGame: async ({ players, types, refreshMarket, scrapCard, banes }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
     let deckData = cards.testData();
-    if(process.env.PORT){
+    if (process.env.PORT) {
       deckData = await cards.data();
     }
     // let banes = true;
-    let game = new GameBuilder.newGame(deckData,players, types, refreshMarket, scrapCard, banes);
+    let game = new GameBuilder.newGame(
+      deckData,
+      players,
+      types,
+      refreshMarket,
+      scrapCard,
+      banes,
+    );
     let gameId = gameDB.length;
     gameDB[gameId] = game;
     return gameId;
@@ -160,8 +182,8 @@ var root = {
       let newPlayerType = [...game.playerTypes, ...types];
       game.playerTypes = newPlayerType;
       return newPlayerList;
-    } else if(players == []) {
-      return game.playerNames
+    } else if (players == []) {
+      return game.playerNames;
     } else {
       return 'this game is not available any more';
     }
@@ -186,15 +208,15 @@ var root = {
       'refreshing market' + gameId + '/' + playerId + '/' + locationId,
     );
     if (game.turn > 1) {
-      console.log('past turn 1 can refreshmarket'+game.turn);
+      console.log('past turn 1 can refreshmarket' + game.turn);
       let location = game.locations[locationId];
       console.log('location:' + location.name);
       let res = location.refreshMarket(playerId);
       console.log('res' + res);
-      game.appendLog("Player refreshed the market at"+location.name)
+      game.appendLog('Player refreshed the market at' + location.name);
       return res;
     } else {
-      game.appendLog("Cannot refresh market on Turn 1");
+      game.appendLog('Cannot refresh market on Turn 1');
       return 'cannot refresh turn 1';
     }
     return 'something went wrong...';
@@ -213,16 +235,16 @@ var root = {
       location = game.locations[locationId];
       console.log('found location' + location.name);
       let response = location.playCard(cardIndex, player);
-      game.appendLog(player.name+" "+response)
+      game.appendLog(player.name + ' ' + response);
       return response;
     } else {
       //mill card
       console.log('milling!');
-      if (player.mills < 1 ) {
+      if (player.mills < 1) {
         console.log('millcard!');
-        
+
         let mill = player.millCard(cardIndex);
-        game.appendLog(mill)
+        game.appendLog(mill);
         return mill;
       } else {
         return 'already milled this turn';
@@ -235,8 +257,8 @@ var root = {
     let player = game.players.find((pl) => pl.id == playerId);
     let location = game.locations[locationId];
     let buyString = location.buy(cardIndex, player);
-    game.appendLog(player.name+" "+buyString)
-    return buyString
+    game.appendLog(player.name + ' ' + buyString);
+    return buyString;
     // return `card bought! ${JSON.stringify(player.discard[0])}`
   },
   nextPlayer: ({ gameId, currentPlayer }) => {
@@ -254,7 +276,7 @@ var root = {
       nextPlayer: npInfo.nextPlayer,
       winner: npInfo.winner,
       loser: game.loser,
-      log: game.log
+      log: game.log,
     };
   },
 };

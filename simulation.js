@@ -6,7 +6,7 @@ module.exports.gameSim = () => {
   // let count = 0;
   let win1 = 0;
   let win2 = 0;
-  let wins = []
+  let wins = [];
 
   let shortest = 100;
   let longest = 0;
@@ -17,13 +17,10 @@ module.exports.gameSim = () => {
   let run = 0;
   let player1 = 'Jonah';
   let player2 = 'Esther';
-  let players = [player1,player2];
+  let players = [player1, player2];
   let overload = 0;
 
-
-
-
-/*
+  /*
 PVE  48 //influence to 1 maybe bump fellowship to +2?
 JVE  38 //faith4
 JoVE 8 
@@ -41,11 +38,16 @@ solo calling:
   joshua: 10/23/39
 */
 
-
-  
-  let game = new GameBuilder.newGame(deckData,players, ['AI','AI'],false,true,false);
+  let game = new GameBuilder.newGame(
+    deckData,
+    players,
+    ['AI', 'AI'],
+    false,
+    true,
+    false,
+  );
   // let game = new GameBuilder.newGame(deckData,["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
-  
+
   let turn = 'turns: ';
 
   const runGame = () => {
@@ -54,7 +56,14 @@ solo calling:
     players = [...newPlayers];
     console.log('reverse it' + players);
     game = null;
-    game = new GameBuilder.newGame(deckData,players, ['AI', 'AI'],false,true,false);
+    game = new GameBuilder.newGame(
+      deckData,
+      players,
+      ['AI', 'AI'],
+      false,
+      true,
+      false,
+    );
     game.setStartingPlayers(players);
     console.log('starting game' + run);
     game.startNewTurn();
@@ -66,10 +75,10 @@ solo calling:
       game.getNextPlayer();
       gameTurn++;
     }
-    console.log('---game: winner:'+game.winner)
+    console.log('---game: winner:' + game.winner);
     turn += '\n run' + run + 'turn' + gameTurn + 'winner:' + game.winner;
     if (game.turn >= turnLimit) {
-      overload+=1;
+      overload += 1;
     }
     if (shortest > game.turn) {
       shortest = game.turn;
@@ -78,11 +87,11 @@ solo calling:
       longest = game.turn;
     }
     average += game.turn;
-    wins.push(game.winner)
-    if (game.winner.substring(0,game.winner.length-1) == player1) {
+    wins.push(game.winner);
+    if (game.winner.substring(0, game.winner.length - 1) == player1) {
       win1++;
     }
-    if (game.winner.substring(0,game.winner.length-1) == player2) {
+    if (game.winner.substring(0, game.winner.length - 1) == player2) {
       win2++;
     }
   };
@@ -91,28 +100,27 @@ solo calling:
     run++;
     runGame();
   }
-    console.log(
-      '\n\nSUMMARY:' +
-        '\nshort:' +
-        shortest +
-        '\naverage' +
-        average / runs +
-        '\nlong:' +
-        longest +
-        '\nplayer1%:' +
-        win1 +
-        '/' +
-        runs +
-        '\nplayer2%:' +
-        win2 +
-        '/' +
-        // '\nwinList:' +
-        // wins +
-        // '/' +
-        runs +
-        '\noverloads:' +
-        overload,
-      // +"\ngameTurn:"+turn
-    );
-
+  console.log(
+    '\n\nSUMMARY:' +
+      '\nshort:' +
+      shortest +
+      '\naverage' +
+      average / runs +
+      '\nlong:' +
+      longest +
+      '\nplayer1%:' +
+      win1 +
+      '/' +
+      runs +
+      '\nplayer2%:' +
+      win2 +
+      '/' +
+      // '\nwinList:' +
+      // wins +
+      // '/' +
+      runs +
+      '\noverloads:' +
+      overload,
+    // +"\ngameTurn:"+turn
+  );
 };

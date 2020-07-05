@@ -18,7 +18,7 @@ module.exports.Player = function Player(
   this.winning = false;
   this.baned = false;
   this.name = story.character.name;
-  
+
   // this.setAbilities = function (abilities) {
   //   this.abilities = [...abilities];
   // };
@@ -33,7 +33,7 @@ module.exports.Player = function Player(
     this.discard = [...newDiscard];
     this.played = [];
     return newDiscard;
-  }
+  };
 
   this.drawCards = function (cardCount) {
     //console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)
@@ -90,57 +90,57 @@ module.exports.Player = function Player(
     this.hand = [];
   };
   this.discardCard = function (index) {
-    if(index != null && index > -1 && this.hand.length > index){
-        let newHand = [...this.hand];
-        //console.log('discardCard:')
-        this.discard = [...this.discard, this.hand[index]];
-        newHand.splice(index, 1);
-        this.hand = [...newHand];
-        //console.log('hand now:'+this.hand.length)
-      }
+    if (index != null && index > -1 && this.hand.length > index) {
+      let newHand = [...this.hand];
+      //console.log('discardCard:')
+      this.discard = [...this.discard, this.hand[index]];
+      newHand.splice(index, 1);
+      this.hand = [...newHand];
+      //console.log('hand now:'+this.hand.length)
+    }
   };
 
   this.playedCard = function (index) {
     // let newHand = [...this.hand]
     //console.log('discardCard:')
-    if(index !=null &&index > -1){
-        this.played = [...this.played, this.hand[index]];
-        // newHand.splice(index,1)
-        let newHand = [];
-        this.hand.map((card, i) => {
-          if (i != index) {
-            newHand.push(card);
-          }
-        });
-        this.hand = [...newHand];
-      }
+    if (index != null && index > -1) {
+      this.played = [...this.played, this.hand[index]];
+      // newHand.splice(index,1)
+      let newHand = [];
+      this.hand.map((card, i) => {
+        if (i != index) {
+          newHand.push(card);
+        }
+      });
+      this.hand = [...newHand];
+    }
     //console.log('hand now:'+this.hand.length)
   };
   this.buyCard = function (card) {
     //console.log('buyCard:')
     //console.log(card)
-    if(card != null){
+    if (card != null) {
       this.played = [card, ...this.played];
     }
   };
 
   this.millCard = function (index) {
-    if(index != null && index > -1 && this.hand.length > index){
+    if (index != null && index > -1 && this.hand.length > index) {
       let cardName = this.hand[index].name;
       this.mills++;
       let newHand = [...this.hand];
       newHand.splice(index, 1);
       this.hand = [...newHand];
-      return this.name+" milled "+cardName
-    }else{
-      return 'card does not exist'
+      return this.name + ' milled ' + cardName;
+    } else {
+      return 'card does not exist';
     }
   };
 
   this.getTotalGold = function () {
     //console.log('getTotalGold:')
     let golds = 0;
-    if(this.hand.length > 0){
+    if (this.hand.length > 0) {
       this.hand.map((card, index) => {
         golds += this.hand[index].gold;
       });
@@ -149,13 +149,19 @@ module.exports.Player = function Player(
     return golds;
   };
   this.getTotalInfluence = function () {
-    console.log('getTotalInfluence:')
+    console.log('getTotalInfluence:');
     let influence = 0;
     this.hand.map((card, index) => {
       influence += this.hand[index].influence;
     });
-    console.log('getTotalInfluence: '+influence+' influence this turn with '+this.hand.length+ ' cards')
-    console.log(this.hand.map((card)=>card.name+card.influence))
+    console.log(
+      'getTotalInfluence: ' +
+        influence +
+        ' influence this turn with ' +
+        this.hand.length +
+        ' cards',
+    );
+    console.log(this.hand.map((card) => card.name + card.influence));
     return influence;
   };
 };

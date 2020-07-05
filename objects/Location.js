@@ -1,8 +1,14 @@
-module.exports.Location = function Location(deck, story, id = 7, infoDeck, character) {
+module.exports.Location = function Location(
+  deck,
+  story,
+  id = 7,
+  infoDeck,
+  character,
+) {
   this.deck = [...deck];
-  this.character = {...character}
+  this.character = { ...character };
   this.infoDeck = [...infoDeck];
-  this.card = {...story.card};
+  this.card = { ...story.card };
   this.info = story.info;
   this.market = [];
   this.battlefield = [];
@@ -11,7 +17,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
   // this.weariness = 0;
   this.abilities = story.abilities;
   this.influencer = { name: 'neutral' };
-  this.proselytized = [0,0,0,0];
+  this.proselytized = [0, 0, 0, 0, 0, 0];
   this.angelic = -1;
   this.apostle = -1;
   this.traversal = 0;
@@ -19,14 +25,9 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
   this.prison = [];
   this.id = id;
 
-  this.wounds = [0,0,0,0];
+  this.wounds = [0, 0, 0, 0, 0, 0];
   this.hardened = 0;
   this.edicts = 0;
-
-  // this.setWeariness = function (newfear) {
-  //   this.weariness = newfear;
-  //   //console.log('weariness:'+this.weariness)
-  // };
 
   this.refreshMarket = function (playerId) {
     let newField = [...this.battlefield];
@@ -50,14 +51,14 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
             //console.log('market refreshed')
             return 'market refreshed';
           }
-        } else if(playerId == -1) {
-           let newDeck = [...this.deck, ...this.market];
-            this.deck = [...newDeck];
-            this.market = [];
-            this.drawOne();
-            this.drawOne();
-            this.drawOne();
-           return 'market refreshed'; 
+        } else if (playerId == -1) {
+          let newDeck = [...this.deck, ...this.market];
+          this.deck = [...newDeck];
+          this.market = [];
+          this.drawOne();
+          this.drawOne();
+          this.drawOne();
+          return 'market refreshed';
           //console.log('no player in bf found')
         }
       }
@@ -91,7 +92,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     // this.market.push(this.deck[5]);
     // this.deck.splice(5, 1);
     this.drawOne();
-    if(this.name != "Jerusalem"){
+    if (this.name != 'Jerusalem') {
       this.drawOne();
       this.drawOne();
     }
@@ -104,7 +105,7 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       this.battlefield[player.id] &&
       this.battlefield[player.id].gold >= this.market[index].cost
     ) {
-      console.log('location:buy:'+JSON.stringify(this.market[index].name))
+      console.log('location:buy:' + JSON.stringify(this.market[index].name));
       let newBattleField = [...this.battlefield];
       newBattleField[player.id].gold -= this.market[index].cost;
       let cardBuy = this.market[index];
@@ -133,164 +134,156 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
   };
 
   this.playCard = function (card, owner) {
-    if(owner.hand[card]){
-        console.log('playCard: owner id:'+owner.id+" on "+this.name)
-        let newField = [...this.battlefield];
-        //console.log('location:playcard:'+card)
-        if (!newField[owner.id]) {
-          newField[owner.id] = {
-            name: owner.name,
-            id: owner.id,
-            influence: 0,
-            runningTotal:0,
-            gold: 0,
-            politics: 0,
-            poliBonus: 0,
-            fear:0,
-            weariness:0,
-            faith:0,
-            faithing: false,
-            cards: [],
-            finalInfluence:0,
-          };
-        }
-        //console.log('play card'+owner.hand[card].name)
-        newField[owner.id].influence += owner.hand[card].influence;
-        newField[owner.id].gold += owner.hand[card].gold;
-        let bfCard = {...owner.hand[card]}
-        newField[owner.id].cards.push(bfCard);
-        
-        if(bfCard.fear != null){
-          console.log('fear played')
-          newField[owner.id].fear += bfCard.fear;
-        
-        }
-        console.log('fear updated')
-        if(bfCard.faith != null){
-          newField[owner.id].faith += bfCard.faith;
-        }
-        //special abilities here!
-        //ninevite
-        if (
-          bfCard.abilities.indexOf('Ninevite') > -1 &&
-          this.name == 'Nineveh'
-        ) {
-          // newField[owner.id].influence += 1;
-          //console.log('ninevite advantage bonus')
-        }
-    
-        if (bfCard.abilities.indexOf('angelic') > -1) {
-          //if you want to scrap it into the market after play..
-          // this.deck = [...this.deck, {...owner.hand[card]}]
-          // owner.hand[card].abilities.push("scrap")
-          if(this.angelic != -1){
-            this.angelic = 7;
-          }else{
+    if (owner.hand[card]) {
+      console.log('playCard: owner id:' + owner.id + ' on ' + this.name);
+      let newField = [...this.battlefield];
+      //console.log('location:playcard:'+card)
+      if (!newField[owner.id]) {
+        newField[owner.id] = {
+          name: owner.name,
+          id: owner.id,
+          influence: 0,
+          runningTotal: 0,
+          gold: 0,
+          politics: 0,
+          poliBonus: 0,
+          fear: 0,
+          weariness: 0,
+          faith: 0,
+          faithing: false,
+          cards: [],
+          finalInfluence: 0,
+        };
+      }
+      //console.log('play card'+owner.hand[card].name)
+      newField[owner.id].influence += owner.hand[card].influence;
+      newField[owner.id].gold += owner.hand[card].gold;
+      let bfCard = { ...owner.hand[card] };
+      newField[owner.id].cards.push(bfCard);
 
-            this.angelic = owner.id;
-          }
-        }
-        if (bfCard.abilities.indexOf('mob') > -1) {
-          newField[owner.id].influence += newField[owner.id].cards.length - 1;
-          bfCard.influence += newField[owner.id].cards.length - 1;
-        }
-        if (bfCard.abilities.indexOf('xerxes') > -1) {
-          this.switcheroo.push(owner.id);
-        }
-        if (bfCard.abilities.indexOf('prison') > -1) {
-          this.prison.push(owner.id);
-        }
-        if (bfCard.abilities.indexOf('mordecai') > -1) {
-          let greatest = -1;
-          let greatCard = {name:"nothing",influence:0,abilities:['scrap']};
-          newField[owner.id].cards.map((c, index) => {
-            if (c.abilities.indexOf('mordecai') < 0 && c.cost > greatest) {
-              greatest = c.cost;
-              greatCard = c;
-            }
-          });
-          let newCard = {
-            ...greatCard,
-            name: "mordecai's blessing: "+greatCard.name,
-            abilities:["scrap","endeavor"]
-          }
-          owner.hand=[...owner.hand,newCard];
-          this.playCard(owner.hand.length-1,owner);
-        }
-    
-        if (bfCard.provision > 0) {
-          for (let x = 0; x < bfCard.provision; x++) {
-            //console.log('provisionments!')
-            if (owner.deck.length > 0 || owner.discard.length > 0) {
-              owner.drawCards(1);
-              this.battlefield = [...newField];
-              this.playCard(owner.hand.length - 1, owner);
-            } else {
-              //console.log('your deck is empty cannot provision')
-            }
-          }
-        }
-    
-        //may change to fellowship?
-        if (bfCard.abilities.indexOf('apostle') > -1) {
-          let churches = 0;
-          this.proselytized.map((church)=> churches += church);
-          newField[owner.id].influence += churches;
-        }
-        if (bfCard.abilities.indexOf('apostle') > -1) {
-          newField[owner.id].playPaul = true;
-        }
-        if (bfCard.abilities.indexOf('traverse') > -1) {
-          this.traversal+=1;
-          
-        }
-    
-        // if (
-        //   owner.hand[card].abilities.indexOf('Harden') > -1 &&
-        //   this.id != owner.id
-        // ) {
-        //   this.hardened+=1;
-        //   //console.log('Jonah has been hardened'+this.hardened)
-        // }
-        //can't else this because some cards have both edict and politics
-        if (bfCard.abilities.indexOf('endeavor') > -1) {
-          this.edicts+=1;
-          console.log('edicts:'+this.edicts)
-          
-          //console.log('played an edict, now there are '+this.edicts)
-        }
-        if (bfCard.politics) {
-          newField[owner.id].politics += bfCard.politics;
-        }
-    
-        newField.map((bf, index)=>{
-          if(bf){
-            bf.poliBonus = bf.politics * this.edicts;
-            console.log('new poli:'+bf.poliBonus)
-          }
-        })
-    
-        this.battlefield = newField;
-        let theString = `played ${bfCard.name} on ${this.name}`;
-        //console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
-        // //console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
-        let cardName = bfCard.name;
-        if (bfCard.abilities.indexOf('scrap') < 0) {
-          
-    
-          owner.playedCard(card);
-          return theString;
+      if (bfCard.fear != null) {
+        console.log('fear played');
+        newField[owner.id].fear += bfCard.fear;
+      }
+      console.log('fear updated');
+      if (bfCard.faith != null) {
+        newField[owner.id].faith += bfCard.faith;
+      }
+      //special abilities here!
+      //ninevite
+      if (bfCard.abilities.indexOf('Ninevite') > -1 && this.name == 'Nineveh') {
+        // newField[owner.id].influence += 1;
+        //console.log('ninevite advantage bonus')
+      }
+
+      if (bfCard.abilities.indexOf('angelic') > -1) {
+        //if you want to scrap it into the market after play..
+        // this.deck = [...this.deck, {...owner.hand[card]}]
+        // owner.hand[card].abilities.push("scrap")
+        if (this.angelic != -1) {
+          this.angelic = 7;
         } else {
-          owner.millCard(card);
-          owner.mills-=1;
-    
-          // let newHand = [...owner.hand]
-          // newHand.splice(card,1)
-          // owner.hand = [...newHand]
-          //console.log('this is an influence card and is not discarded')
-          return theString;
+          this.angelic = owner.id;
         }
       }
+      if (bfCard.abilities.indexOf('mob') > -1) {
+        newField[owner.id].influence += newField[owner.id].cards.length - 1;
+        bfCard.influence += newField[owner.id].cards.length - 1;
+      }
+      if (bfCard.abilities.indexOf('xerxes') > -1) {
+        this.switcheroo.push(owner.id);
+      }
+      if (bfCard.abilities.indexOf('prison') > -1) {
+        this.prison.push(owner.id);
+      }
+      if (bfCard.abilities.indexOf('mordecai') > -1) {
+        let greatest = -1;
+        let greatCard = { name: 'nothing', influence: 0, abilities: ['scrap'] };
+        newField[owner.id].cards.map((c, index) => {
+          if (c.abilities.indexOf('mordecai') < 0 && c.cost > greatest) {
+            greatest = c.cost;
+            greatCard = c;
+          }
+        });
+        let newCard = {
+          ...greatCard,
+          name: "mordecai's blessing: " + greatCard.name,
+          abilities: ['scrap', 'endeavor'],
+        };
+        owner.hand = [...owner.hand, newCard];
+        this.playCard(owner.hand.length - 1, owner);
+      }
+
+      if (bfCard.provision > 0) {
+        for (let x = 0; x < bfCard.provision; x++) {
+          //console.log('provisionments!')
+          if (owner.deck.length > 0 || owner.discard.length > 0) {
+            owner.drawCards(1);
+            this.battlefield = [...newField];
+            this.playCard(owner.hand.length - 1, owner);
+          } else {
+            //console.log('your deck is empty cannot provision')
+          }
+        }
+      }
+
+      //may change to fellowship?
+      if (bfCard.abilities.indexOf('apostle') > -1) {
+        let churches = 0;
+        this.proselytized.map((church) => (churches += church));
+        newField[owner.id].influence += churches;
+      }
+      if (bfCard.abilities.indexOf('apostle') > -1) {
+        newField[owner.id].playPaul = true;
+      }
+      if (bfCard.abilities.indexOf('traverse') > -1) {
+        this.traversal += 1;
+      }
+
+      // if (
+      //   owner.hand[card].abilities.indexOf('Harden') > -1 &&
+      //   this.id != owner.id
+      // ) {
+      //   this.hardened+=1;
+      //   //console.log('Jonah has been hardened'+this.hardened)
+      // }
+      //can't else this because some cards have both edict and politics
+      if (bfCard.abilities.indexOf('endeavor') > -1) {
+        this.edicts += 1;
+        console.log('edicts:' + this.edicts);
+
+        //console.log('played an edict, now there are '+this.edicts)
+      }
+      if (bfCard.politics) {
+        newField[owner.id].politics += bfCard.politics;
+      }
+
+      newField.map((bf, index) => {
+        if (bf) {
+          bf.poliBonus = bf.politics * this.edicts;
+          console.log('new poli:' + bf.poliBonus);
+        }
+      });
+
+      this.battlefield = newField;
+      let theString = `played ${bfCard.name} on ${this.name}`;
+      //console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
+      // //console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
+      let cardName = bfCard.name;
+      if (bfCard.abilities.indexOf('scrap') < 0) {
+        owner.playedCard(card);
+        return theString;
+      } else {
+        owner.millCard(card);
+        owner.mills -= 1;
+
+        // let newHand = [...owner.hand]
+        // newHand.splice(card,1)
+        // owner.hand = [...newHand]
+        //console.log('this is an influence card and is not discarded')
+        return theString;
+      }
+    }
   };
 
   this.compareInfluence = function () {
@@ -300,22 +293,22 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       id: -1,
       influence: 0,
       totalInfluence: 0,
-      runningTotal:0,
+      runningTotal: 0,
       poliBonus: 0,
-      fear:0,
-      faith:0,
+      fear: 0,
+      faith: 0,
       faithing: false,
-      weariness:0,
-      politics:0,
+      weariness: 0,
+      politics: 0,
     };
 
     let runnerUp = 0;
     // let paul = -1;
     if (this.battlefield.length > 0) {
-      
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
-          this.battlefield[index].poliBonus = this.battlefield[index].politics * this.edicts;
+          this.battlefield[index].poliBonus =
+            this.battlefield[index].politics * this.edicts;
           // console.log(player.name+' has polibonus '+this.battlefield[index].poliBonus)
           // if(this.battlefield[index].poliBonus < 0){
           //   this.battlefield[index].poliBonus = 0;
@@ -325,21 +318,21 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
 
       this.battlefield.map((player, index) => {
         if (player && this.battlefield[index]) {
-          
+          this.battlefield[index].weariness = 0;
 
-          this.battlefield[index].weariness=0;
-
-          if(!this.battlefield[index].faithing){
-            this.battlefield.map((pl,ind)=>{
-              if(pl && pl.id != this.battlefield[index].id){
+          if (!this.battlefield[index].faithing) {
+            this.battlefield.map((pl, ind) => {
+              if (pl && pl.id != this.battlefield[index].id) {
                 this.battlefield[index].weariness += pl.fear;
-                console.log('fear to weary:'+pl.fear)
+                console.log('fear to weary:' + pl.fear);
               }
-              
-            })
+            });
           }
 
-          if(this.battlefield[index].influence <= 0 && this.battlefield[index].faith > 0){
+          if (
+            this.battlefield[index].influence <= 0 &&
+            this.battlefield[index].faith > 0
+          ) {
             this.battlefield[index].influence = this.battlefield[index].faith;
             this.battlefield[index].weariness = 0;
             this.battlefield[index].faithing = true;
@@ -352,40 +345,75 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
           //new influencer
           if (
             this.battlefield[index].influence +
-            this.battlefield[index].poliBonus - this.battlefield[index].weariness >
+              this.battlefield[index].poliBonus -
+              this.battlefield[index].weariness >
             influencer.influence + influencer.poliBonus - influencer.weariness
           ) {
             //influencer becomes runner up?
-            if(influencer.influence + influencer.poliBonus - influencer.weariness > 0){
-              runnerUp = influencer.influence + influencer.poliBonus - influencer.weariness;
+            if (
+              influencer.influence +
+                influencer.poliBonus -
+                influencer.weariness >
+              0
+            ) {
+              runnerUp =
+                influencer.influence +
+                influencer.poliBonus -
+                influencer.weariness;
             }
             //new influencer
             influencer = this.battlefield[index];
 
             //new runnerup
           } else if (
-            this.battlefield[index].influence + this.battlefield[index].poliBonus - this.battlefield[index].weariness  > runnerUp
+            this.battlefield[index].influence +
+              this.battlefield[index].poliBonus -
+              this.battlefield[index].weariness >
+            runnerUp
           ) {
-            runnerUp = this.battlefield[index].influence + this.battlefield[index].poliBonus - this.battlefield[index].weariness;
+            runnerUp =
+              this.battlefield[index].influence +
+              this.battlefield[index].poliBonus -
+              this.battlefield[index].weariness;
           }
         }
       });
     }
-  
+
     // if (!runnerUp) {
     //   runnerUp = 0;
     // }
     // //console.log(influencer.name+" is the highest influencer by "+influencer.influence+runnerUp);
     influencer.finalInfluence =
-      influencer.influence + influencer.poliBonus -influencer.weariness - runnerUp ;
-      console.log('influencer of '+influencer.influence +"and"+ influencer.poliBonus + "less weari" +influencer.weariness+ " minus:" + runnerUp + " vs "+this.influence+" on "+this.name)
+      influencer.influence +
+      influencer.poliBonus -
+      influencer.weariness -
+      runnerUp;
+    console.log(
+      'influencer of ' +
+        influencer.influence +
+        'and' +
+        influencer.poliBonus +
+        'less weari' +
+        influencer.weariness +
+        ' minus:' +
+        runnerUp +
+        ' vs ' +
+        this.influence +
+        ' on ' +
+        this.name,
+    );
     return influencer;
   };
   this.setInfluencing = function () {
-
     let influencer = this.compareInfluence();
 
-    if (this.angelic > -1 && (influencer.id != this.angelic || this.angelic == 7 || influencer.finalInfluence <= this.influence)) {
+    if (
+      this.angelic > -1 &&
+      (influencer.id != this.angelic ||
+        this.angelic == 7 ||
+        influencer.finalInfluence <= this.influence)
+    ) {
       //console.log('moments peace no influence today')
 
       this.postInfluencePhase();
@@ -394,28 +422,35 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
       // let baseInfluence = this.influence;
 
       if (this.apostle > -1) {
-        this.battlefield.map((bf,index)=>{
-          if(bf && bf.playPaul && bf.name == "Paul"){
-            if(influencer.id == bf.id && influencer.finalInfluence > this.influence){
+        this.battlefield.map((bf, index) => {
+          if (bf && bf.playPaul && bf.name == 'Paul') {
+            if (
+              influencer.id == bf.id &&
+              influencer.finalInfluence > this.influence
+            ) {
               this.proselytized[bf.id] += 1;
-              console.log('paul got a church')
-            }else{
-              this.wounds[bf.id] +=1;
-              console.log('paul got beat up')
+              console.log('paul got a church');
+            } else {
+              this.wounds[bf.id] += 1;
+              console.log('paul got beat up');
             }
           }
-        })
+        });
       }
 
       // //console.log('influence looks like: '+influencer.finalInfluence+" vs "+baseInfluence +"+"+this.weariness)
       if (
-        influencer.finalInfluence > this.influence  && //this.influence
+        influencer.finalInfluence > this.influence && //this.influence
         influencer.name != 'neutral'
       ) {
         this.influencer = influencer;
         // //console.log('new influencer is now'+influencer.name)
 
-        if (this.name == 'Canaan' && influencer.name == 'Joshua' && this.id == influencer.id) {
+        if (
+          this.name == 'Canaan' &&
+          influencer.name == 'Joshua' &&
+          this.id == influencer.id
+        ) {
           this.abilities = [this.abilities[0] + 1];
           this.influence += 3;
           // this.card.influence += this.abilities[0]-1;
@@ -424,9 +459,8 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
         }
       }
 
-
       this.postInfluencePhase();
-    }//angelic
+    } //angelic
   };
   this.postInfluencePhase = function () {
     this.angelic = -1;
@@ -438,8 +472,8 @@ module.exports.Location = function Location(deck, story, id = 7, infoDeck, chara
     this.traversal = 0;
     //moved to apigame
     // if (this.name == 'Canaan') {
-      // this.weariness+=1;
-      //console.log('end of turn weariness for canaan')
+    // this.weariness+=1;
+    //console.log('end of turn weariness for canaan')
     // }
   };
 };
