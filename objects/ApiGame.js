@@ -592,7 +592,9 @@ module.exports.newGame = function Game(
   };
   this.checkXerxes = function (location) {
     console.log('we have a xerxes');
-    this.locations[location].switcheroo.map((king, ind) => {
+    // this.locations[location].switcheroo.map((king, ind) => {
+      for(let x = 0; x < this.locations[location].switcheroo.length; x++){
+      let king = this.locations[location].switcheroo[x];
       console.log('kingId:' + king);
       let maxCardCost = 0;
       let maxCard;
@@ -661,7 +663,7 @@ module.exports.newGame = function Game(
           }
         }
       });
-    });
+    };
   };
 
   this.getPlayerInfo = function () {
