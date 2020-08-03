@@ -208,7 +208,7 @@ module.exports.Location = function Location(
         let newCard = {
           ...greatCard,
           name: "mordecai's blessing: " + greatCard.name,
-          abilities: ['scrap', 'endeavor'],
+          abilities: ['scrap', 'challenge'],
         };
         owner.hand = [...owner.hand, newCard];
         this.playCard(owner.hand.length - 1, owner);
@@ -248,7 +248,7 @@ module.exports.Location = function Location(
       //   //console.log('Jonah has been hardened'+this.hardened)
       // }
       //can't else this because some cards have both edict and politics
-      if (bfCard.abilities.indexOf('endeavor') > -1) {
+      if (bfCard.abilities.indexOf('challenge') > -1) {
         this.edicts += 1;
         console.log('edicts:' + this.edicts);
 

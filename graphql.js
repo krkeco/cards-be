@@ -106,10 +106,10 @@ type Game {
 var root = {
   wakeup: async () => {
     // let deckData = await cards.data();
-    let deckData = cards.testData();
-    if (process.env.PORT) {
-      deckData = await cards.data();
-    }
+    // let deckData = cards.testData();
+    // if (process.env.PORT) {
+      let deckData = await cards.data();
+    // }
     let game = new GameBuilder.newGame(
       deckData,
       ['Jonah', 'Esther', 'Joshua', 'Paul'],
@@ -154,10 +154,10 @@ var root = {
   newGame: async ({ players, types, refreshMarket, scrapCard, banes }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
-    let deckData = cards.testData();
-    if (process.env.PORT) {
-      deckData = await cards.data();
-    }
+    // let deckData = cards.testData();
+    // if (process.env.PORT) {
+      let deckData = await cards.data();
+    // }
     // let banes = true;
     let game = new GameBuilder.newGame(
       deckData,
