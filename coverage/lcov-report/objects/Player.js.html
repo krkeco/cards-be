@@ -218,7 +218,13 @@
 <a name='L159'></a><a href='#L159'>159</a>
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,6 +381,12 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -399,7 +411,7 @@
   this.winning = false;
   this.baned = false;
   this.name = story.character.name;
-  
+&nbsp;
   // this.setAbilities = function (abilities) {
   //   this.abilities = [...abilities];
   // };
@@ -414,7 +426,7 @@
     this.discard = [...newDiscard];
     this.played = [];
     return newDiscard;
-  }
+  };
 &nbsp;
   this.drawCards = function (cardCount) {
     //console.log('drawcards:'+this.deck.length+"/"+this.hand.length +"/" +this.discard.length)
@@ -471,57 +483,57 @@
     this.hand = [];
   };
   this.discardCard = function (index) {
-    if(index != null &amp;&amp; index &gt; -1 &amp;&amp; this.hand.length &gt; index){
-        let newHand = [...this.hand];
-        //console.log('discardCard:')
-        this.discard = [...this.discard, this.hand[index]];
-        newHand.splice(index, 1);
-        this.hand = [...newHand];
-        //console.log('hand now:'+this.hand.length)
-      }
+    if (index != null &amp;&amp; index &gt; -1 &amp;&amp; this.hand.length &gt; index) {
+      let newHand = [...this.hand];
+      //console.log('discardCard:')
+      this.discard = [...this.discard, this.hand[index]];
+      newHand.splice(index, 1);
+      this.hand = [...newHand];
+      //console.log('hand now:'+this.hand.length)
+    }
   };
 &nbsp;
   this.playedCard = function (index) {
     // let newHand = [...this.hand]
     //console.log('discardCard:')
-    if(index !=null &amp;&amp;index &gt; -1){
-        this.played = [...this.played, this.hand[index]];
-        // newHand.splice(index,1)
-        let newHand = [];
-        this.hand.map((card, i) =&gt; {
-          if (i != index) {
-            newHand.push(card);
-          }
-        });
-        this.hand = [...newHand];
-      }
+    if (index != null &amp;&amp; index &gt; -1) {
+      this.played = [...this.played, this.hand[index]];
+      // newHand.splice(index,1)
+      let newHand = [];
+      this.hand.map((card, i) =&gt; {
+        if (i != index) {
+          newHand.push(card);
+        }
+      });
+      this.hand = [...newHand];
+    }
     //console.log('hand now:'+this.hand.length)
   };
   this.buyCard = function (card) {
     //console.log('buyCard:')
     //console.log(card)
-    if(card != null){
+    if (card != null) {
       this.played = [card, ...this.played];
     }
   };
 &nbsp;
   this.millCard = function (index) {
-    if(index != null &amp;&amp; index &gt; -1 &amp;&amp; this.hand.length &gt; index){
+    if (index != null &amp;&amp; index &gt; -1 &amp;&amp; this.hand.length &gt; index) {
       let cardName = this.hand[index].name;
       this.mills++;
       let newHand = [...this.hand];
       newHand.splice(index, 1);
       this.hand = [...newHand];
-      return this.name+" milled "+cardName
-    }else{
-      return 'card does not exist'
+      return this.name + ' milled ' + cardName;
+    } else {
+      return 'card does not exist';
     }
   };
 &nbsp;
   this.getTotalGold = function () {
     //console.log('getTotalGold:')
     let golds = 0;
-    if(this.hand.length &gt; 0){
+    if (this.hand.length &gt; 0) {
       this.hand.map((card, index) =&gt; {
         golds += this.hand[index].gold;
       });
@@ -530,13 +542,19 @@
     return golds;
   };
   this.getTotalInfluence = function () {
-    console.log('getTotalInfluence:')
+    console.log('getTotalInfluence:');
     let influence = 0;
     this.hand.map((card, index) =&gt; {
       influence += this.hand[index].influence;
     });
-    console.log('getTotalInfluence: '+influence+' influence this turn with '+this.hand.length+ ' cards')
-    console.log(this.hand.map((card)=&gt;card.name+card.influence))
+    console.log(
+      'getTotalInfluence: ' +
+        influence +
+        ' influence this turn with ' +
+        this.hand.length +
+        ' cards',
+    );
+    console.log(this.hand.map((card) =&gt; card.name + card.influence));
     return influence;
   };
 };
@@ -547,7 +565,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jul 01 2020 11:25:23 GMT-0700 (Pacific Daylight Time)
+                at Mon Aug 03 2020 10:18:25 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

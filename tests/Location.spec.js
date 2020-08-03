@@ -20,7 +20,7 @@ const seed = [
   {name:'10mordecai',abilities:['mordecai'],quantity:2,cost:1,gold:1,influence:1},
   {name:'11provision',abilities:[],provision:2,cost:1,gold:2,influence:2},
   {name:'12apostle',abilities:['apostle'],quantity:2,cost:1,gold:1,influence:0},
-  {name:'13endeavor',abilities:['endeavor'],quantity:2,cost:1,gold:1,influence:1},
+  {name:'13endeavor',abilities:['challenge'],quantity:2,cost:1,gold:1,influence:1},
   {name:'14politics',abilities:[],politics:2,cost:1,gold:2,influence:2},
   {name:'15politics',abilities:[],politics:-2,cost:1,gold:2,influence:2},
   {name:'16scrap',abilities:['scrap'],quantity:2,cost:1,gold:1,influence:2},
