@@ -409,6 +409,7 @@ module.exports.Location = function Location(
     let influencer = this.compareInfluence();
     if (
       //ignores angelic
+      influencer.finalInfluence > this.influence && //this.influence
       this.name == 'Canaan' &&
       influencer.name == 'Joshua' &&
       this.id == influencer.id
@@ -419,6 +420,7 @@ module.exports.Location = function Location(
       this.card.fear += 1;
       // console.log('canaan conquered, tier up'+this.abilities[0])
     }
+
     if (
       this.angelic > -1 &&
       (influencer.id != this.angelic ||
