@@ -108,7 +108,7 @@ var root = {
     // let deckData = await cards.data();
     // let deckData = cards.testData();
     // if (process.env.PORT) {
-      let deckData = await cards.data();
+    let deckData = await cards.data();
     // }
     let game = new GameBuilder.newGame(
       deckData,
@@ -156,7 +156,7 @@ var root = {
     // let players = ['Jonah','Esther']
     // let deckData = cards.testData();
     // if (process.env.PORT) {
-      let deckData = await cards.data();
+    let deckData = await cards.data();
     // }
     // let banes = true;
     let game = new GameBuilder.newGame(

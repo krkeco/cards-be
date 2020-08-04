@@ -501,7 +501,7 @@ module.exports.newGame = function Game(
   this.checkPrison = function (location) {
     console.log('we have a imprisonment/warrant');
     // this.locations[location].prison.map((king, ind) => {
-    for(let x = 0; x < this.locations[location].prison.length; x++){
+    for (let x = 0; x < this.locations[location].prison.length; x++) {
       let king = this.locations[location].prison[x];
       console.log('prisonId:' + king);
       let maxCardCost = 0;
@@ -511,7 +511,7 @@ module.exports.newGame = function Game(
         if (bf) {
           if (bf.id != king) {
             console.log('bf near prison:' + JSON.stringify(bf.cards));
-            if(bf.cards.length > 0){
+            if (bf.cards.length > 0) {
               bf.cards.map((c, cInd) => {
                 console.log('card check: ' + JSON.stringify(c));
                 if (c.cost > maxCardCost && c.name != 'Imprisonment') {
@@ -587,13 +587,13 @@ module.exports.newGame = function Game(
           }
         }
       });
-    // });
+      // });
     }
   };
   this.checkXerxes = function (location) {
     console.log('we have a xerxes');
     // this.locations[location].switcheroo.map((king, ind) => {
-      for(let x = 0; x < this.locations[location].switcheroo.length; x++){
+    for (let x = 0; x < this.locations[location].switcheroo.length; x++) {
       let king = this.locations[location].switcheroo[x];
       console.log('kingId:' + king);
       let maxCardCost = 0;
@@ -663,7 +663,7 @@ module.exports.newGame = function Game(
           }
         }
       });
-    };
+    }
   };
 
   this.getPlayerInfo = function () {
