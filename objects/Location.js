@@ -177,17 +177,26 @@ module.exports.Location = function Location(
       break;
       case 'Babylon':
         //courage > 0 || gold > cost
+      if(this.coopCount.totalCourage > 0){
+        this.coopCount.totalCourage -= 1;
         let newDeck = [...this.coopDeck];
         newDeck.push({...removedCard});
         this.coopDeck = [...newDeck];
         this.spliceOp(index)
+      }else if(this.coopCount.totalGold >= removedCard.cost){
+        this.coopCount.totalGold -= removedCard.cost;
+        let newDeck = [...this.coopDeck];
+        newDeck.push({...removedCard});
+        this.coopDeck = [...newDeck];
+        this.spliceOp(index)
+      }
         break;
 
       case 'Rome':
-        let romDeck = [...this.deck];
-        romDeck.push({...removedCard});
-        this.deck = [...romDeck];
-        this.spliceOp(index)
+        // let romDeck = [...this.deck];
+        // romDeck.push({...removedCard});
+        // this.deck = [...romDeck];
+        // this.spliceOp(index)
       break
       
     }
