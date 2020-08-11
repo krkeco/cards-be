@@ -52,6 +52,7 @@ type Location {
 	influencer: String,
   character: Card,
 	market: [Card],
+  coopDisplay:[Card],
   infoDeck: [Card],
 	battlefield: [Battlefield],
 	proselytized: [Int],
@@ -97,6 +98,7 @@ type Game {
     locations(gameId: Int): [Location],
     play(gameId: Int, playerId: Int, locationId: Int, cardIndex: Int): String,
     buy(gameId: Int, playerId: Int, locationId: Int, cardIndex: Int): String,
+    removeEffect(gameId: Int, playerId: Int,locationId: Int, cardIndex: Int): String,
     nextPlayer(gameId: Int, currentPlayer: Int): TurnInfo,
     currentPlayer(gameId: Int): TurnInfo,
     refreshMarket(gameId: Int, playerId: Int, locationId: Int): String,
@@ -159,6 +161,7 @@ var root = {
     let deckData = await cards.data();
     // }
     // let banes = true;
+    let gameType = "coop"//coop, all
     let game = new GameBuilder.newGame(
       deckData,
       players,
@@ -166,6 +169,7 @@ var root = {
       refreshMarket,
       scrapCard,
       banes,
+      gameType
     );
     let gameId = gameDB.length;
     gameDB[gameId] = game;
@@ -258,6 +262,17 @@ var root = {
     let location = game.locations[locationId];
     let buyString = location.buy(cardIndex, player);
     game.appendLog(player.name + ' ' + buyString);
+    return buyString;
+    // return `card bought! ${JSON.stringify(player.discard[0])}`
+  },
+  removeEffect: ({ gameId, playerId, locationId, cardIndex }) => {
+    console.log('getting buy ' + gameId);
+    let game = gameDB[gameId];
+    let player = game.players.find((pl) => pl.id == playerId);
+    let location = game.locations[locationId];
+    let buyString = location.removeEffect(cardIndex);
+    game.appendLog(player.name + ' ' + buyString);
+    
     return buyString;
     // return `card bought! ${JSON.stringify(player.discard[0])}`
   },

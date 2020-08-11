@@ -3,7 +3,7 @@ module.exports.Location = function Location(
   story,
   id = 7,
   infoDeck,
-  character,
+  character
 ) {
   this.deck = [...deck];
   this.character = { ...character };
@@ -11,6 +11,8 @@ module.exports.Location = function Location(
   this.card = { ...story.card };
   this.info = story.info;
   this.market = [];
+  this.coopDeck = [];
+  this.coopDisplay = [];
   this.battlefield = [];
   this.name = story.name;
   this.influence = story.influence;
@@ -67,6 +69,24 @@ module.exports.Location = function Location(
     //console.log('market NOT refreshed')
     return 'market not refreshed';
   };
+
+  this.drawEffect = function () {
+    let newMarket = [...this.coopDisplay];
+    let newDeck = [...this.coopDeck];
+    //console.log('location:drawOne:')
+    if (newDeck.length > 0) {
+      let ranCard = Math.floor(Math.random() * (newDeck.length - 1));
+      newDeck[ranCard].origin = this.id;
+      newMarket.push(newDeck[ranCard]);
+      newDeck.splice(ranCard, 1);
+    } else {
+      //console.log('the market is empty!')
+    }
+
+    this.coopDisplay = [...newMarket];
+    this.coopDeck = [...newDeck];
+  };
+
   this.drawOne = function () {
     let newMarket = [...this.market];
     let newDeck = [...this.deck];
@@ -83,7 +103,6 @@ module.exports.Location = function Location(
     this.market = [...newMarket];
     this.deck = [...newDeck];
   };
-  // createMarket = function(){
   //all decks start with 1 2cost and 1 3 cost card atm
   if (this.deck.length > 0) {
     //otherwise jerusalem has no market
@@ -96,8 +115,90 @@ module.exports.Location = function Location(
       this.drawOne();
       this.drawOne();
     }
-    // //console.log('market: '+this.market)
-    // //console.log('market: '+JSON.stringify(this.deck))
+  }
+  this.coopCount = {
+    totalGold: 0,
+    totalInfluence: 0,
+    totalFaith: 0,
+    totalCourage: 0,
+    totalProvision: 0
+
+  }
+  this.removeEffect = function (index){
+    let removedCard = this.coopDisplay[index];
+    console.log('remove effect ',removedCard.name,removedCard.fear)
+    console.log(this.name,'against',(this.coopCount.totalFaith+this.coopCount.totalInfluence))
+    switch(this.name){
+      case 'Canaan':
+      // totalInfluence + totalFaith >= fear
+        if((this.coopCount.totalFaith + this.coopCount.totalInfluence) >= removedCard.fear){
+          console.log('removing fear of '+removedCard.fear, ' with ',this.coopCount.totalFaith,this.coopCount.totalInfluence)
+          this.coopCount.totalFaith -= removedCard.fear
+          if(this.coopCount.totalFaith < 0){
+            this.coopCount.totalInfluence += this.coopCount.totalFaith
+            this.coopCount.totalFaith =0;
+          }
+
+          let newCanaanCoopDeck = [...this.coopDeck];
+          newCanaanCoopDeck.push({...removedCard});
+          this.coopDeck = [...newCanaanCoopDeck]
+          this.spliceOp(index)
+        }
+      break;
+      case 'Nineveh':
+      //provision > 0 || gold > 0
+      if(this.coopCount.totalProvision > 1){
+
+        this.coopCount.totalProvision -=2;
+
+        let newMarket = [...this.market];
+        newMarket.push({...removedCard});
+        this.market = [...newMarket];
+        this.spliceOp(index)
+
+      }else if(this.coopCount.totalProvision > 0){
+        
+        this.coopCount.totalProvision -=1;
+
+        let newDeck = [...this.coopDeck];
+        newDeck.push({...removedCard});
+        this.coopDeck = [...newDeck];
+        this.spliceOp(index)
+
+      }else if(this.coopCount.totalGold > 1){
+
+        this.coopCount.totalGold -=2;
+        
+        let newDeck = [...this.coopDeck];
+        newDeck.push({...removedCard});
+        this.coopDeck = [...newDeck];
+        this.spliceOp(index)
+      }
+      break;
+      case 'Babylon':
+        //courage > 0 || gold > cost
+        let newDeck = [...this.coopDeck];
+        newDeck.push({...removedCard});
+        this.coopDeck = [...newDeck];
+        this.spliceOp(index)
+        break;
+
+      case 'Rome':
+        let romDeck = [...this.deck];
+        romDeck.push({...removedCard});
+        this.deck = [...romDeck];
+        this.spliceOp(index)
+      break
+      
+    }
+
+    return newCoop.name;
+  }
+  this.spliceOp = function(index){
+    let newCoop = [...this.coopDisplay]
+    newCoop.splice(index, 1);
+    this.coopDisplay = [...newCoop]
+
   }
 
   this.buy = function (index, player) {
@@ -108,6 +209,7 @@ module.exports.Location = function Location(
       console.log('location:buy:' + JSON.stringify(this.market[index].name));
       let newBattleField = [...this.battlefield];
       newBattleField[player.id].gold -= this.market[index].cost;
+      this.coopCount.totalGold -= this.market[index].cost;
       let cardBuy = this.market[index];
       player.buyCard(cardBuy);
       let newMarket = [...this.market];
@@ -120,17 +222,6 @@ module.exports.Location = function Location(
       //can't afford card
       return `can't afford card`;
     }
-    // if (player.type == 'AI') {
-    //   //AI cheat ... if it has gold it floats it
-
-    //   player.buyCard(this.market[index]);
-    //   let newMarket = [...this.market];
-    //   newMarket.splice(index, 1);
-    //   this.market = [...newMarket];
-    //   this.battlefield = [...newBattleField];
-    //   this.drawOne();
-    //   return `bought ${player.discard[0].name}`;
-    // }
   };
 
   this.playCard = function (card, owner) {
@@ -146,6 +237,7 @@ module.exports.Location = function Location(
           runningTotal: 0,
           gold: 0,
           politics: 0,
+          provision:0,
           poliBonus: 0,
           fear: 0,
           weariness: 0,
@@ -160,6 +252,13 @@ module.exports.Location = function Location(
       newField[owner.id].gold += owner.hand[card].gold;
       let bfCard = { ...owner.hand[card] };
       newField[owner.id].cards.push(bfCard);
+
+      this.coopCount.totalInfluence += bfCard.influence || 0;
+      this.coopCount.totalGold += bfCard.gold || 0;
+      this.coopCount.totalFaith += bfCard.faith || 0;
+      this.coopCount.totalCourage += bfCard.politics || 0;
+      this.coopCount.totalProvision += bfCard.provision || 0;
+      console.log('coopCount',JSON.stringify(this.coopCount));
 
       if (bfCard.fear != null) {
         console.log('fear played');
@@ -208,13 +307,14 @@ module.exports.Location = function Location(
         let newCard = {
           ...greatCard,
           name: "mordecai's blessing: " + greatCard.name,
-          abilities: ['scrap', 'challenge'],
+          abilities: ['scrap'],
         };
         owner.hand = [...owner.hand, newCard];
         this.playCard(owner.hand.length - 1, owner);
       }
 
       if (bfCard.provision > 0) {
+        newField[owner.id].provision += bfCard.provision;
         for (let x = 0; x < bfCard.provision; x++) {
           //console.log('provisionments!')
           if (owner.deck.length > 0 || owner.discard.length > 0) {
@@ -240,19 +340,9 @@ module.exports.Location = function Location(
         this.traversal += 1;
       }
 
-      // if (
-      //   owner.hand[card].abilities.indexOf('Harden') > -1 &&
-      //   this.id != owner.id
-      // ) {
-      //   this.hardened+=1;
-      //   //console.log('Jonah has been hardened'+this.hardened)
-      // }
-      //can't else this because some cards have both edict and politics
       if (bfCard.abilities.indexOf('challenge') > -1) {
         this.edicts += 1;
         console.log('edicts:' + this.edicts);
-
-        //console.log('played an edict, now there are '+this.edicts)
       }
       if (bfCard.politics) {
         newField[owner.id].politics += bfCard.politics;
@@ -267,22 +357,17 @@ module.exports.Location = function Location(
 
       this.battlefield = newField;
       let theString = `played ${bfCard.name} on ${this.name}`;
-      //console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
+      console.log(owner.name+" played "+owner.hand[card].name+" on "+this.name+" for influence new: "+newField[owner.id].influence)
       // //console.log(JSON.stringify(newField)+JSON.stringify(this.battlefield))
       let cardName = bfCard.name;
       if (bfCard.abilities.indexOf('scrap') < 0) {
         owner.playedCard(card);
-        return theString;
       } else {
         owner.millCard(card);
         owner.mills -= 1;
 
-        // let newHand = [...owner.hand]
-        // newHand.splice(card,1)
-        // owner.hand = [...newHand]
-        //console.log('this is an influence card and is not discarded')
-        return theString;
       }
+      return theString;
     }
   };
 

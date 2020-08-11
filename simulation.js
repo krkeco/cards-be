@@ -45,6 +45,7 @@ solo calling:
     false,
     true,
     false,
+    'all'//this can be calling
   );
   // let game = new GameBuilder.newGame(deckData,["Jonah","Esther","Joshua","Paul"], ["player","player","player","player"]);
 

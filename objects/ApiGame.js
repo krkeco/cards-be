@@ -13,7 +13,7 @@ module.exports.newGame = function Game(
   banes,
   gameType = 'all',
 ) {
-  console.log('dd:' + JSON.stringify(deckData));
+  // console.log('dd:' + JSON.stringify(deckData));
   let Jerusalem = new loc.Location(
     [...deckData.decks.jerry],
     { ...deckData.stories.jerusalem },
@@ -21,6 +21,9 @@ module.exports.newGame = function Game(
     [...deckData.infoDecks.starter],
   );
   Jerusalem.id = 7;
+
+  let neutralPlayer = new pl.Player({character:{abilities:[], name:'Persecutor'}},[],'player',7);
+  
   this.players = [];
   this.banes = banes;
   this.started = false;
@@ -38,6 +41,7 @@ module.exports.newGame = function Game(
   this.log = [];
   this.simulation = true;
   this.canaan = false;
+  this.draws = 4;
 
   this.getTurn = () => {
     return this.turn;
@@ -138,13 +142,35 @@ module.exports.newGame = function Game(
     this.playerNames.map((player, index) => {
       switch (player) {
         case 'Jonah':
-          let Nineveh = new loc.Location(
+        let Nineveh;
+        if(gameType == "coop"){
+            let storyDeck = []
+            let nineviteDeck = []
+            deckData.decks.jonah.map(card => {
+              if(card.abilities.indexOf('Ninevite') > -1){
+                nineviteDeck.push(card)
+              }else{
+                storyDeck.push(card);
+              }
+            })
+          Nineveh = new loc.Location(
+            [...storyDeck],
+            deckData.stories.jonah.location,
+            index,
+            deckData.infoDecks.jonah,
+            deckData.stories.jonah.character,
+          );
+          Nineveh.coopDeck = [...nineviteDeck]
+
+        }else{
+          Nineveh = new loc.Location(
             deckData.decks.jonah,
             deckData.stories.jonah.location,
             index,
             deckData.infoDecks.jonah,
             deckData.stories.jonah.character,
           );
+        }
           // Nineveh.id = index;
           this.Jonah = new pl.Player(
             deckData.stories.jonah,
@@ -164,25 +190,104 @@ module.exports.newGame = function Game(
             index,
           );
           // this.Esther.id = index;
-          let Babylon = new loc.Location(
-            deckData.decks.esther,
-            deckData.stories.esther.location,
-            index,
-            deckData.infoDecks.esther,
-            deckData.stories.esther.character,
-          );
+          let Babylon;
+
+          if(gameType == "coop"){
+            let storyDeck = []
+            let challengeDeck = []
+            let ham = 0;
+            let tax = 0;
+            let xerxes = 0;
+            let ann = 0;
+            deckData.decks.esther.map(card => {
+              if(card.abilities.indexOf('challenge') > -1){
+                switch(card.name){
+                  case "Haman's Undertaking":
+                  if(ham < 4){
+                    ham++
+                    challengeDeck.push(card)
+                  }
+                  break;
+                  case "Taxes":
+                  if(tax < 2){
+                    tax++
+                    challengeDeck.push(card)
+                  }
+                  break;
+                  case "Xerxes Command":
+                  if(xerxes < 1){
+                    xerxes++
+                    challengeDeck.push(card)
+                  }
+                  break;
+                  case "Annihilation":
+                  if(ann < 1){
+                    ann++
+                    challengeDeck.push(card)
+                  }
+                  break;
+                  default:
+                  storyDeck.push(card);  
+
+                }
+              }else{
+                storyDeck.push(card);
+              }
+            })
+            Babylon = new loc.Location(
+              [...storyDeck],
+              deckData.stories.esther.location,
+              index,
+              deckData.infoDecks.esther,
+              deckData.stories.esther.character,
+            );
+            Babylon.coopDeck = [...challengeDeck]
+
+          }else{
+            Babylon = new loc.Location(
+              deckData.decks.esther,
+              deckData.stories.esther.location,
+              index,
+              deckData.infoDecks.esther,
+              deckData.stories.esther.character,
+            );
+          }
+
+
           // Babylon.id = index;
           this.players.push(this.Esther);
           this.locations[Babylon.id] = Babylon;
           break;
         case 'Joshua':
-          let Canaan = new loc.Location(
-            deckData.decks.joshua,
-            deckData.stories.joshua.location,
-            index,
-            deckData.infoDecks.joshua,
-            deckData.stories.joshua.character,
-          );
+          let Canaan;
+          if(gameType == "coop"){
+            let storyDeck = []
+            let fearDeck = []
+            deckData.decks.joshua.map(card => {
+              if(card.fear > 0){
+                fearDeck.push(card)
+              }else{
+                storyDeck.push(card);
+              }
+            })
+            Canaan = new loc.Location(
+              [...storyDeck],
+              deckData.stories.joshua.location,
+              index,
+              deckData.infoDecks.joshua,
+              deckData.stories.joshua.character,
+            );
+            Canaan.coopDeck = [...fearDeck]
+
+          }else{
+            Canaan = new loc.Location(
+              deckData.decks.joshua,
+              deckData.stories.joshua.location,
+              index,
+              deckData.infoDecks.joshua,
+              deckData.stories.joshua.character,
+            );
+          }
           // Canaan.id = index;
           this.Joshua = new pl.Player(
             deckData.stories.joshua,
@@ -379,6 +484,7 @@ module.exports.newGame = function Game(
     }
     return this.winner;
   };
+
   this.setWinner = function (player) {
     this.winning = true;
     this.winner = player.name + player.id;
@@ -393,6 +499,7 @@ module.exports.newGame = function Game(
       this.losers += 1;
     }
   };
+
   this.checkForConquerer = function () {
     let conquerer = {};
     // let chief = null;
@@ -424,12 +531,14 @@ module.exports.newGame = function Game(
   this.startSim = async () => {
     this.startNewTurn();
   };
+
   this.startNewTurn = function () {
     console.log('apigame startnewturn');
 
     if (gameType == 'all' || gameType == 'calling') {
       let winner = this.checkVictoryConditions();
-    }
+    } 
+
     this.appendLog('Starting turn ' + this.turn);
 
     Object.keys(this.locations).map((location, index) => {
@@ -462,19 +571,18 @@ module.exports.newGame = function Game(
     }
 
     this.turn = this.turn + 1;
+
+
     console.log('\n new turn:' + this.turn);
 
-    // Object.keys(this.locations).map((location) => {
-    //   if(this.canaan){
-    //     this.locations[location].weariness +=1;
-    //   }
-    // });
-
     console.log('player setup');
+      // let draws = 4;
+    if(gameType == 'coop'){
+      this.runEffect();
+    }
 
     this.players.map((player, index) => {
       player.startTurn();
-      let draws = 4;
 
       //influence cards
       Object.keys(this.locations).map((location) => {
@@ -485,19 +593,130 @@ module.exports.newGame = function Game(
           // console.log(
           //   'adding influence card to hand' + JSON.stringify(player.hand),
           // );
-          if (this.locations[location].card.draw > 0) {
-            // player.drawCards(1);
-            draws += this.locations[location].card.draw;
-          }
+          // if (this.locations[location].card.draw > 0) {
+          //   // player.drawCards(1);
+          //   draws += this.locations[location].card.draw;
+          // }
         }
       });
 
-      player.drawCards(draws);
+      player.drawCards(this.draws);
+      this.draws = 4;//reset bc of how useeffect works...
       // console.log('player hand' + JSON.stringify(player.hand));
     });
 
     return true;
   };
+
+  this.runEffect = function() {
+    switch(this.locations[this.currentPlayer].name){
+      case "Canaan":
+      //check for fallen from fear...
+
+      //add new fear to correct location...
+      for(let x = 0; x < this.players.length; x++){
+      //if not canaan, move to correct lcoation
+        this.locations[this.currentPlayer].drawEffect();
+      }
+      let totalFear = 0;
+      this.locations[this.currentPlayer].coopDisplay.map(fearCard=>{
+        totalFear+=fearCard.fear;
+      })
+      if(totalFear > 13 * this.players.length +1){//+1 is jerusalem
+        console.log('fear lose the game')
+      }
+
+      break;
+      case "Nineveh":
+        let ninev = this.locations[this.currentPlayer]
+        ninev.drawEffect();
+        // ninev.drawEffect();//hardmode much?
+      //discard cards
+      let ninevites = 0;
+        let warriors = 0;
+        ninev.coopDisplay.map(card =>{
+          if(card.name == "Priestess"){
+            if(this.draws > 2){
+              this.draws -= 1;
+            }
+          }
+          if(card.name == "Warrior"){
+            warriors+=1;
+          }
+        })
+        if(ninevites > 3){
+          console.log('ninevite lose the game')
+        }
+
+        Object.keys(this.locations).map(location => {
+          let replenish = true;
+          while( 3 - warriors < this.locations[location].market.length){
+            replenish = false;
+            let last = this.locations[location].market.length -1
+  
+            let newMarket = [...this.locations[location].market]
+            let floater = {...newMarket[last]};
+            newMarket.splice(last,1);
+            let newDeck = [...this.locations[location].deck]
+            newDeck.push(floater)
+            this.locations[location].market = [...newMarket]
+            this.locations[location].deck = [...newDeck]
+          }
+          // if(replenish){
+          //   while(this.locations[location].market.length <= warriors){
+          //     this.locations[location].drawOne();
+          //   }
+          // }
+          
+
+        })
+      //discard market cards
+      
+      break;
+      case "Rome":
+      console.log('rome effect')
+      //play 1 card on each location
+      // console.log('deck names',romeDeck.map(card=>card.name))
+      
+      Object.keys(this.locations).map((location,index) =>{
+        if(this.locations[location].influencer.name == "Persecutor"){
+          this.locations[this.currentPlayer].wounds[this.currentPlayer]++;
+        }
+        console.log('playing storm on ',this.locations[location].name)
+        let romeDeck = [...this.locations[this.currentPlayer].deck]
+        // let neutralPlayer = {name:'neutral',id:7,hand:[],deck:[],discard:[],played:[],
+        // playedCard:function(){console.log('played')},
+        // millCard:function(){console.log('milled')}}//new pl.Player([],[],'Player',7);
+        let ranNum = Math.floor(Math.random() * (romeDeck.length - 1))
+        neutralPlayer.hand = [{...romeDeck[ranNum]}];
+        console.log('hand:',neutralPlayer.hand)
+        this.locations[location].playCard(0,neutralPlayer);
+      })
+      if(this.locations[this.currentPlayer].wounds[this.currentPlayer] > 6){
+        console.log('paul lose game')
+      }
+
+      break;
+      case "Babylon":
+      /*
+      2 taxes 
+      4 haman
+      1 annihilation
+      1 kings
+      */
+      if(this.locations[this.currentPlayer].coopDisplay.length > 3){
+        console.log('challenge lose game')
+      }
+
+      for(let x = 0; x < this.players.length; x++){
+        this.locations[this.currentPlayer].drawEffect();
+      }
+
+
+      break;
+    }
+  }
+
   this.checkPrison = function (location) {
     console.log('we have a imprisonment/warrant');
     // this.locations[location].prison.map((king, ind) => {
@@ -698,6 +917,7 @@ module.exports.newGame = function Game(
         id: location.id,
         market: location.market,
         infoDeck: location.infoDeck,
+        coopDisplay: location.coopDisplay,
         battlefield: location.battlefield,
         influence: location.influence,
         abilities: location.abilities,

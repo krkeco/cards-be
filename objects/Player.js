@@ -5,20 +5,23 @@ module.exports.Player = function Player(
   id = 0,
   color = 'red',
 ) {
+  console.log('a char')
   this.deck = [story.character, ...deck];
+  console.log('deck up')
   this.hand = [];
   this.id = id;
   this.type = type;
   this.color = color;
   this.mills = 0;
   this.abilities = [...story.character.abilities];
+  console.log('ab up')
   this.discard = [];
   this.played = [];
   this.firstPlayer = false;
   this.winning = false;
   this.baned = false;
   this.name = story.character.name;
-
+console.log('allup')
   // this.setAbilities = function (abilities) {
   //   this.abilities = [...abilities];
   // };
