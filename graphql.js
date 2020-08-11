@@ -153,7 +153,14 @@ var root = {
     };
     // return player
   },
-  newGame: async ({ players, types, refreshMarket, scrapCard, banes, gameType }) => {
+  newGame: async ({
+    players,
+    types,
+    refreshMarket,
+    scrapCard,
+    banes,
+    gameType,
+  }) => {
     console.log('players are:' + JSON.stringify(players));
     // let players = ['Jonah','Esther']
     // let deckData = cards.testData();
@@ -169,7 +176,7 @@ var root = {
       refreshMarket,
       scrapCard,
       banes,
-      gameType
+      gameType,
     );
     let gameId = gameDB.length;
     gameDB[gameId] = game;
@@ -271,10 +278,10 @@ var root = {
     let player = game.players.find((pl) => pl.id == playerId);
     let location = game.locations[locationId];
     let buyString = location.removeEffect(cardIndex);
-    console.log('check esther')
+    console.log('check esther');
     game.checkEstherEffects();
     game.appendLog(player.name + ' ' + buyString);
-    
+
     return buyString;
     // return `card bought! ${JSON.stringify(player.discard[0])}`
   },
