@@ -13,6 +13,11 @@ module.exports.Location = function Location(
   this.market = [];
   this.coopDeck = [];
   this.coopDisplay = [];
+
+  this.tax = 0;
+  this.extortion = 0;
+  this.kingCommand = false;
+
   this.battlefield = [];
   this.name = story.name;
   this.influence = story.influence;
@@ -78,6 +83,7 @@ module.exports.Location = function Location(
       let ranCard = Math.floor(Math.random() * (newDeck.length - 1));
       newDeck[ranCard].origin = this.id;
       newMarket.push(newDeck[ranCard]);
+
       newDeck.splice(ranCard, 1);
     } else {
       //console.log('the market is empty!')
@@ -126,10 +132,10 @@ module.exports.Location = function Location(
   }
   this.removeEffect = function (index){
     let removedCard = this.coopDisplay[index];
-    console.log('remove effect ',removedCard.name,removedCard.fear)
-    console.log(this.name,'against',(this.coopCount.totalFaith+this.coopCount.totalInfluence))
+    console.log('remove effect ',removedCard.name)
     switch(this.name){
       case 'Canaan':
+        console.log(this.name,'against',(this.coopCount.totalFaith+this.coopCount.totalInfluence))
       // totalInfluence + totalFaith >= fear
         if((this.coopCount.totalFaith + this.coopCount.totalInfluence) >= removedCard.fear){
           console.log('removing fear of '+removedCard.fear, ' with ',this.coopCount.totalFaith,this.coopCount.totalInfluence)
@@ -176,6 +182,7 @@ module.exports.Location = function Location(
       }
       break;
       case 'Babylon':
+      console.log('effect on Babylon')
         //courage > 0 || gold > cost
       if(this.coopCount.totalCourage > 0){
         this.coopCount.totalCourage -= 1;
@@ -183,6 +190,7 @@ module.exports.Location = function Location(
         newDeck.push({...removedCard});
         this.coopDeck = [...newDeck];
         this.spliceOp(index)
+        console.log('removed effect from babylon')
       }else if(this.coopCount.totalGold >= removedCard.cost){
         this.coopCount.totalGold -= removedCard.cost;
         let newDeck = [...this.coopDeck];
@@ -190,6 +198,7 @@ module.exports.Location = function Location(
         this.coopDeck = [...newDeck];
         this.spliceOp(index)
       }
+      console.log('fin bab')
         break;
 
       case 'Rome':
@@ -201,7 +210,7 @@ module.exports.Location = function Location(
       
     }
 
-    return newCoop.name;
+    return removedCard.name;
   }
   this.spliceOp = function(index){
     let newCoop = [...this.coopDisplay]
@@ -213,12 +222,15 @@ module.exports.Location = function Location(
   this.buy = function (index, player) {
     if (
       this.battlefield[player.id] &&
-      this.battlefield[player.id].gold >= this.market[index].cost
+      this.battlefield[player.id].gold >= this.market[index].cost + this.tax
     ) {
       console.log('location:buy:' + JSON.stringify(this.market[index].name));
       let newBattleField = [...this.battlefield];
       newBattleField[player.id].gold -= this.market[index].cost;
+      newBattleField[player.id].gold -= this.tax;
       this.coopCount.totalGold -= this.market[index].cost;
+      this.coopCount.totalGold -= this.tax;
+
       let cardBuy = this.market[index];
       player.buyCard(cardBuy);
       let newMarket = [...this.market];
@@ -564,11 +576,13 @@ module.exports.Location = function Location(
     this.apostle = -1;
     this.switcheroo = [];
     this.prison = [];
+    this.kingCommand = false;
     this.traversal = 0;
+    this.tax = 0;
+    this.influence = 3
     //moved to apigame
-    // if (this.name == 'Canaan') {
-    // this.weariness+=1;
-    //console.log('end of turn weariness for canaan')
-    // }
+    if (this.name == 'Canaan') {
+      this.influence += this.abilities * 3;
+    }
   };
 };

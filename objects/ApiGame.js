@@ -553,6 +553,13 @@ module.exports.newGame = function Game(
       if (this.locations[location].prison.length > 0) {
         this.checkPrison(location);
       }
+      // if(this.locations[location].kingCommand){
+      //   Object.keys(this.players).map((player,index)=>{
+      //     this.players[player].played.map((card, cInd) =>{
+      //       console.log('king sees: ',card.name,card.cost)
+      //     })
+      //   })
+      // }
       let old = this.locations[location].influencer;
       this.locations[location].setInfluencing();
       if (old.name != this.locations[location].influencer.name) {
@@ -699,10 +706,10 @@ module.exports.newGame = function Game(
       break;
       case "Babylon":
       /*
-      2 taxes 
-      4 haman
-      1 annihilation
-      1 kings
+      2 taxes -- tax 
+      4 haman -- extortion
+      1 annihilation -- 
+      1 kings -- edict
       */
       if(this.locations[this.currentPlayer].coopDisplay.length > 3){
         console.log('challenge lose game')
@@ -712,9 +719,62 @@ module.exports.newGame = function Game(
         this.locations[this.currentPlayer].drawEffect();
       }
 
+      this.locations[this.currentPlayer].coopDisplay.map(card=>{
+          switch(card.name){
+            case 'Taxes':
+            Object.keys(this.locations).map((location,index)=>{
+              this.locations[location].tax += 1;
+            })
+            break;
+            case "Haman's Undertaking":
+            Object.keys(this.locations).map((location,index)=>{
+              this.locations[location].influence += 2;
+            })
+            break;
+            case "Annihilation":
+              this.locations[this.currentPlayer].influence += 13;
+            break;
+            case "Xerxes Command":
+              this.locations[this.currentPlayer].kingCommand = true;
+            break;
+          }
+      })
 
-      break;
     }
+    console.log('finish runEffect')
+  }
+  this.checkEstherEffects = function(){
+    console.log('reseting for esthereffect')
+    Object.keys(this.locations).map((location, index)=>{
+      this.locations[location].tax =0;
+      this.locations[location].influence =3;
+
+      // if (this.locations[location].name == 'Canaan') {
+      //   this.locations[location].influence += this.abilities * 3;
+      // }
+    })
+    // Object.keys(this.locations).map((location, index)=>{
+    //   this.locations[location].coopDisplay.map(card=>{
+    //       switch(card.name){
+    //         case 'Taxes':
+    //         Object.keys(this.locations).map((loc,ind)=>{
+    //           this.locations[loc].tax += 1;
+    //         })
+    //         break;
+    //         case "Haman's Undertaking":
+    //         Object.keys(this.locations).map((loc,ind)=>{
+    //           this.locations[loc].influence += 2;
+    //         })
+    //         break;
+    //         case "Annihilation":
+    //           this.locations[this.currentPlayer].influence += 13;
+    //         break;
+    //         case "Xerxes Command":
+    //           this.locations[this.currentPlayer].kingCommand = true;
+    //         break;
+    //       }
+    //   })
+    // })
   }
 
   this.checkPrison = function (location) {

@@ -271,6 +271,8 @@ var root = {
     let player = game.players.find((pl) => pl.id == playerId);
     let location = game.locations[locationId];
     let buyString = location.removeEffect(cardIndex);
+    console.log('check esther')
+    game.checkEstherEffects();
     game.appendLog(player.name + ' ' + buyString);
     
     return buyString;

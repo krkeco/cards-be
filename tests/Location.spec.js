@@ -88,7 +88,7 @@ describe("playCard abilities", () => {
       expect(playerBF.faith).toEqual(2);
       expect(playerBF.politics).toEqual(0);
       expect(playerBF.poliBonus).toEqual(0);
-      expect(location.edicts).toEqual(2);//1 from the endeavor 1 from mordecai
+      expect(location.edicts).toEqual(1);//1 from the endeavor 
       expect(location.angelic).toEqual(player.id);
       expect(playerBF.cards[7].influence).toEqual(8);//mob bonus to 1 + 7 prev cards
       expect(playerBF.playPaul).toEqual(true);
