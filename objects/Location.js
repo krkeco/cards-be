@@ -85,8 +85,6 @@ module.exports.Location = function Location(
       newMarket.push(newDeck[ranCard]);
 
       newDeck.splice(ranCard, 1);
-    } else {
-      //console.log('the market is empty!')
     }
 
     this.coopDisplay = [...newMarket];
@@ -151,6 +149,7 @@ module.exports.Location = function Location(
             this.coopCount.totalInfluence,
           );
           this.coopCount.totalFaith -= removedCard.fear;
+
           if (this.coopCount.totalFaith < 0) {
             this.coopCount.totalInfluence += this.coopCount.totalFaith;
             this.coopCount.totalFaith = 0;

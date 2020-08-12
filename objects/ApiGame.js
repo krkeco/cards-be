@@ -609,11 +609,12 @@ module.exports.newGame = function Game(
     console.log('\n new turn:' + this.turn);
 
     console.log('player setup');
-    // let draws = 4;
+    
     if (gameType == 'coop') {
       this.runEffect();
     }
-
+    // neutralPlayer.startTurn();
+    neutralPlayer.played =[];
     this.players.map((player, index) => {
       player.startTurn();
 
@@ -632,12 +633,12 @@ module.exports.newGame = function Game(
           // }
         }
       });
-
+      console.log('drawing ',this.draws,' cards')
       player.drawCards(this.draws);
-      this.draws = 4; //reset bc of how useeffect works...
+      
       // console.log('player hand' + JSON.stringify(player.hand));
     });
-
+    this.draws = 4; //reset bc of how useeffect works...
     return true;
   };
 
@@ -671,15 +672,18 @@ module.exports.newGame = function Game(
         this.locations[this.currentPlayer].coopDisplay.map((fearCard) => {
           totalFear += fearCard.fear;
         });
-        if (totalFear > 13 * this.players.length + 1) {
+        if (totalFear > 13 * (this.players.length + 1)) {
           //+1 is jerusalem
           console.log('fear lose the game');
         }
 
+
         break;
       case 'Nineveh':
         let ninev = this.locations[this.currentPlayer];
-        ninev.drawEffect();
+        for(let x = 0; x < this.players.length; x++){
+          ninev.drawEffect();
+        }
         // ninev.drawEffect();//hardmode much?
         //discard cards
         let ninevites = 0;
@@ -728,6 +732,7 @@ module.exports.newGame = function Game(
 
         Object.keys(this.locations).map((location, index) => {
           if (this.locations[location].influencer.name == 'Persecutor') {
+            this.locations[location].influencer = { name: 'neutral' };
             this.locations[this.currentPlayer].wounds[this.currentPlayer]++;
           }
           console.log('playing storm on ', this.locations[location].name);
@@ -739,6 +744,7 @@ module.exports.newGame = function Game(
           neutralPlayer.hand = [{ ...romeDeck[ranNum] }];
           console.log('hand:', neutralPlayer.hand);
           this.locations[location].playCard(0, neutralPlayer);
+          console.log('neutral player played',neutralPlayer.played)
         });
         if (this.locations[this.currentPlayer].wounds[this.currentPlayer] > 6) {
           console.log('paul lose game');
@@ -789,12 +795,14 @@ module.exports.newGame = function Game(
   this.checkEstherEffects = function () {
     console.log('reseting for esthereffect');
     Object.keys(this.locations).map((location, index) => {
+
       this.locations[location].tax = 0;
       this.locations[location].influence = 3;
+      console.log('inf 3 ? :',this.locations[location].influence)
       this.locations[location].kingCommand = false;
 
       if (this.locations[location].name == 'Canaan') {
-        this.locations[location].influence += this.abilities * 3;
+        this.locations[location].influence += this.locations[location].abilities * 3;
       }
     });
     Object.keys(this.locations).map((location, index) => {
@@ -861,9 +869,15 @@ module.exports.newGame = function Game(
                 console.log('spliced switch' + switchPlay);
               }
             });
+            console.log('king',king)
+            let kingPlay;
+            if(king != 7){//Nuetral efffect for paul coop
+              kingPlay = [...this.players[king].played];
+            }else{
+              kingPlay = neutralPlayer.played;
+            }
 
-            let kingPlay = [...this.players[king].played];
-            console.log(kingPlay);
+            console.log('kplay:',kingPlay);
             let prison;
             kingPlay.map((card, cInd) => {
               if (card.abilities.indexOf('prison') > -1) {
