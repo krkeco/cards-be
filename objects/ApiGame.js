@@ -624,13 +624,6 @@ module.exports.newGame = function Game(
           let newHand = [...player.hand];
           newHand.push(this.locations[location].card);
           player.hand = [...newHand];
-          // console.log(
-          //   'adding influence card to hand' + JSON.stringify(player.hand),
-          // );
-          // if (this.locations[location].card.draw > 0) {
-          //   // player.drawCards(1);
-          //   draws += this.locations[location].card.draw;
-          // }
         }
       });
       console.log('drawing ',this.draws,' cards')
@@ -662,19 +655,20 @@ module.exports.newGame = function Game(
     switch (this.locations[this.currentPlayer].name) {
       case 'Canaan':
         //check for fallen from fear...
-
-        //add new fear to correct location...
-        for (let x = 0; x < this.players.length; x++) {
-          //if not canaan, move to correct lcoation
-          this.locations[this.currentPlayer].drawEffect();
-        }
         let totalFear = 0;
         this.locations[this.currentPlayer].coopDisplay.map((fearCard) => {
           totalFear += fearCard.fear;
         });
         if (totalFear > 13 * (this.players.length + 1)) {
           //+1 is jerusalem
+          this.setLoser(this.players[this.currentPlayer])
           console.log('fear lose the game');
+        }
+
+        //add new fear to correct location...
+        for (let x = 0; x < this.players.length; x++) {
+          //if not canaan, move to correct lcoation
+          this.locations[this.currentPlayer].drawEffect();
         }
 
 
@@ -699,6 +693,7 @@ module.exports.newGame = function Game(
           }
         });
         if (ninevites > 3) {
+          this.setLoser(this.players[this.currentPlayer])
           console.log('ninevite lose the game');
         }
 
@@ -748,6 +743,7 @@ module.exports.newGame = function Game(
         });
         if (this.locations[this.currentPlayer].wounds[this.currentPlayer] > 6) {
           console.log('paul lose game');
+          this.setLoser(this.players[this.currentPlayer])
         }
 
         break;
@@ -759,6 +755,7 @@ module.exports.newGame = function Game(
       1 kings -- edict
       */
         if (this.locations[this.currentPlayer].coopDisplay.length > 3) {
+          this.setLoser(this.players[this.currentPlayer])
           console.log('challenge lose game');
         }
 
@@ -819,10 +816,10 @@ module.exports.newGame = function Game(
             });
             break;
           case 'Annihilation':
-            this.locations[this.currentPlayer].influence += 13;
+            this.locations[location].influence += 13;
             break;
           case 'Xerxes Command':
-            this.locations[this.currentPlayer].kingCommand = true;
+            this.locations[location].kingCommand = true;
             break;
         }
       });
