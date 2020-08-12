@@ -659,7 +659,7 @@ module.exports.newGame = function Game(
         this.locations[this.currentPlayer].coopDisplay.map((fearCard) => {
           totalFear += fearCard.fear;
         });
-        if (totalFear > 13 * (this.players.length + 1)) {
+        if (totalFear > 13 * (this.players.length)) {
           //+1 is jerusalem
           this.setLoser(this.players[this.currentPlayer])
           console.log('fear lose the game');
@@ -680,7 +680,7 @@ module.exports.newGame = function Game(
         }
         // ninev.drawEffect();//hardmode much?
         //discard cards
-        let ninevites = 0;
+        // let ninevites = 0;
         let warriors = 0;
         ninev.coopDisplay.map((card) => {
           if (card.name == 'Priestess') {
@@ -692,7 +692,7 @@ module.exports.newGame = function Game(
             warriors += 1;
           }
         });
-        if (ninevites > 3) {
+        if (ninev.coopDisplay.length > 3) {
           this.setLoser(this.players[this.currentPlayer])
           console.log('ninevite lose the game');
         }
