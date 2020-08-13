@@ -703,8 +703,8 @@ module.exports.newGame = function Game(
       case 'Nineveh':
         let ninev = this.locations[this.currentPlayer];
         if (ninev.coopDisplay.length > 3) {
-          this.setLoser(this.players[this.currentPlayer])
           console.log('ninevite lose the game');
+          this.setLoser(this.players[this.currentPlayer])
         }
         for(let x = 0; x < difficulty; x++){
           ninev.drawEffect();
@@ -726,22 +726,30 @@ module.exports.newGame = function Game(
 
         Object.keys(this.locations).map((location) => {
           let replenish = true;
-          while (3 - warriors <= this.locations[location].market.length) {
-            replenish = false;
-            let last = this.locations[location].market.length - 1;
-
-            let newMarket = [...this.locations[location].market];
-            let floater = { ...newMarket[last] };
-            newMarket.splice(last, 1);
-            let newDeck = [...this.locations[location].deck];
-            newDeck.push(floater);
-            this.locations[location].market = [...newMarket];
-            this.locations[location].deck = [...newDeck];
-          }
-          if(replenish){
-            while(this.locations[location].market.length < warriors){
-              this.locations[location].drawOne();
+          // while (warriors +1 < this.locations[location].market.length) {
+          if(warriors > 0 && this.locations[location].market.length > 3 - warriors){
+            
+            //l = 2 w = 1 
+            // for(let x = 0; x < this.locations[location].market.length - (3 - warriors); x++){
+              while(this.locations[location].market.length > 3 - warriors){
+              replenish = false;
+              let last = this.locations[location].market.length - 1;
+  
+              let newMarket = [...this.locations[location].market];
+              let floater = { ...newMarket[last] };
+              newMarket.splice(last, 1);
+              let newDeck = [...this.locations[location].deck];
+              newDeck.push(floater);
+              this.locations[location].market = [...newMarket];
+              this.locations[location].deck = [...newDeck];
             }
+          }
+          if(this.locations[location].market.length < 3 - warriors){
+            
+              while(this.locations[location].market.length < 3 - warriors){
+                this.locations[location].drawOne();
+              }
+            
           }
         });
         //discard market cards
