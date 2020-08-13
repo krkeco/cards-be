@@ -383,7 +383,9 @@ module.exports.Location = function Location(
 
       newField.map((bf, index) => {
         if (bf) {
+          this.coopCount.totalInfluence -= bf.poliBonus;
           bf.poliBonus = bf.politics * this.edicts;
+          this.coopCount.totalInfluence += bf.poliBonus;
           console.log('new poli:' + bf.poliBonus);
         }
       });

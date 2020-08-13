@@ -31,6 +31,9 @@ module.exports.newGame = function Game(
 
   this.players = [];
   this.banes = banes;
+  if(gameType == 'coop' ||gameType == 'hard' || gameType == 'mono'){
+    this.banes = false;
+  }
   this.started = false;
   this.refreshMarket = refreshMarket;
   this.scrapCard = scrapCard;
@@ -148,7 +151,7 @@ module.exports.newGame = function Game(
       switch (player) {
         case 'Jonah':
           let Nineveh;
-          if (gameType == 'coop') {
+          if (gameType == 'coop' || gameType == 'hard' || gameType == 'mono') {
             let storyDeck = [];
             let nineviteDeck = [];
             deckData.decks.jonah.map((card) => {
@@ -196,7 +199,7 @@ module.exports.newGame = function Game(
           // this.Esther.id = index;
           let Babylon;
 
-          if (gameType == 'coop') {
+          if (gameType == 'coop' || gameType == 'hard' || gameType == 'mono'){
             let storyDeck = [];
             let challengeDeck = [];
             let ham = 0;
@@ -269,7 +272,7 @@ module.exports.newGame = function Game(
           break;
         case 'Joshua':
           let Canaan;
-          if (gameType == 'coop') {
+          if (gameType == 'coop' || gameType == 'hard' || gameType == 'mono') {
             let storyDeck = [];
             let fearDeck = [];
             deckData.decks.joshua.map((card) => {
@@ -366,15 +369,17 @@ module.exports.newGame = function Game(
             this.setWinner(player);
             // }else if(babylonian.id != player.id && this.locations[player.id].edicts >= 4){
           } else {
-            this.locations[player.id].battlefield.map((bf, ind) => {
-              if (bf && bf.id == player.id && bf.poliBonus + bf.influence < 0) {
-                //totalinfluence
-                console.log(
-                  'esther has a polibonus' + bf.poliBonus + ' so she loses',
-                );
-                this.setLoser(player);
-              }
-            });
+            if(this.banes){
+              this.locations[player.id].battlefield.map((bf, ind) => {
+                if (bf && bf.id == player.id && bf.poliBonus + bf.influence < 0) {
+                  //totalinfluence
+                  console.log(
+                    'esther has a polibonus' + bf.poliBonus + ' so she loses',
+                  );
+                  this.setLoser(player);
+                }
+              });
+            }
           }
           break;
         case 'Jonah':
@@ -428,7 +433,7 @@ module.exports.newGame = function Game(
                 if (ninevites >= 4 && isInfluencer) {
                   //4
                   this.setWinner(player);
-                } else if (this.locations[player.id].hardened >= 3) {
+                } else if (this.banes && this.locations[player.id].hardened >= 3) {
                   this.setLoser(player);
                 }
               } else {
@@ -449,7 +454,7 @@ module.exports.newGame = function Game(
           if (pros >= 7) {
             //og 7
             this.setWinner(player);
-          } else if (wounds >= 6) {
+          } else if (this.banes && wounds >= 6) {
             this.setLoser(player);
           }
           //check abilities
@@ -463,7 +468,7 @@ module.exports.newGame = function Game(
           if (this.locations[player.id].abilities[0] > 2) {
             this.setWinner(player);
             //add ALL fear subtract ALL faith
-          } else if (
+          } else if (this.banes &&
             this.locations[player.id].battlefield[player.id] &&
             this.locations[player.id].battlefield[player.id].fear +
               this.locations[player.id].battlefield[player.id].weariness >=
@@ -506,6 +511,9 @@ module.exports.newGame = function Game(
     if (this.banes) {
       this.players[player.id].baned = true;
       this.losers += 1;
+    }
+    if(gameType === 'mono' || gameType == 'coop' || gameType == 'hard'){
+      this.losers = this.players.length;
     }
   };
 
@@ -610,9 +618,21 @@ module.exports.newGame = function Game(
 
     console.log('player setup');
     
-    if (gameType == 'coop') {
+    if (gameType == 'coop' || gameType == 'hard'){
       this.runEffect();
     }
+    if(gameType == 'mono'){
+      let floatCurrentPlayer;
+      floatCurrentPlayer = this.currentPlayer+0;
+      // for(let x = 0; x < this.players.length; x++){
+        // this.currentPlayer = x;
+        this.currentPlayer = 0;
+        console.log('runeffect for',this.currentPlayer)
+        this.runEffect();
+      // }
+      this.currentPlayer = floatCurrentPlayer;
+    }
+
     // neutralPlayer.startTurn();
     neutralPlayer.played =[];
     this.players.map((player, index) => {
@@ -636,6 +656,13 @@ module.exports.newGame = function Game(
   };
 
   this.runEffect = function () {
+    let difficulty = this.players.length;
+    if(gameType == "hard"){
+      difficulty += 1;
+    }
+    if(gameType == 'mono'){
+      diffulty = 1;
+    }
     let wins = 0;
     this.players.map((player,index)=>{
       if(player.winning){
@@ -659,14 +686,14 @@ module.exports.newGame = function Game(
         this.locations[this.currentPlayer].coopDisplay.map((fearCard) => {
           totalFear += fearCard.fear;
         });
-        if (totalFear > 13 * (this.players.length)) {
+        if (totalFear > 13 * this.players.length) {
           //+1 is jerusalem
           this.setLoser(this.players[this.currentPlayer])
-          console.log('fear lose the game');
+          console.log('fear lose the game',totalFear);
         }
 
         //add new fear to correct location...
-        for (let x = 0; x < this.players.length; x++) {
+        for (let x = 0; x < difficulty; x++) {
           //if not canaan, move to correct lcoation
           this.locations[this.currentPlayer].drawEffect();
         }
@@ -675,7 +702,7 @@ module.exports.newGame = function Game(
         break;
       case 'Nineveh':
         let ninev = this.locations[this.currentPlayer];
-        for(let x = 0; x < this.players.length; x++){
+        for(let x = 0; x < difficulty; x++){
           ninev.drawEffect();
         }
         // ninev.drawEffect();//hardmode much?
@@ -711,11 +738,11 @@ module.exports.newGame = function Game(
             this.locations[location].market = [...newMarket];
             this.locations[location].deck = [...newDeck];
           }
-          // if(replenish){
-          //   while(this.locations[location].market.length <= warriors){
-          //     this.locations[location].drawOne();
-          //   }
-          // }
+          if(replenish){
+            while(this.locations[location].market.length < warriors){
+              this.locations[location].drawOne();
+            }
+          }
         });
         //discard market cards
 
@@ -730,17 +757,24 @@ module.exports.newGame = function Game(
             this.locations[location].influencer = { name: 'neutral' };
             this.locations[this.currentPlayer].wounds[this.currentPlayer]++;
           }
+
           console.log('playing storm on ', this.locations[location].name);
           let romeDeck = [...this.locations[this.currentPlayer].deck];
-          // let neutralPlayer = {name:'neutral',id:7,hand:[],deck:[],discard:[],played:[],
-          // playedCard:function(){console.log('played')},
-          // millCard:function(){console.log('milled')}}//new pl.Player([],[],'Player',7);
           let ranNum = Math.floor(Math.random() * (romeDeck.length - 1));
           neutralPlayer.hand = [{ ...romeDeck[ranNum] }];
           console.log('hand:', neutralPlayer.hand);
           this.locations[location].playCard(0, neutralPlayer);
           console.log('neutral player played',neutralPlayer.played)
+          
+
         });
+        if(gameType == 'hard'){
+          let romeDeck = [...this.locations[this.currentPlayer].deck];
+          let ranNum = Math.floor(Math.random() * (romeDeck.length - 1));
+          neutralPlayer.hand = [{ ...romeDeck[ranNum] }];
+          console.log('hardmode hand:', neutralPlayer.hand);
+          this.locations[this.currentPlayer].playCard(0, neutralPlayer);
+        }
         if (this.locations[this.currentPlayer].wounds[this.currentPlayer] > 6) {
           console.log('paul lose game');
           this.setLoser(this.players[this.currentPlayer])
@@ -759,7 +793,7 @@ module.exports.newGame = function Game(
           console.log('challenge lose game');
         }
 
-        for (let x = 0; x < this.players.length; x++) {
+        for (let x = 0; x < difficulty; x++) {
           this.locations[this.currentPlayer].drawEffect();
         }
         //one extra
