@@ -514,6 +514,10 @@ module.exports.newGame = function Game(
     }
     if(gameType === 'mono' || gameType == 'coop' || gameType == 'hard'){
       this.losers = this.players.length;
+      this.loser = 'coop lost to the world :('
+      Object.keys(this.players).map(player=>{
+        this.players[player].baned = true;
+      })
     }
   };
 
