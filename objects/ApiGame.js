@@ -702,6 +702,10 @@ module.exports.newGame = function Game(
         break;
       case 'Nineveh':
         let ninev = this.locations[this.currentPlayer];
+        if (ninev.coopDisplay.length > 3) {
+          this.setLoser(this.players[this.currentPlayer])
+          console.log('ninevite lose the game');
+        }
         for(let x = 0; x < difficulty; x++){
           ninev.drawEffect();
         }
@@ -719,14 +723,10 @@ module.exports.newGame = function Game(
             warriors += 1;
           }
         });
-        if (ninev.coopDisplay.length > 3) {
-          this.setLoser(this.players[this.currentPlayer])
-          console.log('ninevite lose the game');
-        }
 
         Object.keys(this.locations).map((location) => {
           let replenish = true;
-          while (3 - warriors < this.locations[location].market.length) {
+          while (3 - warriors <= this.locations[location].market.length) {
             replenish = false;
             let last = this.locations[location].market.length - 1;
 
