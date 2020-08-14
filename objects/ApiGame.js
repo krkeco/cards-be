@@ -171,6 +171,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.jonah,
               deckData.stories.jonah.character,
+              gameType
             );
             Nineveh.coopDeck = [...nineviteDeck];
           } else {
@@ -180,6 +181,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.jonah,
               deckData.stories.jonah.character,
+              gameType
             );
           }
           // Nineveh.id = index;
@@ -258,6 +260,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.esther,
               deckData.stories.esther.character,
+              gameType
             );
             Babylon.coopDeck = [...challengeDeck];
           } else {
@@ -267,6 +270,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.esther,
               deckData.stories.esther.character,
+              gameType
             );
           }
 
@@ -292,6 +296,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.joshua,
               deckData.stories.joshua.character,
+              gameType
             );
             Canaan.coopDeck = [...fearDeck];
           } else {
@@ -301,6 +306,7 @@ module.exports.newGame = function Game(
               index,
               deckData.infoDecks.joshua,
               deckData.stories.joshua.character,
+              gameType
             );
           }
           // Canaan.id = index;
@@ -322,6 +328,7 @@ module.exports.newGame = function Game(
             index,
             deckData.infoDecks.paul,
             deckData.stories.paul.character,
+              gameType
           );
           // Rome.id = index;
           this.Paul = new pl.Player(
@@ -694,7 +701,8 @@ module.exports.newGame = function Game(
         this.locations[this.currentPlayer].coopDisplay.map((fearCard) => {
           totalFear += fearCard.fear;
         });
-        if (totalFear > 13 * this.players.length) {
+        if (totalFear > 13 * this.players.length + 1 ) {
+          //if you have just 13 you get pwnd by an unlucky cursing
           //+1 is jerusalem
           this.setLoser(this.players[this.currentPlayer])
           console.log('fear lose the game',totalFear);

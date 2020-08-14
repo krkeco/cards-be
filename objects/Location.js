@@ -4,6 +4,7 @@ module.exports.Location = function Location(
   id = 7,
   infoDeck,
   character,
+  gameType = 'all'
 ) {
   this.deck = [...deck];
   this.character = { ...character };
@@ -231,8 +232,10 @@ module.exports.Location = function Location(
 
   this.buy = function (index, player) {
     if (
-      this.battlefield[player.id] &&
-      this.battlefield[player.id].gold >= this.market[index].cost + this.tax
+      (gameType == 'all' &&
+        this.battlefield[player.id] &&
+            this.battlefield[player.id].gold >= this.market[index].cost + this.tax)
+      || (gameType != 'all' && this.coopCount.totalGold >=  this.market[index].cost + this.tax)
     ) {
       console.log('location:buy:' + JSON.stringify(this.market[index].name));
       let newBattleField = [...this.battlefield];
@@ -457,8 +460,8 @@ module.exports.Location = function Location(
           }
 
           if (
-            this.battlefield[index].influence <= 0 &&
-            this.battlefield[index].faith > 0
+            this.battlefield[index].fear < 1 &&
+            this.battlefield[index].faith > this.battlefield[index].influence
           ) {
             this.battlefield[index].influence = this.battlefield[index].faith;
             this.battlefield[index].weariness = 0;
@@ -541,10 +544,17 @@ module.exports.Location = function Location(
       influencer.name == 'Joshua' &&
       this.id == influencer.id
     ) {
+      if (
+        influencer.finalInfluence > this.influence && //this.influence
+        influencer.name != 'neutral'
+      ) {
+        this.influencer = influencer;
+        // //console.log('new influencer is now'+influencer.name)
+      }
       this.abilities = [this.abilities[0] + 1];
       this.influence += 3;
       // this.card.influence += this.abilities[0]-1;
-      this.card.fear += 1;
+      // this.card.fear += 1;
       // console.log('canaan conquered, tier up'+this.abilities[0])
     }
 
