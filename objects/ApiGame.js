@@ -156,13 +156,17 @@ module.exports.newGame = function Game(
             let nineviteDeck = [];
             deckData.decks.jonah.map((card) => {
               if (card.abilities.indexOf('Ninevite') > -1) {
-                nineviteDeck.push(card);
+                nineviteDeck.push({...card});
               } else {
-                storyDeck.push(card);
+                storyDeck.push({...card});
+              }
+              console.log('this player jonah is',index)
+              if(gameType=='mono' && index != 0){
+                storyDeck.push({...card});
               }
             });
             Nineveh = new loc.Location(
-              [...storyDeck],
+              storyDeck,
               deckData.stories.jonah.location,
               index,
               deckData.infoDecks.jonah,
@@ -713,6 +717,7 @@ module.exports.newGame = function Game(
         for(let x = 0; x < difficulty; x++){
           ninev.drawEffect();
         }
+        console.log('post draw effect nineveh')
         // ninev.drawEffect();//hardmode much?
         //discard cards
         // let ninevites = 0;
