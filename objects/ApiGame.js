@@ -458,10 +458,18 @@ module.exports.newGame = function Game(
           console.log('checking paul win con');
           let pros = 0;
           let wounds = 0;
-          Object.keys(this.locations).map((location, index) => {
-            pros += this.locations[location].proselytized[player.id];
-            wounds += this.locations[location].wounds[player.id];
-          });
+          if(gameType === 'mono' || gameType == 'coop' || gameType == 'hard'){
+            Object.keys(this.locations).map((location, index) => {
+              this.locations[location].proselytized.map(pro => pros += pro);
+              this.locations[location].wounds.map(pro => wounds += pro);
+              // wounds += this.locations[location].wounds[player.id];
+            });
+          }else{
+            Object.keys(this.locations).map((location, index) => {
+              pros += this.locations[location].proselytized[player.id];
+              wounds += this.locations[location].wounds[player.id];
+            });
+          }
           if (pros >= 7) {
             //og 7
             this.setWinner(player);

@@ -573,7 +573,7 @@ module.exports.Location = function Location(
 
       if (this.apostle > -1) {
         this.battlefield.map((bf, index) => {
-          if (bf && bf.playPaul && bf.name == 'Paul') {
+          if (bf && bf.playPaul && (bf.name == 'Paul' || gameType != 'all')) {
             if (
               influencer.id == bf.id &&
               influencer.finalInfluence > this.influence
