@@ -43,7 +43,16 @@ type Player {
 	hand: [Card],
 			
 },
+type CoopInfo {
+
+    totalGold: String,
+    totalInfluence: String,
+    totalFaith: String,
+    totalCourage: String,
+    totalProvision: String,
+},
 type Location {	
+  coopCount: CoopInfo,
 	name: String,
   id: Int,
 	influence: Int,
@@ -77,6 +86,7 @@ type TurnInfo {
 	nextPlayer: Int,
 	winner: String,
   loser: String,
+  winning: Boolean,
 },
 type WaitingRoom {
 	room: [String],
@@ -150,6 +160,7 @@ var root = {
       winner: game.winner,
       log: game.log,
       loser: game.loser,
+      winning: game.winning
     };
     // return player
   },
@@ -300,6 +311,7 @@ var root = {
       nextPlayer: npInfo.nextPlayer,
       winner: npInfo.winner,
       loser: game.loser,
+      winning: game.winning,
       log: game.log,
     };
   },

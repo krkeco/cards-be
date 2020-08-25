@@ -518,9 +518,11 @@ module.exports.newGame = function Game(
   };
 
   this.setWinner = function (player) {
-    this.winning = true;
+    if(gameType != 'coop' && gameType != 'hard'){
+      this.winning = true;
+    }
     player.winning = true;
-    this.winner = player.name + player.id;
+    this.winner += ' ' + player.name + player.id;
     this.appendLog(this.winner + ' won the game by finishing their calling!');
   };
 
@@ -643,6 +645,10 @@ module.exports.newGame = function Game(
     
     if (gameType == 'coop' || gameType == 'hard'){
       this.runEffect();
+      Object.keys(this.locations).map(location=>{
+
+      this.checkNinevehEffect(this.locations[location]);
+      })
     }
     if(gameType == 'mono'){
       let floatCurrentPlayer;
@@ -652,6 +658,10 @@ module.exports.newGame = function Game(
         this.currentPlayer = 0;
         console.log('runeffect for',this.currentPlayer)
         this.runEffect();
+        Object.keys(this.locations).map(location=>{
+
+          this.checkNinevehEffect(this.locations[location]);
+        })
       // }
       this.currentPlayer = floatCurrentPlayer;
     }
@@ -737,46 +747,6 @@ module.exports.newGame = function Game(
         // ninev.drawEffect();//hardmode much?
         //discard cards
         // let ninevites = 0;
-        let warriors = 0;
-        ninev.coopDisplay.map((card) => {
-          if (card.name == 'Priestess') {
-            if (this.draws > 2) {
-              this.draws -= 1;
-            }
-          }
-          if (card.name == 'Warrior') {
-            warriors += 1;
-          }
-        });
-
-        Object.keys(this.locations).map((location) => {
-          let replenish = true;
-          // while (warriors +1 < this.locations[location].market.length) {
-          if(warriors > 0 && this.locations[location].market.length > 3 - warriors){
-            
-            //l = 2 w = 1 
-            // for(let x = 0; x < this.locations[location].market.length - (3 - warriors); x++){
-              while(this.locations[location].market.length > 3 - warriors){
-              replenish = false;
-              let last = this.locations[location].market.length - 1;
-  
-              let newMarket = [...this.locations[location].market];
-              let floater = { ...newMarket[last] };
-              newMarket.splice(last, 1);
-              let newDeck = [...this.locations[location].deck];
-              newDeck.push(floater);
-              this.locations[location].market = [...newMarket];
-              this.locations[location].deck = [...newDeck];
-            }
-          }
-          if(this.locations[location].market.length < 3 - warriors){
-            
-              while(this.locations[location].market.length < 3 - warriors){
-                this.locations[location].drawOne();
-              }
-            
-          }
-        });
         //discard market cards
 
         break;
@@ -830,7 +800,9 @@ module.exports.newGame = function Game(
           this.locations[this.currentPlayer].drawEffect();
         }
         //one extra
-        this.locations[this.currentPlayer].drawEffect();
+        if(gameType != 'mono'){
+          this.locations[this.currentPlayer].drawEffect();
+        }
 
         this.locations[this.currentPlayer].coopDisplay.map((card) => {
           switch (card.name) {
@@ -855,7 +827,51 @@ module.exports.newGame = function Game(
     }
     console.log('finish runEffect');
   };
+  this.checkNinevehEffect = function(ninev) {
+    // console.log('ninev:',this.locations[ninev].name)
+    if(ninev.name == 'Nineveh'){
+      let warriors = 0;
+      ninev.coopDisplay.map((card) => {
+        if (card.name == 'Priestess') {
+          if (this.draws > 2) {
+            this.draws -= 1;
+          }
+        }
+        if (card.name == 'Warrior') {
+          warriors += 1;
+        }
+      });
 
+      Object.keys(this.locations).map((location) => {
+        let replenish = true;
+        // while (warriors +1 < this.locations[location].market.length) {
+        if(warriors > 0 && this.locations[location].market.length > 3 - warriors){
+          
+          //l = 2 w = 1 
+          // for(let x = 0; x < this.locations[location].market.length - (3 - warriors); x++){
+            while(this.locations[location].market.length > 3 - warriors){
+            replenish = false;
+            let last = this.locations[location].market.length - 1;
+
+            let newMarket = [...this.locations[location].market];
+            let floater = { ...newMarket[last] };
+            newMarket.splice(last, 1);
+            let newDeck = [...this.locations[location].deck];
+            newDeck.push(floater);
+            this.locations[location].market = [...newMarket];
+            this.locations[location].deck = [...newDeck];
+          }
+        }
+        if(this.locations[location].market.length < 3 - warriors){
+          
+            while(this.locations[location].market.length < 3 - warriors){
+              this.locations[location].drawOne();
+            }
+          
+        }
+      });
+    }
+  }
   this.checkEstherEffects = function () {
     console.log('reseting for esthereffect');
     Object.keys(this.locations).map((location, index) => {
@@ -1094,6 +1110,7 @@ module.exports.newGame = function Game(
         theInfluencer = location.influencer.name + location.influencer.id;
       }
       let info = {
+        coopCount:location.coopCount,
         name: location.name,
         character: location.character,
         id: location.id,
